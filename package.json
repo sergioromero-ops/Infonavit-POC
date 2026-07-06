@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "auth0-js": "^10.2.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.2",
