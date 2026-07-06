@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { auth } from 'express-oauth2-jwt-bearer';
 import 'dotenv/config';
+import { db } from './data/db.js';
 
 // Authorization middleware
 const checkJwt = auth({
@@ -26,15 +27,35 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Este endpoint ahora está protegido
-app.get('/api/profile', checkJwt, (req, res) => {
-  res.json({
-    name: 'Juan Derechohabiente (Protegido)',
-    email: 'juan.derechohabiente@example.com',
-    role: 'derechohabiente',
-    memberSince: '2023-01-15',
-    auth_info: req.auth.payload,
-  });
+// Endpoint de perfil protegido
+app.get('/api/profile', checkJwt, async (req, res) => {
+  try {
+    const auth0Id = req.auth.payload.sub;
+    const email = req.auth.payload.email; // Asumiendo que el email está en el token
+
+    let user = await db.user.findUnique({ where: { auth0Id } });
+
+    // Si el usuario no existe, lo creamos (user-provisioning)
+    if (!user) {
+      user = await db.user.create({
+        data: {
+          auth0Id,
+          email,
+          // Se pueden añadir más datos que vengan del token o de un perfil de Auth0
+        },
+      });
+    }
+
+    res.json({
+      name: user.email, // Usamos el email como nombre por ahora
+      role: user.role || 'DERECHOHABIENTE',
+      memberSince: user.createdAt,
+      ...user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 // Servir frontend en producción
