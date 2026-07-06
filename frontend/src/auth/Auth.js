@@ -21,6 +21,10 @@ class Auth {
     this.setSession = this.setSession.bind(this);
   }
 
+  getAccessToken() {
+    return this.accessToken;
+  }
+
   getProfile() {
     return this.profile;
   }

@@ -4,13 +4,21 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { auth } from 'express-oauth2-jwt-bearer';
+import 'dotenv/config';
+
+// Authorization middleware
+const checkJwt = auth({
+  audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(cors({ origin: 'http://localhost:3000' })); // Ajustar en producción
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
 // API routes
@@ -18,13 +26,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.get('/api/profile', (req, res) => {
-  // Simulación de datos de perfil de usuario
+// Este endpoint ahora está protegido
+app.get('/api/profile', checkJwt, (req, res) => {
   res.json({
-    name: 'Juan Derechohabiente',
+    name: 'Juan Derechohabiente (Protegido)',
     email: 'juan.derechohabiente@example.com',
     role: 'derechohabiente',
     memberSince: '2023-01-15',
+    auth_info: req.auth.payload,
   });
 });
 
