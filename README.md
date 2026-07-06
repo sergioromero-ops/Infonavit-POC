@@ -67,6 +67,31 @@ npm run dev
 npm run build
 ```
 
+## Docker y Cloud Run
+
+Construir la imagen localmente:
+
+```bash
+docker build -t infonavit-poc .
+```
+
+Probarla localmente:
+
+```bash
+docker run -p 8080:8080 infonavit-poc
+```
+
+Desplegar en Cloud Run:
+
+```bash
+gcloud run deploy infonavit-poc \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated
+```
+
+Cloud Run inyecta la variable `PORT` y el contenedor ya queda preparado para escuchar en ese puerto.
+
 ## Enfoque de la propuesta
 
 La POC esta pensada para una conversacion ejecutiva y funcional:
