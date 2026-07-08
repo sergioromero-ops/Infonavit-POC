@@ -22,10 +22,11 @@ button{font-family:inherit;cursor:pointer}
 input,select,textarea{font-family:inherit;font-size:14px}
 
 /* ============ BARRA DE PROTOTIPO / SELECTOR DE ROL ============ */
-.proto-bar{position:sticky;top:0;z-index:900;background:var(--gris-900);color:#fff;display:flex;align-items:center;gap:10px;padding:8px 16px;flex-wrap:wrap}
-.proto-bar .tag{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:3px 8px;border-radius:6px;font-weight:600}
-.proto-bar .roles{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
-.rol-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 13px;border-radius:99px;font-size:12.5px;font-weight:600;transition:.15s}
+.proto-bar{position:sticky;top:0;z-index:900;background:var(--gris-900);color:#fff;display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.proto-bar::-webkit-scrollbar{display:none}
+.proto-bar .tag{font-size:10px;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.14);padding:3px 8px;border-radius:6px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.proto-bar .roles{display:flex;gap:5px;flex-wrap:nowrap;margin-left:auto}
+.rol-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 11px;border-radius:99px;font-size:11.5px;font-weight:600;transition:.15s;white-space:nowrap;flex-shrink:0}
 .rol-btn:hover{background:rgba(255,255,255,.12)}
 .rol-btn.activo{background:var(--rojo);border-color:var(--rojo)}
 
