@@ -4,14 +4,24 @@ import AUTH_CONFIG from "../config";
 
 class Auth {
   constructor() {
-    this.auth0 = new auth0.WebAuth({
-      domain: AUTH_CONFIG.domain,
-      clientID: AUTH_CONFIG.clientId,
-      redirectUri: AUTH_CONFIG.callbackUrl,
-      audience: AUTH_CONFIG.audience,
-      responseType: "token id_token",
-      scope: "openid profile email",
-    });
+    this.auth0 = null;
+    this.authConfigured = Boolean(
+      AUTH_CONFIG.domain &&
+        AUTH_CONFIG.clientId &&
+        AUTH_CONFIG.callbackUrl &&
+        AUTH_CONFIG.audience,
+    );
+
+    if (this.authConfigured) {
+      this.auth0 = new auth0.WebAuth({
+        domain: AUTH_CONFIG.domain,
+        clientID: AUTH_CONFIG.clientId,
+        redirectUri: AUTH_CONFIG.callbackUrl,
+        audience: AUTH_CONFIG.audience,
+        responseType: "token id_token",
+        scope: "openid profile email",
+      });
+    }
 
     this.getProfile = this.getProfile.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
@@ -31,6 +41,11 @@ class Auth {
 
   handleAuthentication() {
     return new Promise((resolve, reject) => {
+      if (!this.auth0) {
+        reject(new Error("Auth0 is not configured"));
+        return;
+      }
+
       this.auth0.parseHash((err, authResult) => {
         if (err) return reject(err);
         if (!authResult || !authResult.idToken) {
@@ -47,6 +62,11 @@ class Auth {
   }
 
   login() {
+    if (!this.auth0) {
+      console.warn("Auth0 is not configured");
+      return;
+    }
+
     this.auth0.authorize();
   }
 
