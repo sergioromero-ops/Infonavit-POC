@@ -245,8 +245,8 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
     </div>
   </header>
 
-  <div class="hero2">
-    <div class="video-capa"><video src="assets/hero-familia.mp4" autoplay muted loop playsinline></video></div>
+  <div class="hero2" id="hero2">
+    <div class="video-capa"><video id="video-hero" src="assets/hero-familia.mp4" autoplay muted loop playsinline crossorigin="anonymous"></video></div>
     <div class="contenedor">
       <div class="texto-hero">
         <h1>Una vivienda digna, con un camino claro hasta la entrega.</h1>
@@ -1427,6 +1427,24 @@ function validarEscrituras(){
   toast('✓ 25 firmas programadas. Derechohabientes notificados.');
   pintarB2G();
 }
+
+/* ================= IGUALAR FONDO AL VIDEO ================= */
+function igualarFondoVideo(){
+  const v=document.getElementById("video-hero"), hero=document.getElementById("hero2");
+  if(!v||!hero) return;
+  try{
+    const c=document.createElement("canvas"); c.width=24; c.height=24;
+    const x=c.getContext("2d",{willReadFrequently:true});
+    x.drawImage(v,0,0,120,120,0,0,24,24); // esquina superior izquierda del video
+    const d=x.getImageData(2,2,1,1).data;
+    hero.style.background="rgb("+d[0]+","+d[1]+","+d[2]+")";
+  }catch(e){}
+}
+(function(){
+  const v=document.getElementById("video-hero");
+  if(!v) return;
+  v.addEventListener("playing",()=>{ igualarFondoVideo(); setTimeout(igualarFondoVideo,600); setTimeout(igualarFondoVideo,2000); });
+})();
 
 /* ================= LANDING V2: MODAL + CARRUSEL ================= */
 function cerrarModalEntrada(si){
