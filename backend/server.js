@@ -8,11 +8,24 @@ import { auth } from 'express-oauth2-jwt-bearer';
 import 'dotenv/config';
 import { db } from './data/db.js';
 
-// Authorization middleware
-const checkJwt = auth({
-  audience: process.env.AUTH0_AUDIENCE,
-  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
-});
+const auth0Audience = process.env.AUTH0_AUDIENCE?.trim();
+const auth0Domain = process.env.AUTH0_DOMAIN?.trim();
+const auth0Configured = Boolean(auth0Audience && auth0Domain);
+
+// Keep the service healthy while Auth0 is being configured, without exposing
+// protected routes or accepting unauthenticated requests.
+const checkJwt = auth0Configured
+  ? auth({
+      audience: auth0Audience,
+      issuerBaseURL: `https://${auth0Domain}/`,
+    })
+  : (_req, res) => {
+      res.status(503).json({ message: 'Authentication is not configured' });
+    };
+
+if (!auth0Configured) {
+  console.warn('AUTH0_AUDIENCE and AUTH0_DOMAIN are not configured');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
