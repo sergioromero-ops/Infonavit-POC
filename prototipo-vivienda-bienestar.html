@@ -1500,6 +1500,7 @@ function irVista(v, btn){
   document.getElementById('vista-'+v).classList.add('activa');
   document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo', b.dataset.vista===v));
   window.scrollTo({top:0});
+  if(typeof montarVoz==='function') montarVoz(v);
   if(v==='b2g' && typeof pintarB2G==='function') pintarB2G();
 }
 
@@ -1619,7 +1620,29 @@ function toast(msg){
 }
 </script>
 <!-- Widget de voz ElevenLabs ConvAI -->
-<elevenlabs-convai agent-id="agent_0501kx1nh32ve5daf6by9qq0tef9"></elevenlabs-convai>
+<div id="convai-slot"></div>
+<script>
+const AGENTES_VOZ={
+  landing:"agent_0501kx1nh32ve5daf6by9qq0tef9",
+  hub:"agent_0501kx1nh32ve5daf6by9qq0tef9",
+  b2g:"agent_9701kx1tggy2f0g8ns0pvmrpgtn4",
+  colab:"agent_1901kx1se68zffzajnqw88pw1rjx",
+  b2b:"agent_1501kx1sejsheqs8ppczajwkeze7",
+  b2o:"agent_1901kx1v0efxepvtn3s8w236j8jr",
+  b2c:"agent_1601kx1sfh3fe6bbt7ygnwnegw6x"
+};
+function montarVoz(v){
+  const slot=document.getElementById("convai-slot");
+  const id=AGENTES_VOZ[v]||AGENTES_VOZ.landing;
+  const actual=slot.firstElementChild;
+  if(actual && actual.getAttribute("agent-id")===id) return;
+  slot.innerHTML="";
+  const w=document.createElement("elevenlabs-convai");
+  w.setAttribute("agent-id",id);
+  slot.appendChild(w);
+}
+montarVoz("landing");
+</script>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>
