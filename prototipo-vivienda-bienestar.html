@@ -59,6 +59,22 @@ table.tabla td{padding:12px;border-bottom:1px solid var(--gris-100);vertical-ali
 table.tabla tr:last-child td{border-bottom:none}
 table.tabla tr.clic{cursor:pointer}
 
+/* ============ MAPA CONSTRUCTOR (JALISCO) ============ */
+.mapa-b2b-wrap{position:relative;display:flex;justify-content:center}
+#mapa-b2b{width:100%;height:auto;max-height:440px;display:block}
+#mapa-b2b .edo-b{fill:#ECEEF1;stroke:#fff;stroke-width:.6}
+#mapa-b2b .edo-b.jal{fill:#F7E3E9;stroke:var(--vino);stroke-width:.9}
+#mapa-b2b .pin{cursor:pointer}
+#mapa-b2b .pin .halo{opacity:.35;animation:latido 1.8s infinite}
+#mapa-b2b .pin circle.c{stroke:#fff;stroke-width:.6;transition:r .15s}
+#mapa-b2b .pin:hover circle.c{r:2.9}
+#mapa-b2b .lbl-mapa{font-size:3px;fill:var(--gris-500);font-weight:600;pointer-events:none}
+@keyframes latido{0%,100%{opacity:.35}50%{opacity:.12}}
+#mapa-b2b-tip{position:absolute;pointer-events:none;background:var(--gris-900);color:#fff;font-size:12px;line-height:1.5;padding:8px 11px;border-radius:8px;box-shadow:var(--sombra-md);display:none;z-index:50;white-space:nowrap}
+.dev-card.flash{animation:flashCard 1.8s ease}
+@keyframes flashCard{0%,55%{box-shadow:0 0 0 3px var(--rojo),var(--sombra-md)}100%{box-shadow:var(--sombra)}}
+
+
 /* ============ MAPA REAL DE MÉXICO ============ */
 .mapa-mx-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:stretch}
 .mapa-mx-svg{position:relative}
@@ -669,26 +685,39 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="kpi"><span class="lbl">Documentos pendientes</span><b style="color:var(--ambar)">7</b></div>
         <div class="kpi"><span class="lbl">Fianzas por vencer</span><b style="color:var(--rojo-sem)" id="b2b-fianzas-kpi">1</b></div>
       </div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="titulo-seccion" style="margin-top:0"><h3>Mis desarrollos en el mapa · Jalisco</h3><span class="chip gris">Pasa el mouse y haz clic en un desarrollo</span></div>
+        <div class="mapa-b2b-wrap">
+          <svg id="mapa-b2b" viewBox="393 335 152 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de Jalisco con la ubicación de los desarrollos"></svg>
+          <div id="mapa-b2b-tip"></div>
+        </div>
+        <div class="mapa-leyenda">
+          <span><i style="background:#57B98B;border-radius:99px"></i>Desarrollo en verde</span>
+          <span><i style="background:#E8A94E;border-radius:99px"></i>Desarrollo en amarillo</span>
+          <span><i style="background:#E4695E;border-radius:99px"></i>Desarrollo en rojo</span>
+          <span><i style="background:#F7E3E9;border:1px solid var(--vino)"></i>Jalisco</span>
+        </div>
+      </div>
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-        <div class="dev-card">
+        <div class="dev-card" id="dev-bosques">
           <div class="top"><div><h4>Bosques del Bienestar</h4><small>Tlajomulco, Jal. · 420 viviendas</small></div><span class="chip rojo" style="margin-left:auto" id="b2b-bosques-sem"><span class="punto rojo"></span>Rojo</span></div>
           <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span id="b2b-bosques-bar" style="width:78%"></span></div><b id="b2b-bosques-pct">78%</b></div>
           <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span id="b2b-bosques-serv-bar" class="ambar" style="width:54%"></span></div><b id="b2b-bosques-serv">54%</b></div>
           <button class="btn primario chico" onclick="irPanel('b2b','actualizar')">Actualizar avance</button>
         </div>
-        <div class="dev-card">
+        <div class="dev-card" id="dev-tesistan">
           <div class="top"><div><h4>Jardines de Tesistán</h4><small>Zapopan, Jal. · 360 viviendas</small></div><span class="chip verde" style="margin-left:auto"><span class="punto verde"></span>Verde</span></div>
           <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" style="width:92%"></span></div><b>92%</b></div>
           <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" style="width:88%"></span></div><b>88%</b></div>
           <button class="btn secundario chico" onclick="toast('Prototipo: flujo de actualización disponible para Bosques del Bienestar')">Actualizar avance</button>
         </div>
-        <div class="dev-card">
+        <div class="dev-card" id="dev-lomas">
           <div class="top"><div><h4>Lomas del Salto</h4><small>El Salto, Jal. · 288 viviendas</small></div><span class="chip ambar" style="margin-left:auto"><span class="punto ambar"></span>Amarillo</span></div>
           <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="ambar" style="width:64%"></span></div><b>64%</b></div>
           <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="ambar" style="width:57%"></span></div><b>57%</b></div>
           <button class="btn secundario chico" onclick="toast('Prototipo: flujo de actualización disponible para Bosques del Bienestar')">Actualizar avance</button>
         </div>
-        <div class="dev-card">
+        <div class="dev-card" id="dev-chapala">
           <div class="top"><div><h4>Vistas de Chapala</h4><small>Ixtlahuacán, Jal. · 380 viviendas</small></div><span class="chip verde" style="margin-left:auto"><span class="punto verde"></span>Verde</span></div>
           <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" style="width:85%"></span></div><b>85%</b></div>
           <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" style="width:81%"></span></div><b>81%</b></div>
@@ -1391,6 +1420,56 @@ function seleccionarEdo(p){
     </div>
     <button class="btn primario chico" style="width:100%;margin-bottom:8px" onclick="${esJal?'verDetalleBosques()':`toast('Prototipo: el detalle completo está disponible para Jalisco')`}">Ver desarrollos del estado</button>
     <button class="btn secundario chico" style="width:100%" onclick="toast('Solicitud de actualización enviada a los constructores de ${p.dataset.nombre}')">Solicitar actualización</button>`;
+}
+
+
+/* ============ MAPA CONSTRUCTOR (JALISCO) ============ */
+const devsB2B = [
+  {card:'dev-bosques', nombre:'Bosques del Bienestar', mun:'Tlajomulco, Jal.', viv:420, x:475.0, y:421.0, sem:'rojo',  etq:'Rojo',    fis:'78%', serv:'54%'},
+  {card:'dev-tesistan',nombre:'Jardines de Tesistán',  mun:'Zapopan, Jal.',    viv:360, x:471.0, y:409.5, sem:'verde', etq:'Verde',   fis:'92%', serv:'88%'},
+  {card:'dev-lomas',   nombre:'Lomas del Salto',       mun:'El Salto, Jal.',   viv:288, x:482.5, y:418.5, sem:'ambar', etq:'Amarillo',fis:'64%', serv:'57%'},
+  {card:'dev-chapala', nombre:'Vistas de Chapala',     mun:'Ixtlahuacán, Jal.',viv:380, x:479.5, y:427.5, sem:'verde', etq:'Verde',   fis:'85%', serv:'81%'}
+];
+const mapaB2B = document.getElementById('mapa-b2b');
+if(mapaB2B && mapaSvg){
+  const NS='http://www.w3.org/2000/svg';
+  const colSemB={rojo:'#E4695E',ambar:'#E8A94E',verde:'#57B98B'};
+  mapaSvg.querySelectorAll('.edo').forEach(p=>{
+    const c=document.createElementNS(NS,'path');
+    c.setAttribute('d',p.getAttribute('d'));
+    c.setAttribute('class','edo-b'+(p.id==='MXJAL'?' jal':''));
+    mapaB2B.appendChild(c);
+  });
+  const gdl=document.createElementNS(NS,'text');
+  gdl.setAttribute('x',476.5); gdl.setAttribute('y',413.2); gdl.setAttribute('class','lbl-mapa'); gdl.setAttribute('text-anchor','middle');
+  gdl.textContent='Guadalajara';
+  mapaB2B.appendChild(gdl);
+  const tipB=document.getElementById('mapa-b2b-tip');
+  devsB2B.forEach(d=>{
+    const g=document.createElementNS(NS,'g');
+    g.setAttribute('class','pin');
+    const halo=document.createElementNS(NS,'circle');
+    halo.setAttribute('cx',d.x); halo.setAttribute('cy',d.y); halo.setAttribute('r',d.sem==='rojo'?4.2:3.4); halo.setAttribute('fill',colSemB[d.sem]); halo.setAttribute('class','halo');
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',d.x); c.setAttribute('cy',d.y); c.setAttribute('r',2.2); c.setAttribute('fill',colSemB[d.sem]); c.setAttribute('class','c');
+    g.appendChild(halo); g.appendChild(c);
+    g.addEventListener('mousemove',e=>{
+      const r=mapaB2B.parentElement.getBoundingClientRect();
+      tipB.style.display='block';
+      tipB.style.left=Math.min(e.clientX-r.left+14, r.width-210)+'px';
+      tipB.style.top=(e.clientY-r.top-14)+'px';
+      tipB.innerHTML=`<b>${d.nombre}</b><br>${d.mun} · ${d.viv} viviendas<br><span style="color:${colSemB[d.sem]}">●</span> ${d.etq} · Físico <b>${d.fis}</b> · Servicios <b>${d.serv}</b><br><span style="opacity:.75">Clic para ir a la tarjeta</span>`;
+    });
+    g.addEventListener('mouseleave',()=>tipB.style.display='none');
+    g.addEventListener('click',()=>{
+      tipB.style.display='none';
+      const card=document.getElementById(d.card);
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
+      setTimeout(()=>card.classList.remove('flash'),1900);
+    });
+    mapaB2B.appendChild(g);
+  });
 }
 
 function toast(msg){
