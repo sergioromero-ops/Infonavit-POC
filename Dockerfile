@@ -5,19 +5,19 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copiar los package.json y package-lock.json para instalar dependencias
+# Copiar los manifiestos antes del código para aprovechar la caché de Docker
 COPY package.json package-lock.json ./
 COPY frontend/package.json ./frontend/
 COPY backend/package.json ./backend/
 
-# Instalar todas las dependencias del monorepo
-RUN npm install --workspaces
+# npm puede omitir el binario opcional de Rollup cuando el lock se creó en macOS.
+# Instalarlo explícitamente garantiza que Vite funcione sobre Alpine.
+RUN npm install --workspaces \
+    && npm install --no-save @rollup/rollup-linux-x64-musl@4.62.2
 
 # Copiar el resto del código fuente
 COPY frontend/ ./frontend/
 COPY backend/ ./backend/
-# Copia cualquier otro archivo en la raíz (como el propio Dockerfile, etc.)
-COPY . .
 
 # Construir el frontend
 RUN npm run build --workspace=frontend
@@ -36,7 +36,6 @@ COPY --from=builder /app/backend/package.json ./backend/
 
 # Copiar las dependencias de producción ya instaladas desde la etapa de build
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/backend/node_modules ./backend/node_modules
 
 # Copiar el código de la aplicación del backend
 COPY --from=builder /app/backend ./backend/
