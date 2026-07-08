@@ -155,6 +155,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
   <span class="tag">Prototipo · Datos simulados</span>
   <div class="roles">
     <button class="rol-btn activo" data-vista="landing" onclick="irVista('landing',this)">🌐 Web pública</button>
+    <button class="rol-btn" data-vista="hub" onclick="entrarPorHub(null)">🔐 Acceso privado</button>
     <button class="rol-btn" data-vista="b2g" onclick="irVista('b2g',this)">🏛️ Director · Infonavit</button>
     <button class="rol-btn" data-vista="colab" onclick="irVista('colab',this)">🧑‍💼 Colaborador</button>
     <button class="rol-btn" data-vista="b2b" onclick="irVista('b2b',this)">🏗️ Constructor</button>
@@ -189,6 +190,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
         <button class="btn blanco" onclick="irVista('b2c')">Verificar si soy elegible →</button>
         <button class="btn borde" onclick="document.getElementById('como').scrollIntoView()">Conocer el programa</button>
       </div>
+      <p style="margin-top:14px;font-size:12.5px;opacity:.85">✦ Copiloto comercial en esta página: precalifica, resuelve dudas y agenda una llamada.</p>
     </div>
   </div>
 
@@ -215,14 +217,14 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 
   <div id="accesos" class="seccion" style="background:#fff">
     <div class="contenedor">
-      <h2>Una plataforma, cinco experiencias con IA personalizada</h2>
-      <p class="intro">Comunicación abierta para el derechohabiente; comunicación cerrada por rol, todas conectadas entre sí, cada una con IA y objetivos definidos.</p>
+      <h2>Dos capas: comunicación abierta y cerrada</h2>
+      <p class="intro">01 · Esta web pública es la capa abierta: sin login, para elegibilidad y captación. 02 · La web privada enruta por rol a cinco apps autenticadas, cada una con IA personalizada y objetivos definidos.</p>
       <div class="grid roles-grid">
-        <div class="rol-card" onclick="irVista('b2c')"><div class="ic">🏠</div><h3>Soy derechohabiente</h3><p>Verifica tu elegibilidad, elige tu vivienda y llega a la firma paso a paso. IA con fines comerciales y operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('colab')"><div class="ic">🧑‍💼</div><h3>Soy colaborador Infonavit</h3><p>Tareas internas: pagos, fianzas, verificaciones y validaciones. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2b')"><div class="ic">🏗️</div><h3>Soy constructor</h3><p>Actualiza avance de obra, servicios, fianzas e inventario de tus desarrollos. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2o')"><div class="ic">📋</div><h3>Soy operador</h3><p>Notarios, valuadores y verificadores: valida trámites y destraba entregas. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2g')"><div class="ic">🏛️</div><h3>Soy el Director</h3><p>Torre de control nacional: metas, avances, bloqueos y escrituración. IA con fines comerciales, operativos y financieros.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('b2c')"><div class="ic">🏠</div><h3>Soy derechohabiente</h3><p>Capa abierta, sin cuenta: verifica tu elegibilidad y encuentra tu vivienda. Al avanzar, tu proceso continúa con login. IA con fines comerciales y operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="entrarPorHub('colab')"><div class="ic">🧑‍💼</div><h3>Soy colaborador Infonavit</h3><p>Tareas internas: pagos, fianzas, verificaciones y validaciones. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="entrarPorHub('b2b')"><div class="ic">🏗️</div><h3>Soy constructor</h3><p>Actualiza avance de obra, servicios, fianzas e inventario de tus desarrollos. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="entrarPorHub('b2o')"><div class="ic">📋</div><h3>Soy operador</h3><p>Notarios, valuadores y verificadores: valida trámites y destraba entregas. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="entrarPorHub('b2g')"><div class="ic">🏛️</div><h3>Soy el Director</h3><p>Torre de control nacional: metas, avances, bloqueos y escrituración. IA con fines comerciales, operativos y financieros.</p><span class="lnk">Entrar →</span></div>
       </div>
     </div>
   </div>
@@ -313,6 +315,38 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .formulario input[type=text],.formulario input[type=number],.formulario select,.formulario textarea{width:100%;padding:11px 13px;border:1.5px solid var(--gris-300);border-radius:9px;margin-top:5px;outline:none;transition:.15s}
 .formulario input:focus,.formulario select:focus,.formulario textarea:focus{border-color:var(--rojo)}
 </style>
+
+<!-- ============ VISTA: HUB PRIVADO (02 · Comunicación cerrada) ============ -->
+<section id="vista-hub" class="vista">
+  <div style="min-height:calc(100vh - 41px);background:linear-gradient(160deg,var(--vino),var(--rojo) 60%,#C05C74);display:flex;align-items:center;justify-content:center;padding:40px 20px">
+    <div style="width:100%;max-width:920px">
+      <div style="text-align:center;color:#fff;margin-bottom:28px">
+        <div class="marca" style="width:46px;height:46px;border-radius:12px;background:#fff;color:var(--rojo);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:19px">IV</div>
+        <h2 style="font-size:26px;margin-top:12px;letter-spacing:-.01em">Acceso · Vivienda del Bienestar</h2>
+        <p style="font-size:13.5px;opacity:.85;margin-top:6px">02 · Web privada — comunicación cerrada · un solo acceso, enruta por rol</p>
+      </div>
+      <div id="hub-login" class="card" style="max-width:400px;margin:0 auto;padding:26px">
+        <form class="formulario" onsubmit="event.preventDefault();hubEntrar()">
+          <div><label>Correo o NSS</label><input type="text" value="usuario@vivienda.gob.mx"></div>
+          <div><label>Contraseña</label><input type="text" value="••••••••" style="letter-spacing:.2em"></div>
+          <button class="btn primario btn-full">Iniciar sesión</button>
+          <p style="font-size:11px;color:var(--gris-500);text-align:center">Prototipo: no se valida ninguna credencial</p>
+        </form>
+      </div>
+      <div id="hub-roles" style="display:none">
+        <p style="text-align:center;color:#fff;font-size:13px;opacity:.9;margin-bottom:16px">Web apps autenticadas · cada una con IA personalizada y objetivos definidos</p>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+          <div class="rol-card" onclick="irVista('b2g')" style="text-align:center"><div class="ic" style="margin:0 auto">🏛️</div><h3 style="font-size:14.5px">Director</h3><p style="flex:none">IA + objetivos · C O F</p></div>
+          <div class="rol-card" onclick="irVista('colab')" style="text-align:center"><div class="ic" style="margin:0 auto">🧑‍💼</div><h3 style="font-size:14.5px">Colaborador</h3><p style="flex:none">IA + objetivos · O</p></div>
+          <div class="rol-card" onclick="irVista('b2b')" style="text-align:center"><div class="ic" style="margin:0 auto">🏗️</div><h3 style="font-size:14.5px">Constructor</h3><p style="flex:none">IA + objetivos · O</p></div>
+          <div class="rol-card" onclick="irVista('b2o')" style="text-align:center"><div class="ic" style="margin:0 auto">📋</div><h3 style="font-size:14.5px">Operador</h3><p style="flex:none">IA + objetivos · O</p></div>
+          <div class="rol-card" onclick="irVista('b2c')" style="text-align:center;border-color:var(--verde)"><div class="ic" style="margin:0 auto;background:var(--verde-claro)">🏠</div><h3 style="font-size:14.5px">Derechohabiente</h3><p style="flex:none">IA + objetivos · C O</p></div>
+        </div>
+        <p style="text-align:center;color:#fff;font-size:11.5px;opacity:.7;margin-top:16px">C comercial · O operativo · F financiero</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ VISTA: B2G TORRE DE CONTROL ============ -->
 <section id="vista-b2g" class="vista">
@@ -1243,7 +1277,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 
         <div class="burbuja-copiloto" id="copiloto-b2c">
           <div class="ia">✦</div>
-          <span id="copiloto-b2c-txt"><b>Copiloto:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.</span>
+          <span id="copiloto-b2c-txt"><b>Copiloto operativo:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.</span>
         </div>
       </div>
     </div>
@@ -1342,6 +1376,15 @@ function validarEscrituras(){
   pintarB2G();
 }
 
+/* ================= HUB PRIVADO ================= */
+let hubDestino=null;
+function entrarPorHub(rol){ hubDestino=rol; irVista('hub'); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.remove('activo')); document.getElementById('hub-login').style.display='block'; document.getElementById('hub-roles').style.display='none'; }
+function hubEntrar(){
+  document.getElementById('hub-login').style.display='none';
+  if(hubDestino){ const d=hubDestino; hubDestino=null; toast('Sesión iniciada · redirigiendo a tu app…'); setTimeout(()=>{ irVista(d); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista===d)); },800); }
+  else{ document.getElementById('hub-roles').style.display='block'; }
+}
+
 /* ================= HISTORIA: COLABORADOR ================= */
 function validarFianza(){
   const b=document.getElementById('btn-validar-fianza');
@@ -1363,14 +1406,14 @@ function irPantalla(n){
   pantallaActual=n;
   const c=document.getElementById('copiloto-b2c-txt');
   const msjs={
-    0:'<b>Copiloto:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.',
-    1:'<b>Copiloto:</b> Tu NSS son 11 números. ¿No lo encuentras? Está en tu recibo de nómina, arriba a la derecha.',
-    2:'<b>Copiloto:</b> Tu crédito conjunto con Luis suma capacidad. La mensualidad nunca superará el 30% de su ingreso.',
-    3:'<b>Copiloto:</b> Ordené las opciones por cercanía a tu trabajo y compatibilidad con tu crédito.',
-    4:'<b>Copiloto:</b> El 304 tiene vista al parque y le da el sol de la mañana. Buena elección 😉',
-    5:'<b>Copiloto:</b> Solo te falta 1 documento. La constancia del SAT se descarga con tu CURP — te muestro cómo.',
-    6:'<b>Copiloto:</b> El notario ya tiene todo. Ese día solo llevas tu INE y firmas. Duración: unos 40 minutos.',
-    7:'<b>Copiloto:</b> De aquí en adelante yo te aviso: no necesitas llamar ni ir a un CESI a preguntar cómo va.'
+    0:'<b>Copiloto operativo:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.',
+    1:'<b>Copiloto operativo:</b> Tu NSS son 11 números. ¿No lo encuentras? Está en tu recibo de nómina, arriba a la derecha.',
+    2:'<b>Copiloto operativo:</b> Tu crédito conjunto con Luis suma capacidad. La mensualidad nunca superará el 30% de su ingreso.',
+    3:'<b>Copiloto operativo:</b> Ordené las opciones por cercanía a tu trabajo y compatibilidad con tu crédito.',
+    4:'<b>Copiloto operativo:</b> El 304 tiene vista al parque y le da el sol de la mañana. Buena elección 😉',
+    5:'<b>Copiloto operativo:</b> Solo te falta 1 documento. La constancia del SAT se descarga con tu CURP — te muestro cómo.',
+    6:'<b>Copiloto operativo:</b> El notario ya tiene todo. Ese día solo llevas tu INE y firmas. Duración: unos 40 minutos.',
+    7:'<b>Copiloto operativo:</b> De aquí en adelante yo te aviso: no necesitas llamar ni ir a un CESI a preguntar cómo va.'
   };
   if(c && msjs[n]!==undefined) c.innerHTML=msjs[n];
 }
