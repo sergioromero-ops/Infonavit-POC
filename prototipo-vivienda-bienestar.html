@@ -6,8 +6,8 @@
 <title>Control Inteligente de Vivienda del Bienestar · Prototipo</title>
 <style>
 :root{
-  --rojo:#E4002B; --rojo-osc:#B00021; --rojo-claro:#FDE8EC;
-  --vino:#8A1538; --gris-900:#1F2328; --gris-700:#40474F; --gris-500:#6B7280;
+  --rojo:#9F2241; --rojo-osc:#7C1A33; --rojo-claro:#F6E8EC;
+  --vino:#5E1024; --gris-900:#1F2328; --gris-700:#40474F; --gris-500:#6B7280;
   --gris-300:#D1D5DB; --gris-100:#F3F4F6; --gris-50:#F9FAFB;
   --verde:#0E8A4C; --verde-claro:#E3F5EB; --ambar:#C77700; --ambar-claro:#FFF4E0;
   --rojo-sem:#D92D20; --rojo-sem-claro:#FEE4E2; --azul:#175CD3; --azul-claro:#EAF1FC;
@@ -110,7 +110,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .land-nav{margin-left:auto;display:flex;gap:22px;font-size:13.5px;font-weight:600;color:var(--gris-700)}
 .land-nav a{text-decoration:none;color:inherit}
 .land-nav a:hover{color:var(--rojo)}
-.hero{background:linear-gradient(135deg,var(--vino) 0%,var(--rojo) 68%,#FF4D6A 100%);color:#fff;padding:72px 0 88px;position:relative;overflow:hidden}
+.hero{background:linear-gradient(135deg,var(--vino) 0%,var(--rojo) 68%,#C05C74 100%);color:#fff;padding:72px 0 88px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.07)}
 .hero::before{content:"";position:absolute;right:60px;bottom:-160px;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.06)}
 .hero .contenedor{position:relative;z-index:2;max-width:1180px}
@@ -156,6 +156,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
   <div class="roles">
     <button class="rol-btn activo" data-vista="landing" onclick="irVista('landing',this)">🌐 Web pública</button>
     <button class="rol-btn" data-vista="b2g" onclick="irVista('b2g',this)">🏛️ Director · Infonavit</button>
+    <button class="rol-btn" data-vista="colab" onclick="irVista('colab',this)">🧑‍💼 Colaborador</button>
     <button class="rol-btn" data-vista="b2b" onclick="irVista('b2b',this)">🏗️ Constructor</button>
     <button class="rol-btn" data-vista="b2o" onclick="irVista('b2o',this)">📋 Operador</button>
     <button class="rol-btn" data-vista="b2c" onclick="irVista('b2c',this)">🏠 Derechohabiente</button>
@@ -214,13 +215,14 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 
   <div id="accesos" class="seccion" style="background:#fff">
     <div class="contenedor">
-      <h2>Una plataforma, cuatro experiencias</h2>
-      <p class="intro">Cada actor del programa ve exactamente lo que necesita para avanzar.</p>
+      <h2>Una plataforma, cinco experiencias con IA personalizada</h2>
+      <p class="intro">Comunicación abierta para el derechohabiente; comunicación cerrada por rol, todas conectadas entre sí, cada una con IA y objetivos definidos.</p>
       <div class="grid roles-grid">
-        <div class="rol-card" onclick="irVista('b2c')"><div class="ic">🏠</div><h3>Soy derechohabiente</h3><p>Verifica tu elegibilidad, elige tu vivienda y llega a la firma paso a paso.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2b')"><div class="ic">🏗️</div><h3>Soy constructor</h3><p>Actualiza avance de obra, servicios, fianzas e inventario de tus desarrollos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2o')"><div class="ic">📋</div><h3>Soy operador</h3><p>Notarios, valuadores y verificadores: valida trámites y destraba entregas.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="irVista('b2g')"><div class="ic">🏛️</div><h3>Soy Infonavit</h3><p>Torre de control nacional: metas, avances, bloqueos y escrituración en tiempo real.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('b2c')"><div class="ic">🏠</div><h3>Soy derechohabiente</h3><p>Verifica tu elegibilidad, elige tu vivienda y llega a la firma paso a paso. IA con fines comerciales y operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('colab')"><div class="ic">🧑‍💼</div><h3>Soy colaborador Infonavit</h3><p>Tareas internas: pagos, fianzas, verificaciones y validaciones. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('b2b')"><div class="ic">🏗️</div><h3>Soy constructor</h3><p>Actualiza avance de obra, servicios, fianzas e inventario de tus desarrollos. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('b2o')"><div class="ic">📋</div><h3>Soy operador</h3><p>Notarios, valuadores y verificadores: valida trámites y destraba entregas. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
+        <div class="rol-card" onclick="irVista('b2g')"><div class="ic">🏛️</div><h3>Soy el Director</h3><p>Torre de control nacional: metas, avances, bloqueos y escrituración. IA con fines comerciales, operativos y financieros.</p><span class="lnk">Entrar →</span></div>
       </div>
     </div>
   </div>
@@ -239,6 +241,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
     <div class="contenedor">
       <span>© 2026 Infonavit · Programa de Vivienda para el Bienestar · Prototipo con datos simulados</span>
       <span>Aviso de privacidad · Términos · Infonatel 800 008 3900</span>
+      <span>Desarrollado por Pigui AI · Hello@pigui.ai</span>
     </div>
   </footer>
 </section>
@@ -370,7 +373,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         </div>
 
         <div class="copiloto-caja">
-          <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Director</h4><small>IA · analiza los datos del programa en tiempo real</small></div></div>
+          <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Director</h4><small>IA personalizada · objetivos comerciales, operativos y financieros</small></div></div>
           <div id="chat-b2g" class="chat">
             <div class="burbuja ia">Buenos días. Resumen de hoy: el avance nacional va en <b>78.1%</b> de la meta de contratación. Detecté <b>3 desarrollos en rojo</b>; el más urgente es <b>Bosques del Bienestar</b> en Jalisco: 160 viviendas terminadas pero solo 92 entregables por falta de servicios, 48 escrituras pendientes y fianza por vencer. ¿Quiere que le muestre la causa raíz?</div>
           </div>
@@ -652,6 +655,89 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .aviso-solicitud.ver{display:flex;gap:10px;align-items:center}
 </style>
 
+<!-- ============ VISTA: COLABORADOR INFONAVIT ============ -->
+<section id="vista-colab" class="vista">
+  <header class="app-head">
+    <div class="contenedor">
+      <div class="logo"><div class="marca">IV</div>
+        <div>Portal del Colaborador<small>Operación interna · Programa de Vivienda del Bienestar</small></div>
+      </div>
+      <div class="usuario">
+        <div class="avatar">LM</div>
+        <div>Laura Mendoza<br><small style="color:var(--gris-500);font-weight:600">Dirección de Vivienda · Región Occidente</small></div>
+      </div>
+    </div>
+  </header>
+  <nav class="subnav">
+    <div class="contenedor">
+      <button class="activo" onclick="irPanel('colab','tareas',this)">Mis tareas</button>
+      <button onclick="irPanel('colab','validaciones',this)">Validaciones</button>
+      <button onclick="irPanel('colab','comunicacion',this)">Comunicación</button>
+    </div>
+  </nav>
+  <div id="panel-colab-tareas" class="panel activo">
+    <div class="contenedor">
+      <div class="grid kpis" style="margin-bottom:20px">
+        <div class="kpi"><span class="lbl">Tareas asignadas</span><b>14</b></div>
+        <div class="kpi"><span class="lbl">Pagos por liberar</span><b style="color:var(--ambar)">3</b><span class="delta">$61.4 MDP</span></div>
+        <div class="kpi"><span class="lbl">Fianzas por validar</span><b style="color:var(--rojo-sem)" id="colab-fianzas">1</b></div>
+        <div class="kpi"><span class="lbl">Verificaciones por programar</span><b>5</b></div>
+        <div class="kpi"><span class="lbl">Resueltas esta semana</span><b>22</b></div>
+      </div>
+      <div class="grid dos-col">
+        <div>
+          <div class="tarea"><div class="ic" style="background:var(--rojo-sem-claro)">🛡️</div><div><b>Validar renovación de fianza · Bosques del Bienestar</b><p>Hábitat Jalisco envió póliza de renovación ($48.2 MDP). Jurídico debe validar en 48 h para bajar el riesgo del desarrollo.</p></div><div class="acciones"><button class="btn primario chico" id="btn-validar-fianza" onclick="validarFianza()">Validar póliza</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">💰</div><div><b>Liberar estimación 7 · Valle Angelópolis</b><p>Grupo Angelópolis cargó evidencia de urbanización. Tesorería espera visto bueno regional. Monto: $18.2 MDP.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: estimación liberada a tesorería')">Dar visto bueno</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🔍</div><div><b>Programar verificación de obra · etapa 3</b><p>Bosques del Bienestar reporta 82% físico. Verificador debe confirmar en sitio antes del 15 de julio.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: visita programada 11 jul, 10:00 h')">Programar visita</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Gestión con Ayto. de Tlajomulco · drenaje</b><p>El constructor solicitó apoyo institucional para destrabar el colector municipal (54 viviendas).</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: mesa de trabajo solicitada al municipio')">Abrir gestión</button></div></div>
+        </div>
+        <div class="copiloto-caja">
+          <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Colaborador</h4><small>IA personalizada · objetivos operativos</small></div></div>
+          <div class="chat" id="chat-colab">
+            <div class="burbuja ia">Prioricé tus 14 tareas por impacto: <b>1)</b> validar la fianza de Bosques del Bienestar (baja el riesgo de 420 viviendas), <b>2)</b> liberar la estimación 7 de Angelópolis antes del corte de tesorería del viernes, <b>3)</b> programar la verificación de la etapa 3. Las tres destraban entregas de julio.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="panel-colab-validaciones" class="panel">
+    <div class="contenedor">
+      <div class="card">
+        <div class="titulo-seccion" style="margin-top:0"><h3>Validaciones internas recientes</h3></div>
+        <table class="tabla">
+          <thead><tr><th>Trámite</th><th>Desarrollo</th><th>Área</th><th>Estatus</th></tr></thead>
+          <tbody>
+            <tr><td>Renovación de fianza $48.2 MDP</td><td>Bosques del Bienestar</td><td>Jurídico</td><td><span class="chip ambar" id="val-fianza-colab">En revisión</span></td></tr>
+            <tr><td>Estimación 6 · $16.8 MDP</td><td>Valle Angelópolis</td><td>Tesorería</td><td><span class="chip verde">Pagada · 30 jun</span></td></tr>
+            <tr><td>Verificación etapa 2</td><td>Altos de Santa Regia</td><td>Verificación</td><td><span class="chip verde">Aprobada</span></td></tr>
+            <tr><td>Dictamen de convenio municipal</td><td>Lomas del Salto</td><td>Jurídico</td><td><span class="chip azul">En elaboración</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="panel-colab-comunicacion" class="panel">
+    <div class="contenedor">
+      <div class="grid dos-col">
+        <div class="card">
+          <div class="titulo-seccion" style="margin-top:0"><h3>Solicitudes de la Dirección</h3></div>
+          <div class="msj-item"><div class="avatar">DG</div><div><b>Dirección General</b> · <small>hoy</small><p style="font-size:13px;color:var(--gris-700)">Dar seguimiento prioritario a Bosques del Bienestar: fianza, verificación de etapa 3 y gestión de drenaje con el municipio.</p></div></div>
+          <div class="msj-item"><div class="avatar">TS</div><div><b>Tesorería</b> · <small>ayer</small><p style="font-size:13px;color:var(--gris-700)">Corte de estimaciones el viernes 10. Favor de enviar vistos buenos pendientes antes de las 14:00 h.</p></div></div>
+        </div>
+        <div class="card">
+          <div class="titulo-seccion" style="margin-top:0"><h3>Reportar a la torre de control</h3></div>
+          <form class="formulario" onsubmit="event.preventDefault();toast('Reporte enviado a la torre de control');this.reset()">
+            <div><label>Desarrollo</label><select><option>Bosques del Bienestar</option><option>Valle Angelópolis</option><option>Altos de Santa Regia</option></select></div>
+            <div><label>Tipo</label><select><option>Avance de gestión</option><option>Bloqueo detectado</option><option>Validación completada</option></select></div>
+            <div><label>Detalle</label><textarea rows="3" placeholder="Describe el avance o bloqueo…"></textarea></div>
+            <button class="btn primario">Enviar reporte</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ VISTA: B2B CONSTRUCTOR ============ -->
 <section id="vista-b2b" class="vista">
   <header class="app-head">
@@ -773,7 +859,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         </div>
         <div>
           <div class="copiloto-caja">
-            <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Constructor</h4><small>Te ayuda a actualizar sin fricción</small></div></div>
+            <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Constructor</h4><small>IA personalizada · objetivos operativos</small></div></div>
             <div class="chat">
               <div class="burbuja ia">Detecté que tu <b>fianza vence en 9 días</b> y que Infonavit la marcó como crítica. Ya preparé el borrador de renovación con tu afianzadora habitual. Al enviarla, el semáforo del desarrollo puede pasar de rojo a amarillo.</div>
               <div class="burbuja ia">💡 Si actualizas hoy avance + servicios + fianza, tu calificación de cumplimiento sube de <b>C a B</b> y tus 25 escrituras listas pasan a validación de notaría automáticamente.</div>
@@ -857,7 +943,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Jardines de Tesistán · 18 escrituras firmadas por registrar</b><p>Pendientes de inscripción en Registro Público de la Propiedad.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: lote enviado a Registro Público')">Enviar a RPP</button></div></div>
         </div>
         <div class="copiloto-caja">
-          <div class="cab"><div class="ia">✦</div><div><h4>Copiloto Operativo</h4><small>Prioriza lo que más destraba</small></div></div>
+          <div class="cab"><div class="ia">✦</div><div><h4>Copiloto Operativo</h4><small>IA personalizada · objetivos operativos</small></div></div>
           <div class="chat" id="chat-b2o">
             <div class="burbuja ia">Tu mayor impacto hoy: <b>programar las 25 firmas de Bosques del Bienestar</b>. Con eso, las escrituras pendientes del desarrollo bajan de 48 a 23 y el Director ve el avance en su tablero de inmediato.</div>
           </div>
@@ -945,7 +1031,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .depto.libre{background:var(--verde-claro);color:var(--verde)}
 .depto.libre:hover{border-color:var(--verde)}
 .depto.ocupado{background:var(--gris-100);color:var(--gris-300);cursor:not-allowed}
-.depto.sel{background:var(--rojo);color:#fff;box-shadow:0 4px 12px rgba(228,0,43,.35)}
+.depto.sel{background:var(--rojo);color:#fff;box-shadow:0 4px 12px rgba(159,34,65,.35)}
 .leyenda{display:flex;gap:14px;font-size:11px;color:var(--gris-500);font-weight:600}
 .leyenda i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:4px}
 .crono{background:var(--gris-900);color:#fff;border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px}
@@ -1254,6 +1340,18 @@ function validarEscrituras(){
   document.getElementById('chat-b2o').insertAdjacentHTML('beforeend','<div class="burbuja ia">Excelente. Notifiqué a los 25 derechohabientes con fecha y requisitos, y el tablero del Director ya muestra las escrituras pendientes de Bosques en <b>23</b>.</div>');
   toast('✓ 25 firmas programadas. Derechohabientes notificados.');
   pintarB2G();
+}
+
+/* ================= HISTORIA: COLABORADOR ================= */
+function validarFianza(){
+  const b=document.getElementById('btn-validar-fianza');
+  b.textContent='✓ Fianza validada'; b.disabled=true; b.style.opacity=.6;
+  document.getElementById('colab-fianzas').textContent='0';
+  const v=document.getElementById('val-fianza-colab'); if(v){v.className='chip verde';v.textContent='Validada · hoy';}
+  const ft=document.getElementById('causa-fianza-t'), fp=document.getElementById('causa-fianza-p'), fc=document.getElementById('causa-fianza-chip');
+  if(ft){ ft.textContent='Fianza renovada y validada por jurídico'; fp.textContent='Póliza $48.2 MDP vigente hasta julio 2027.'; fc.className='chip verde'; fc.textContent='Resuelto'; }
+  document.getElementById('chat-colab').insertAdjacentHTML('beforeend','<div class="burbuja ia">Validación registrada. La torre de control ya muestra la fianza de Bosques del Bienestar como <b>resuelta</b> y notifiqué al constructor.</div>');
+  toast('✓ Fianza validada. Torre de control actualizada.');
 }
 
 /* ================= HISTORIA: B2C ================= */
