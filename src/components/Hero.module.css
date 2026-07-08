@@ -1,0 +1,161 @@
+.hero {
+  background: linear-gradient(180deg, var(--pg-hero-top) 0%, var(--pg-hero-bottom) 100%);
+  padding: 64px 0 72px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 560px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid rgba(59, 87, 219, 0.2);
+  border-radius: 999px;
+  padding: 7px 14px;
+  width: fit-content;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--pg-blue);
+}
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pg-teal);
+  box-shadow: 0 0 0 0 rgba(46, 158, 146, 0.5);
+  animation: piguiPulse 2.6s ease-in-out infinite;
+}
+
+.title {
+  font-size: 56px;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.accent {
+  color: var(--pg-blue);
+}
+
+.sub {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--pg-muted);
+  text-wrap: pretty;
+}
+
+.ctaRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.primary {
+  font-size: 16px;
+  padding: 15px 30px;
+  border-radius: 12px;
+}
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pg-blue);
+  font-size: 16px;
+  font-weight: 600;
+}
+.arrow {
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+.textLink:hover .arrow {
+  transform: translateX(4px);
+}
+
+.fine {
+  font-size: 13.5px;
+  color: var(--pg-faint);
+}
+
+/* ---- art side ---- */
+.art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.slotWrap {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 440 / 400;
+}
+
+.statCard {
+  position: absolute;
+  right: 8px;
+  bottom: 18px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--pg-shadow-card);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: piguiFloatSm 6s ease-in-out infinite;
+}
+.statIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--pg-blue-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pg-blue);
+  font-weight: 700;
+  font-size: 15px;
+}
+.statTop {
+  font-size: 13px;
+  font-weight: 600;
+}
+.statBot {
+  font-size: 11px;
+  color: var(--pg-faint);
+}
+
+@media (max-width: 940px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .art {
+    order: -1;
+  }
+  .title {
+    font-size: 44px;
+  }
+  .copy {
+    max-width: none;
+  }
+}
+@media (max-width: 560px) {
+  .title {
+    font-size: 34px;
+  }
+  .sub {
+    font-size: 16px;
+  }
+}

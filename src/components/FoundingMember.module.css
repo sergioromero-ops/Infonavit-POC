@@ -1,0 +1,146 @@
+.section {
+  background: #fff;
+  padding-bottom: 88px;
+}
+.card {
+  background: var(--pg-dark);
+  border-radius: 24px;
+  padding: 64px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.slot {
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 360 / 340;
+  animation: piguiFloatSm 7s ease-in-out infinite;
+}
+.badge {
+  position: absolute;
+  left: -6px;
+  top: -14px;
+  background: var(--pg-orange);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transform: rotate(-4deg);
+  animation: badgeTilt 5s ease-in-out infinite;
+  box-shadow: 0 8px 20px rgba(238, 123, 46, 0.35);
+}
+@keyframes badgeTilt {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(2deg) translateY(-2px);
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--pg-lilac);
+}
+.title {
+  font-size: 38px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.gold {
+  color: var(--pg-gold);
+}
+
+.perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.perk {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+.check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(240, 199, 102, 0.18);
+  color: var(--pg-gold);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  margin-top: 3px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.cta {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 12px;
+}
+.link {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.18s ease;
+}
+.link:hover {
+  color: #fff;
+}
+
+@media (max-width: 940px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px;
+  }
+  .art {
+    order: -1;
+    max-width: 340px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .title {
+    font-size: 30px;
+  }
+}
+@media (max-width: 560px) {
+  .card {
+    padding: 28px 22px;
+  }
+}

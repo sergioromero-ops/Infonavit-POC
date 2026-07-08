@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Poppins:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Archivo:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail" data-bg-color="#3B57DB">
+  <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+    <rect x="36" y="22" width="48" height="36" rx="10" fill="#ffffff"></rect>
+    <circle cx="52" cy="40" r="4" fill="#3B57DB"></circle>
+    <circle cx="68" cy="40" r="4" fill="#3B57DB"></circle>
+  </svg>
+</template>
+<style>
+body{margin:0;background:#EFECE5;font-family:'Instrument Sans',system-ui,sans-serif}
+a{color:#B93450}a:hover{color:#D9435F}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+@keyframes piguiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes piguiFloatSm{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes piguiMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes piguiBlob{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(34px,-22px) scale(1.08)}66%{transform:translate(-24px,16px) scale(.94)}}
+@keyframes piguiDot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+@keyframes piguiShine{0%{transform:translateX(-130%) skewX(-18deg)}60%,100%{transform:translateX(320%) skewX(-18deg)}}
+@keyframes piguiOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes piguiPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.9;transform:scale(1.12)}}
+</style></helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Redesign of the real pigui.ai — same brand (blue, mascot, Poppins), fixed messaging &amp; hierarchy</span></div>
+<div class="dv-opts">
+
+<!-- ============================== OPTION 2A ============================== -->
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Brand-true redesign — keeps your blue + mascot; fixes hero, ecosystem, chat demo, supporter offer</div>
+<sc-if value="{{ showRationale }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:720px;font:400 11.5px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.55);background:#FFF9E8;border:1px solid rgba(0,0,0,.09);border-radius:6px;padding:8px 12px">Same structure as your current site, section by section — but the hero now says what Pigui is, the stock photo is gone (the mascot is the hero), the empty chat card shows a real conversation, ecosystem cards explain each app, the space video becomes a product frame, and the three competing $ CTAs become one clear founding-member offer. Dashed boxes are drop zones: drag your real mascot renders onto them.</div>
+</sc-if>
+<div class="dv-card" style="width:1440px" data-screen-label="2a Brand-true redesign">
+<div style="background:#FFFFFF;color:#252B3D;font-family:'Poppins',sans-serif">
+
+  <!-- nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 72px;background:#fff;border-bottom:1px solid rgba(37,43,61,.07)">
+    <div style="display:flex;align-items:center;gap:11px">
+      <div style="width:36px;height:36px;border-radius:11px;background:#3B57DB;display:flex;align-items:center;justify-content:center"><div style="width:16px;height:10px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;gap:2px"><div style="width:3px;height:3px;border-radius:50%;background:#3B57DB"></div><div style="width:3px;height:3px;border-radius:50%;background:#3B57DB"></div></div></div>
+      <div style="font:600 19px 'Poppins',sans-serif">Pigui AI</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:34px;font-size:14.5px;font-weight:500;color:#5F6579">
+      <div style="color:#252B3D;font-weight:600">Home</div><div>Ecosystem</div><div>How it works</div><div>Community</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="border:1.5px solid rgba(59,87,219,.4);color:#3B57DB;font-size:14.5px;font-weight:600;padding:10px 22px;border-radius:10px;cursor:pointer" style-hover="border-color:#3B57DB">Log in</div>
+      <div style="background:#3B57DB;color:#fff;font-size:14.5px;font-weight:600;padding:11px 24px;border-radius:10px;cursor:pointer;box-shadow:0 4px 12px rgba(59,87,219,.25)" style-hover="background:#2E46BC">Sign up free</div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="background:linear-gradient(180deg,#EEF1FB 0%,#F8F9FD 100%);display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding:64px 72px 72px">
+    <div style="display:flex;flex-direction:column;gap:24px;max-width:560px">
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid rgba(59,87,219,.2);border-radius:999px;padding:7px 14px;width:fit-content">
+        <div style="width:8px;height:8px;border-radius:50%;background:#2E9E92"></div>
+        <div style="font-size:12.5px;font-weight:600;color:#3B57DB">AI built for small business</div>
+      </div>
+      <div style="font:600 56px/1.08 'Poppins',sans-serif;letter-spacing:-0.02em;text-wrap:balance">Meet the AI team that brings customers <span style="color:#3B57DB">back</span></div>
+      <div style="font-size:18px;line-height:1.6;color:#5F6579;text-wrap:pretty">Pigui chats with you like a partner, runs your rewards program, and learns your business — so first-time buyers become regulars, on autopilot.</div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="background:#3B57DB;color:#fff;font-size:16px;font-weight:600;padding:15px 30px;border-radius:12px;cursor:pointer;box-shadow:0 6px 18px rgba(59,87,219,.3)" style-hover="background:#2E46BC">Sign up free</div>
+        <div style="display:flex;align-items:center;gap:8px;color:#3B57DB;font-size:16px;font-weight:600;cursor:pointer">Meet Penny &amp; Pigui <span style="font-size:18px">→</span></div>
+      </div>
+      <div style="font-size:13.5px;color:#8A90A3">Free to start · No credit card · Set up in minutes</div>
+    </div>
+    <div style="position:relative;display:flex;justify-content:center">
+      <div style="position:absolute;inset:30px 60px;background:radial-gradient(circle,rgba(59,87,219,.16),rgba(59,87,219,0) 70%);border-radius:50%"></div>
+      <div style="position:relative;width:440px;height:400px">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-hero-mascot" shape="rounded" radius="24" fit="contain" placeholder="Drop the Pigui mascot render here" hint-size="440px,400px" style="width:100%;height:100%"></x-import>
+      </div>
+      <div style="position:absolute;right:8px;bottom:18px;background:#fff;border-radius:14px;box-shadow:0 12px 30px rgba(37,43,61,.14);padding:12px 16px;display:flex;align-items:center;gap:10px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#E7EBFB;display:flex;align-items:center;justify-content:center;color:#3B57DB;font-weight:700;font-size:13px">↺</div>
+        <div style="display:flex;flex-direction:column"><div style="font-size:13px;font-weight:600">+38% repeat visits</div><div style="font-size:11px;color:#8A90A3">members vs. non-members</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- proof strip -->
+  <div style="display:flex;align-items:center;gap:30px;padding:22px 72px;border-bottom:1px solid rgba(37,43,61,.07)">
+    <div style="font-size:13px;font-weight:600;color:#8A90A3;flex:none">Built with 100+ small businesses</div>
+    <div style="display:flex;flex:1;gap:14px">
+      <div style="flex:1;height:32px;border-radius:8px;background:repeating-linear-gradient(45deg,#EDF0F9,#EDF0F9 6px,#F8F9FD 6px,#F8F9FD 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#8A90A3">partner logo</div>
+      <div style="flex:1;height:32px;border-radius:8px;background:repeating-linear-gradient(45deg,#EDF0F9,#EDF0F9 6px,#F8F9FD 6px,#F8F9FD 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#8A90A3">partner logo</div>
+      <div style="flex:1;height:32px;border-radius:8px;background:repeating-linear-gradient(45deg,#EDF0F9,#EDF0F9 6px,#F8F9FD 6px,#F8F9FD 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#8A90A3">partner logo</div>
+      <div style="flex:1;height:32px;border-radius:8px;background:repeating-linear-gradient(45deg,#EDF0F9,#EDF0F9 6px,#F8F9FD 6px,#F8F9FD 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#8A90A3">partner logo</div>
+      <div style="flex:1;height:32px;border-radius:8px;background:repeating-linear-gradient(45deg,#EDF0F9,#EDF0F9 6px,#F8F9FD 6px,#F8F9FD 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#8A90A3">partner logo</div>
+    </div>
+  </div>
+
+  <!-- chat demo -->
+  <div style="padding:88px 72px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div style="background:#F4F5FB;border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(37,43,61,.08)">
+        <div style="width:34px;height:34px;border-radius:50%;background:#3B57DB;display:flex;align-items:center;justify-content:center"><div style="width:14px;height:9px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;gap:2px"><div style="width:2.5px;height:2.5px;border-radius:50%;background:#3B57DB"></div><div style="width:2.5px;height:2.5px;border-radius:50%;background:#3B57DB"></div></div></div>
+        <div style="display:flex;flex-direction:column"><div style="font-size:14px;font-weight:600">Pigui</div><div style="font-size:11.5px;color:#2E9E92;font-weight:500">online · trained on your shop</div></div>
+      </div>
+      <div style="align-self:flex-end;background:#3B57DB;color:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;font-size:14px;max-width:320px;line-height:1.5">How were sales this week?</div>
+      <div style="align-self:flex-start;background:#fff;border:1px solid rgba(37,43,61,.08);border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:14px;max-width:360px;line-height:1.55">Up <strong>12%</strong> 📈 — but Tuesdays are slow. 28 of your regulars haven't visited in 2 weeks. Want me to send them a double-points offer for Tuesday?</div>
+      <div style="align-self:flex-end;display:flex;gap:8px">
+        <div style="background:#fff;border:1.5px solid #3B57DB;color:#3B57DB;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer">Edit offer</div>
+        <div style="background:#3B57DB;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer">Yes, send it</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid rgba(37,43,61,.1);border-radius:12px;padding:12px 16px;margin-top:4px">
+        <div style="flex:1;font-size:13.5px;color:#8A90A3">Ask Pigui anything about your business…</div>
+        <div style="width:30px;height:30px;border-radius:8px;background:#3B57DB;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">↑</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:480px">
+      <div style="font:600 13px/1 'Poppins',sans-serif;letter-spacing:.12em;color:#3B57DB">TALK &amp; CHAT WITH PIGUI</div>
+      <div style="font:600 40px/1.15 'Poppins',sans-serif;letter-spacing:-0.02em">An assistant that knows your shop — and acts on it</div>
+      <div style="font-size:16.5px;line-height:1.6;color:#5F6579">Train Pigui on your menu, prices, and customers. Then it doesn't just answer — it spots the opportunity and does the work.</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:#E7EBFB;color:#3B57DB;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px">✓</div><div style="font-size:15px;line-height:1.5;color:#252B3D"><strong>Answers</strong> — sales, stock, and customer questions in plain language</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:#E7EBFB;color:#3B57DB;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px">✓</div><div style="font-size:15px;line-height:1.5;color:#252B3D"><strong>Acts</strong> — sends campaigns and rewards with your one-tap approval</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:#E7EBFB;color:#3B57DB;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px">✓</div><div style="font-size:15px;line-height:1.5;color:#252B3D"><strong>Learns</strong> — every sale makes its suggestions sharper</div></div>
+      </div>
+      <div style="background:#3B57DB;color:#fff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:12px;cursor:pointer;width:fit-content;box-shadow:0 6px 18px rgba(59,87,219,.3)" style-hover="background:#2E46BC">Start training yours — free</div>
+    </div>
+  </div>
+
+  <!-- ecosystem -->
+  <div style="background:#F4F5FB;padding:88px 72px;display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+      <div style="font:600 40px/1.15 'Poppins',sans-serif;letter-spacing:-0.02em">One Pigui, three superpowers</div>
+      <div style="font-size:16.5px;color:#5F6579;max-width:560px;line-height:1.6">Everything you need to understand customers, make better decisions, and grow.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+      <div style="background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;border-top:4px solid #1C2749">
+        <div style="width:130px;height:130px;align-self:center">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-eco-business" shape="rounded" radius="18" fit="contain" placeholder="Business mascot" hint-size="130px,130px" style="width:100%;height:100%"></x-import>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;text-align:center">
+          <div style="font:600 20px 'Poppins',sans-serif;color:#1C2749">Pigui Business</div>
+          <div style="font-size:14.5px;line-height:1.55;color:#5F6579">Your numbers, explained. Sales, top customers, and what to do next — no spreadsheets.</div>
+        </div>
+        <div style="align-self:center;border:1.5px solid #1C2749;color:#1C2749;font-size:13.5px;font-weight:600;padding:10px 22px;border-radius:10px;cursor:pointer" style-hover="background:#1C2749;color:#fff">See your numbers</div>
+      </div>
+      <div style="background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;border-top:4px solid #2E9E92">
+        <div style="width:130px;height:130px;align-self:center">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-eco-scan" shape="rounded" radius="18" fit="contain" placeholder="Scan mascot" hint-size="130px,130px" style="width:100%;height:100%"></x-import>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;text-align:center">
+          <div style="font:600 20px 'Poppins',sans-serif;color:#2E9E92">Pigui Scan</div>
+          <div style="font-size:14.5px;line-height:1.55;color:#5F6579">The counter app. Scan a customer's QR to add points, redeem rewards, and record the sale.</div>
+        </div>
+        <div style="align-self:center;border:1.5px solid #2E9E92;color:#2E9E92;font-size:13.5px;font-weight:600;padding:10px 22px;border-radius:10px;cursor:pointer" style-hover="background:#2E9E92;color:#fff">Scan at the counter</div>
+      </div>
+      <div style="background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px;border-top:4px solid #EE7B2E">
+        <div style="width:130px;height:130px;align-self:center">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-eco-rewards" shape="rounded" radius="18" fit="contain" placeholder="Rewards mascot" hint-size="130px,130px" style="width:100%;height:100%"></x-import>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;text-align:center">
+          <div style="font:600 20px 'Poppins',sans-serif;color:#EE7B2E">Pigui Rewards</div>
+          <div style="font-size:14.5px;line-height:1.55;color:#5F6579">Loyalty customers love. AI picks the right reward for the right customer at the right time.</div>
+        </div>
+        <div style="align-self:center;border:1.5px solid #EE7B2E;color:#EE7B2E;font-size:13.5px;font-weight:600;padding:10px 22px;border-radius:10px;cursor:pointer" style-hover="background:#EE7B2E;color:#fff">Reward your regulars</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- how it works -->
+  <div style="padding:88px 72px;display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+      <div style="font:600 40px/1.15 'Poppins',sans-serif;letter-spacing:-0.02em">How it works</div>
+      <div style="font-size:16.5px;color:#5F6579;max-width:540px;line-height:1.6">See Pigui in action — for you, your staff, and your customers.</div>
+    </div>
+    <div style="position:relative;border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(37,43,61,.14)">
+      <div style="width:100%;height:560px">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-video-frame" shape="rect" placeholder="Drop a real product screenshot or video frame (not stock footage)" hint-size="100%,560px" style="width:100%;height:100%"></x-import>
+      </div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+        <div style="width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 12px 32px rgba(37,43,61,.25);display:flex;align-items:center;justify-content:center;font-size:26px;color:#3B57DB">▶</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:40px;height:40px;border-radius:50%;background:#3B57DB;color:#fff;font:600 16px 'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</div>
+        <div style="display:flex;flex-direction:column;gap:5px"><div style="font-size:17px;font-weight:600">Sign up &amp; meet Pigui</div><div style="font-size:14.5px;line-height:1.55;color:#5F6579">Create your account and tell Pigui about your business — like onboarding a new hire.</div></div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:40px;height:40px;border-radius:50%;background:#3B57DB;color:#fff;font:600 16px 'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</div>
+        <div style="display:flex;flex-direction:column;gap:5px"><div style="font-size:17px;font-weight:600">Launch your rewards</div><div style="font-size:14.5px;line-height:1.55;color:#5F6579">Print your QR, staff install Pigui Scan. Customers join at the counter in one scan.</div></div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:40px;height:40px;border-radius:50%;background:#3B57DB;color:#fff;font:600 16px 'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;flex:none">3</div>
+        <div style="display:flex;flex-direction:column;gap:5px"><div style="font-size:17px;font-weight:600">Grow on autopilot</div><div style="font-size:14.5px;line-height:1.55;color:#5F6579">Pigui learns, suggests, and sends the nudges that bring customers back. You approve.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- founding member -->
+  <div style="margin:0 72px 88px;background:#1C2749;border-radius:24px;padding:64px;display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center">
+    <div style="position:relative;display:flex;justify-content:center">
+      <div style="width:360px;height:340px">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pigui-supporter-photo" shape="rounded" radius="20" fit="contain" placeholder="Drop mascot or founder photo" hint-size="360px,340px" style="width:100%;height:100%"></x-import>
+      </div>
+      <div style="position:absolute;left:-6px;top:-14px;background:#EE7B2E;color:#fff;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;transform:rotate(-4deg)">EARLY ACCESS</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div style="font:600 13px/1 'Poppins',sans-serif;letter-spacing:.12em;color:#8FA3F0">HELP BUILD PIGUI</div>
+      <div style="font:600 38px/1.15 'Poppins',sans-serif;color:#fff;letter-spacing:-0.02em">Become a founding member — <span style="color:#F0C766">$5, lifetime access</span></div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(240,199,102,.18);color:#F0C766;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:3px">✓</div><div style="font-size:15.5px;line-height:1.5;color:rgba(255,255,255,.85)">Lifetime access to every Pigui app — locked in before public pricing</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(240,199,102,.18);color:#F0C766;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:3px">✓</div><div style="font-size:15.5px;line-height:1.5;color:rgba(255,255,255,.85)">Direct line to the team — your feedback shapes the roadmap</div></div>
+        <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:20px;height:20px;border-radius:50%;background:rgba(240,199,102,.18);color:#F0C766;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:3px">✓</div><div style="font-size:15.5px;line-height:1.5;color:rgba(255,255,255,.85)">Earn up to $200 for structured feedback sessions</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <div style="background:#F0C766;color:#1C2749;font-size:16px;font-weight:700;padding:15px 30px;border-radius:12px;cursor:pointer" style-hover="background:#F6D689">Get lifetime access — $5</div>
+        <div style="color:rgba(255,255,255,.7);font-size:14px;font-weight:500;text-decoration:underline;cursor:pointer">or try it for $1 today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="background:#F4F5FB;padding:56px 72px 0;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:48px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:10px;background:#3B57DB;display:flex;align-items:center;justify-content:center"><div style="width:14px;height:9px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;gap:2px"><div style="width:2.5px;height:2.5px;border-radius:50%;background:#3B57DB"></div><div style="width:2.5px;height:2.5px;border-radius:50%;background:#3B57DB"></div></div></div>
+        <div style="font:600 17px 'Poppins',sans-serif">Pigui AI</div>
+      </div>
+      <div style="font-size:13.5px;line-height:1.7;color:#5F6579">hello@pigui.ai<br>16870 W Bernardo Drive, Suite 400<br>San Diego, California 92127, USA</div>
+      <div style="display:flex;gap:10px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid rgba(37,43,61,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#3B57DB">Tk</div>
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid rgba(37,43,61,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#3B57DB">In</div>
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid rgba(37,43,61,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#3B57DB">Fb</div>
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid rgba(37,43,61,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#3B57DB">Ig</div>
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid rgba(37,43,61,.1);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#3B57DB">Yt</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:14px;font-weight:600">Product</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:#5F6579"><div>Pigui Business</div><div>Pigui Scan</div><div>Pigui Rewards</div><div>Pricing</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:14px;font-weight:600">Support</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:#5F6579"><div>FAQ</div><div>Schedule a meeting</div><div>Contact support</div><div>Our offices</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:14px;font-weight:600">Company</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:14px;color:#5F6579"><div>Community</div><div>Security</div><div>Privacy policy</div><div>Terms &amp; conditions</div></div>
+    </div>
+  </div>
+  <div style="background:#F4F5FB;margin-top:40px;padding:20px 72px;border-top:1px solid rgba(37,43,61,.08);display:flex;justify-content:space-between;font-size:12.5px;color:#8A90A3">
+    <div>© 2026 Pigui AI — All rights reserved</div>
+    <div>Made with 💙 for small business</div>
+  </div>
+
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "swap <a class="dv-oid" href="#2a">2a</a>'s chat section for <a class="dv-oid" href="#1b">1b</a>'s loop" · "make <a class="dv-oid" href="#2a">2a</a> bilingual EN/ES" · "tighten <a class="dv-oid" href="#2a">2a</a>'s hero copy"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Pigui.ai — three homepage directions · desktop 1440 · English · optimized for sign-ups</span></div>
+<div class="dv-opts">
+
+<!-- ============================== OPTION 1A ============================== -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Clarity — the product is the proof · recommended starting point</div>
+<sc-if value="{{ showRationale }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:640px;font:400 11.5px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.55);background:#FFF9E8;border:1px solid rgba(0,0,0,.09);border-radius:6px;padding:8px 12px">Fixes the #1 issue: today a visitor can't tell what Pigui does in 5 seconds (title says "AI platform", tagline says "grow organically", social cards say "rewards"). One concrete promise, the dashboard itself as hero proof, one primary CTA repeated down the page.</div>
+</sc-if>
+<div class="dv-card" style="width:1440px" data-screen-label="1a Clarity home">
+<div style="background:#FBF7F3;color:#221B18;font-family:'Instrument Sans',sans-serif">
+
+  <!-- nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 72px;border-bottom:1px solid rgba(34,27,24,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;border-radius:50%;background:#D9435F;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#FBF7F3"></div></div>
+      <div style="font:700 22px 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em">pigui</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:36px;font-size:15px;font-weight:500;color:#544A44">
+      <div>How it works</div><div>Features</div><div>Pricing</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px">
+      <div style="font-size:15px;font-weight:600;color:#544A44">Log in</div>
+      <div style="background:#D9435F;color:#fff;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;cursor:pointer" style-hover="background:#B93450">Start free</div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:76px 72px 84px">
+    <div style="display:flex;flex-direction:column;gap:26px;max-width:560px">
+      <div style="font:600 13px/1 'Instrument Sans',sans-serif;letter-spacing:.14em;color:#B93450">LOYALTY, RUN BY AI</div>
+      <div style="font:800 62px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-0.025em;text-wrap:balance">Turn first-time buyers into regulars</div>
+      <div style="font-size:19px;line-height:1.55;color:#6B5F58;text-wrap:pretty">Pigui gives your shop a rewards program customers actually use. Set it up in minutes — then AI picks the right reward, for the right customer, at the right moment.</div>
+      <sc-if value="{{ heroButtons }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="background:#D9435F;color:#fff;font-size:17px;font-weight:600;padding:16px 30px;border-radius:12px;cursor:pointer;box-shadow:0 6px 18px rgba(217,67,95,.28)" style-hover="background:#B93450">Start free</div>
+        <div style="border:1.5px solid rgba(34,27,24,.18);color:#221B18;font-size:17px;font-weight:600;padding:15px 26px;border-radius:12px;cursor:pointer" style-hover="border-color:#221B18">See how it works</div>
+      </div>
+      </sc-if>
+      <sc-if value="{{ heroEmail }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:stretch;gap:10px;max-width:480px">
+        <div style="flex:1;display:flex;align-items:center;background:#fff;border:1.5px solid rgba(34,27,24,.16);border-radius:12px;padding:0 18px;font-size:16px;color:#9A8D85">you@yourshop.com</div>
+        <div style="background:#D9435F;color:#fff;font-size:16px;font-weight:600;padding:16px 26px;border-radius:12px;cursor:pointer" style-hover="background:#B93450">Start free</div>
+      </div>
+      </sc-if>
+      <div style="font-size:14px;color:#9A8D85">Free for your first 100 members · No credit card required</div>
+    </div>
+
+    <!-- dashboard mock -->
+    <div style="position:relative">
+      <div style="background:#fff;border:1px solid rgba(34,27,24,.1);border-radius:18px;box-shadow:0 24px 60px rgba(34,27,24,.12);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(34,27,24,.07)">
+          <div style="font-size:15px;font-weight:600">Casa Verde Café — This week</div>
+          <div style="font-size:12.5px;font-weight:600;color:#2C7A57;background:#E7F3EC;padding:5px 10px;border-radius:999px">Program live</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:18px 24px">
+          <div style="background:#FBF7F3;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:12px;color:#9A8D85;font-weight:500">Repeat visits</div>
+            <div style="display:flex;align-items:baseline;gap:8px"><div style="font:700 26px 'Bricolage Grotesque',sans-serif">312</div><div style="font-size:12.5px;font-weight:600;color:#2C7A57">↑ 18%</div></div>
+          </div>
+          <div style="background:#FBF7F3;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:12px;color:#9A8D85;font-weight:500">New members</div>
+            <div style="display:flex;align-items:baseline;gap:8px"><div style="font:700 26px 'Bricolage Grotesque',sans-serif">47</div><div style="font-size:12.5px;font-weight:600;color:#2C7A57">↑ 9%</div></div>
+          </div>
+          <div style="background:#FBF7F3;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:12px;color:#9A8D85;font-weight:500">Points redeemed</div>
+            <div style="font:700 26px 'Bricolage Grotesque',sans-serif">1,240</div>
+          </div>
+        </div>
+        <div style="margin:0 24px 16px;background:#FDF1F3;border:1px solid rgba(217,67,95,.25);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:22px;height:22px;border-radius:50%;background:#D9435F;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">AI</div>
+            <div style="font-size:13px;font-weight:600;color:#B93450">Suggested campaign</div>
+          </div>
+          <div style="font-size:14.5px;line-height:1.5;color:#221B18">28 members who usually buy pastries haven't visited in 9 days. Send them <strong>2× points this Tuesday</strong>?</div>
+          <div style="display:flex;gap:10px">
+            <div style="background:#221B18;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer">Approve</div>
+            <div style="border:1px solid rgba(34,27,24,.18);font-size:13px;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer">Edit</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:74px;padding:0 24px 20px">
+          <div style="flex:1;height:34%;background:#EFDDD3;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:46%;background:#EFDDD3;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:40%;background:#EFDDD3;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:58%;background:#EFDDD3;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:52%;background:#EFDDD3;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:72%;background:#D9435F;border-radius:5px 5px 0 0"></div>
+          <div style="flex:1;height:88%;background:#D9435F;border-radius:5px 5px 0 0"></div>
+        </div>
+      </div>
+      <div style="position:absolute;right:-18px;bottom:-22px;background:#fff;border:1px solid rgba(34,27,24,.1);border-radius:14px;box-shadow:0 14px 34px rgba(34,27,24,.14);padding:14px 18px;display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:50%;background:#E7F3EC;display:flex;align-items:center;justify-content:center;color:#2C7A57;font-weight:700;font-size:14px">✓</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:13.5px;font-weight:600">María redeemed a free coffee</div>
+          <div style="font-size:12px;color:#9A8D85">Visit #11 · 2 min ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- proof strip -->
+  <div style="display:flex;align-items:center;gap:34px;padding:26px 72px;border-top:1px solid rgba(34,27,24,.08);border-bottom:1px solid rgba(34,27,24,.08)">
+    <div style="font-size:13.5px;font-weight:600;color:#9A8D85;flex:none">Powering rewards at local businesses</div>
+    <div style="display:flex;flex:1;gap:16px">
+      <div style="flex:1;height:34px;border-radius:8px;background:repeating-linear-gradient(45deg,#F1EAE3,#F1EAE3 6px,#FBF7F3 6px,#FBF7F3 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#9A8D85">client logo</div>
+      <div style="flex:1;height:34px;border-radius:8px;background:repeating-linear-gradient(45deg,#F1EAE3,#F1EAE3 6px,#FBF7F3 6px,#FBF7F3 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#9A8D85">client logo</div>
+      <div style="flex:1;height:34px;border-radius:8px;background:repeating-linear-gradient(45deg,#F1EAE3,#F1EAE3 6px,#FBF7F3 6px,#FBF7F3 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#9A8D85">client logo</div>
+      <div style="flex:1;height:34px;border-radius:8px;background:repeating-linear-gradient(45deg,#F1EAE3,#F1EAE3 6px,#FBF7F3 6px,#FBF7F3 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#9A8D85">client logo</div>
+      <div style="flex:1;height:34px;border-radius:8px;background:repeating-linear-gradient(45deg,#F1EAE3,#F1EAE3 6px,#FBF7F3 6px,#FBF7F3 12px);display:flex;align-items:center;justify-content:center;font:500 10px ui-monospace,monospace;color:#9A8D85">client logo</div>
+    </div>
+  </div>
+
+  <!-- how it works -->
+  <div style="padding:88px 72px;display:flex;flex-direction:column;gap:52px">
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:640px">
+      <div style="font:600 13px/1 sans-serif;letter-spacing:.14em;color:#B93450;font-family:'Instrument Sans',sans-serif">HOW IT WORKS</div>
+      <div style="font:700 40px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em">Live before the lunch rush</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+      <div style="background:#fff;border:1px solid rgba(34,27,24,.09);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px">
+        <div style="height:150px;background:#FBF7F3;border-radius:12px;display:flex;align-items:center;justify-content:center">
+          <div style="background:#fff;border:1px solid rgba(34,27,24,.1);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;width:220px;box-shadow:0 8px 20px rgba(34,27,24,.08)">
+            <div style="font-size:12px;font-weight:600">Reward for 10 visits</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#FBF7F3;border-radius:8px;padding:9px 12px"><div style="font-size:12.5px">Free coffee</div><div style="font-size:11px;font-weight:700;color:#D9435F">100 pts</div></div>
+            <div style="background:#221B18;color:#fff;font-size:11.5px;font-weight:600;border-radius:8px;padding:8px;text-align:center">Publish program</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font:700 15px ui-monospace,monospace;color:#D9435F">01</div>
+          <div style="font:700 21px 'Bricolage Grotesque',sans-serif">Create your program</div>
+          <div style="font-size:15px;line-height:1.55;color:#6B5F58">Pick your rewards, add your logo, set point values. Ten minutes, no designer, no developer.</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(34,27,24,.09);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px">
+        <div style="height:150px;background:#FBF7F3;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:18px">
+          <div style="width:92px;height:92px;background:#fff;border:1px solid rgba(34,27,24,.12);border-radius:14px;padding:10px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:3px">
+            <div style="background:#221B18;border-radius:2px"></div><div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div><div style="background:#221B18;border-radius:2px"></div>
+            <div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#D9435F;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div>
+            <div></div><div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div><div></div>
+            <div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div>
+            <div style="background:#221B18;border-radius:2px"></div><div style="background:#221B18;border-radius:2px"></div><div></div><div style="background:#221B18;border-radius:2px"></div><div style="background:#221B18;border-radius:2px"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:12px;font-weight:600;color:#2C7A57;background:#E7F3EC;padding:6px 12px;border-radius:999px">+ Sofía joined</div>
+            <div style="font-size:12px;font-weight:600;color:#2C7A57;background:#E7F3EC;padding:6px 12px;border-radius:999px">+ Diego joined</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font:700 15px ui-monospace,monospace;color:#D9435F">02</div>
+          <div style="font:700 21px 'Bricolage Grotesque',sans-serif">Customers join in one scan</div>
+          <div style="font-size:15px;line-height:1.55;color:#6B5F58">A QR at the counter — no app to download. Staff track points with Pigui Scan on any phone.</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(34,27,24,.09);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:18px">
+        <div style="height:150px;background:#FBF7F3;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+          <div style="background:#221B18;color:#fff;border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:13px;max-width:240px;line-height:1.45">Hola Sofía — you're 20 pts from a free coffee. See you this week? ☕</div>
+          <div style="font-size:11.5px;color:#9A8D85;font-weight:500">Sent by Pigui AI · WhatsApp</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font:700 15px ui-monospace,monospace;color:#D9435F">03</div>
+          <div style="font:700 21px 'Bricolage Grotesque',sans-serif">AI brings them back</div>
+          <div style="font-size:15px;line-height:1.55;color:#6B5F58">Pigui learns each customer's habits and sends the nudge that works — you just approve.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- features -->
+  <div style="padding:0 72px 88px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div style="font:700 40px/1.1 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em;max-width:520px">Everything loyalty needs, nothing it doesn't</div>
+      <div style="font-size:15px;color:#6B5F58;max-width:360px;line-height:1.55">One platform for the counter, the back office, and the customer's pocket.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div style="border:1px solid rgba(34,27,24,.1);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff">
+        <div style="width:38px;height:38px;border-radius:10px;background:#FDF1F3;display:flex;align-items:center;justify-content:center;color:#D9435F;font-weight:700;font-size:15px">◉</div>
+        <div style="font-weight:700;font-size:17px">Pigui Scan</div>
+        <div style="font-size:14px;line-height:1.55;color:#6B5F58">Scan a customer's QR to add points, redeem rewards, and ring up the sale — from any phone.</div>
+      </div>
+      <div style="border:1px solid rgba(34,27,24,.1);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff">
+        <div style="width:38px;height:38px;border-radius:10px;background:#FDF1F3;display:flex;align-items:center;justify-content:center;color:#D9435F;font-weight:700;font-size:15px">✦</div>
+        <div style="font-weight:700;font-size:17px">Smart rewards</div>
+        <div style="font-size:14px;line-height:1.55;color:#6B5F58">AI tunes offers per customer — double points for the regular, a welcome-back gift for the one slipping away.</div>
+      </div>
+      <div style="border:1px solid rgba(34,27,24,.1);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff">
+        <div style="width:38px;height:38px;border-radius:10px;background:#FDF1F3;display:flex;align-items:center;justify-content:center;color:#D9435F;font-weight:700;font-size:15px">▤</div>
+        <div style="font-weight:700;font-size:17px">Customer insights</div>
+        <div style="font-size:14px;line-height:1.55;color:#6B5F58">Know your top spenders, your at-risk regulars, and what actually drives a second visit.</div>
+      </div>
+      <div style="border:1px solid rgba(34,27,24,.1);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;background:#fff">
+        <div style="width:38px;height:38px;border-radius:10px;background:#FDF1F3;display:flex;align-items:center;justify-content:center;color:#D9435F;font-weight:700;font-size:15px">➤</div>
+        <div style="font-weight:700;font-size:17px">Campaigns</div>
+        <div style="font-size:14px;line-height:1.55;color:#6B5F58">WhatsApp and email nudges written and timed by AI. You approve with one tap.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- results band -->
+  <div style="margin:0 72px;background:#221B18;border-radius:24px;padding:56px 64px;display:flex;flex-direction:column;gap:36px">
+    <div style="font:700 30px/1.15 'Bricolage Grotesque',sans-serif;color:#FBF7F3;max-width:560px">What shops see in their first 90 days</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid #D9435F;padding-top:16px">
+        <div style="font:800 52px/1 'Bricolage Grotesque',sans-serif;color:#FBF7F3">+38%</div>
+        <div style="font-size:15px;color:rgba(251,247,243,.65)">repeat visits from members</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid #D9435F;padding-top:16px">
+        <div style="font:800 52px/1 'Bricolage Grotesque',sans-serif;color:#FBF7F3">+24%</div>
+        <div style="font-size:15px;color:rgba(251,247,243,.65)">average ticket from members</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;border-top:2px solid #D9435F;padding-top:16px">
+        <div style="font:800 52px/1 'Bricolage Grotesque',sans-serif;color:#FBF7F3">12 min</div>
+        <div style="font-size:15px;color:rgba(251,247,243,.65)">average time to launch</div>
+      </div>
+    </div>
+    <div style="font:400 11px ui-monospace,monospace;color:rgba(251,247,243,.4)">sample metrics — replace with real pilot data</div>
+  </div>
+
+  <!-- final CTA -->
+  <div style="padding:96px 72px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
+    <div style="font:800 48px/1.08 'Bricolage Grotesque',sans-serif;letter-spacing:-0.02em;max-width:640px;text-wrap:balance">Your regulars are waiting.</div>
+    <div style="font-size:18px;color:#6B5F58;max-width:480px;line-height:1.55">Launch your rewards program today — free for your first 100 members.</div>
+    <div style="display:flex;align-items:stretch;gap:10px;width:480px">
+      <div style="flex:1;display:flex;align-items:center;background:#fff;border:1.5px solid rgba(34,27,24,.16);border-radius:12px;padding:0 18px;font-size:16px;color:#9A8D85;text-align:left">you@yourshop.com</div>
+      <div style="background:#D9435F;color:#fff;font-size:16px;font-weight:600;padding:16px 26px;border-radius:12px;cursor:pointer;display:flex;align-items:center" style-hover="background:#B93450">Start free</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:26px 72px;border-top:1px solid rgba(34,27,24,.08);font-size:13.5px;color:#9A8D85">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:18px;height:18px;border-radius:50%;background:#D9435F"></div>
+      <div style="font:700 15px 'Bricolage Grotesque',sans-serif;color:#221B18">pigui</div>
+      <div>© 2026 Pigui AI</div>
+    </div>
+    <div style="display:flex;gap:26px"><div>Pricing</div><div>Pigui Scan</div><div>Privacy</div><div>Terms</div><div>Contact</div></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ============================== OPTION 1B ============================== -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>The Loop — one memorable visual explains the mechanic · boldest brand</div>
+<sc-if value="{{ showRationale }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:640px;font:400 11.5px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.55);background:#FFF9E8;border:1px solid rgba(0,0,0,.09);border-radius:6px;padding:8px 12px">Novel UX: the whole page is structured around the loyalty loop (buy → earn → nudge → return). Strongest differentiation vs. generic AI-platform sites; the animated loop makes "what does Pigui do?" answerable without reading.</div>
+</sc-if>
+<div class="dv-card" style="width:1440px" data-screen-label="1b Loop home">
+<div style="background:#0F2B21;color:#F2EDDF;font-family:'Instrument Sans',sans-serif">
+
+  <!-- nav -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 72px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;border-radius:50%;background:#E4B44C;display:flex;align-items:center;justify-content:center"><div style="width:11px;height:11px;border-radius:50%;background:#0F2B21"></div></div>
+      <div style="font:700 22px 'Space Grotesk',sans-serif;letter-spacing:-0.02em">pigui</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:36px;font-size:15px;font-weight:500;color:rgba(242,237,223,.75)">
+      <div>The loop</div><div>Pigui Scan</div><div>Pricing</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px">
+      <div style="font-size:15px;font-weight:600;color:rgba(242,237,223,.75)">Log in</div>
+      <div style="background:#E4B44C;color:#0F2B21;font-size:15px;font-weight:700;padding:12px 22px;border-radius:999px;cursor:pointer" style-hover="background:#F0C766">Start free</div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:22px;padding:64px 72px 40px;text-align:center">
+    <div style="font:600 13px/1 'Space Grotesk',sans-serif;letter-spacing:.18em;color:#E4B44C">LOYALTY ON AUTOPILOT</div>
+    <div style="font:700 72px/1.02 'Space Grotesk',sans-serif;letter-spacing:-0.03em;max-width:820px;text-wrap:balance">Your customers, on&nbsp;repeat.</div>
+    <div style="font-size:19px;line-height:1.55;color:rgba(242,237,223,.7);max-width:600px;text-wrap:pretty">Every sale starts a loop: they buy, they earn, AI nudges, they come back. Pigui runs the whole thing while you run the shop.</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-top:6px">
+      <div style="background:#E4B44C;color:#0F2B21;font-size:17px;font-weight:700;padding:16px 32px;border-radius:999px;cursor:pointer" style-hover="background:#F0C766">Start free</div>
+      <div style="border:1.5px solid rgba(242,237,223,.3);color:#F2EDDF;font-size:17px;font-weight:600;padding:15px 28px;border-radius:999px;cursor:pointer" style-hover="border-color:#F2EDDF">Watch 90-sec demo</div>
+    </div>
+  </div>
+
+  <!-- the loop diagram -->
+  <div style="display:flex;justify-content:center;padding:36px 72px 84px">
+    <div style="position:relative;width:560px;height:560px">
+      <div style="position:absolute;inset:40px;border:1.5px dashed rgba(242,237,223,.28);border-radius:50%"></div>
+      <div style="position:absolute;inset:40px;animation:piguiOrbit 14s linear infinite">
+        <div style="position:absolute;top:-9px;left:50%;margin-left:-9px;width:18px;height:18px;border-radius:50%;background:#E4B44C;box-shadow:0 0 22px rgba(228,180,76,.8)"></div>
+      </div>
+      <div style="position:absolute;inset:205px;border-radius:50%;background:rgba(228,180,76,.14);animation:piguiPulse 3.2s ease-in-out infinite"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+        <div style="width:118px;height:118px;border-radius:50%;background:#E4B44C;color:#0F2B21;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+          <div style="font:700 26px 'Space Grotesk',sans-serif">AI</div>
+          <div style="font-size:10.5px;font-weight:600;letter-spacing:.08em">RUNS IT</div>
+        </div>
+      </div>
+      <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:12px;padding:12px 20px;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="font:700 15px 'Space Grotesk',sans-serif">01 · Buy</div><div style="font-size:12px;color:rgba(242,237,223,.6)">a sale at the counter</div>
+      </div>
+      <div style="position:absolute;top:50%;right:-64px;transform:translateY(-50%);background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:12px;padding:12px 20px;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="font:700 15px 'Space Grotesk',sans-serif">02 · Earn</div><div style="font-size:12px;color:rgba(242,237,223,.6)">points in one scan</div>
+      </div>
+      <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:12px;padding:12px 20px;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="font:700 15px 'Space Grotesk',sans-serif">03 · Nudge</div><div style="font-size:12px;color:rgba(242,237,223,.6)">AI sends the right offer</div>
+      </div>
+      <div style="position:absolute;top:50%;left:-70px;transform:translateY(-50%);background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:12px;padding:12px 20px;display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="font:700 15px 'Space Grotesk',sans-serif">04 · Return</div><div style="font-size:12px;color:rgba(242,237,223,.6)">and spend more</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- loop stages -->
+  <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(242,237,223,.12)">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:72px;border-bottom:1px solid rgba(242,237,223,.12)">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px">
+        <div style="font:700 14px 'Space Grotesk',sans-serif;color:#E4B44C;letter-spacing:.1em">01 — BUY</div>
+        <div style="font:700 38px/1.1 'Space Grotesk',sans-serif;letter-spacing:-0.02em">A sale becomes a member in one scan</div>
+        <div style="font-size:16.5px;line-height:1.6;color:rgba(242,237,223,.7)">Your staff opens Pigui Scan, the customer shows their QR, done. No tablets, no hardware, no app for the customer to download.</div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <div style="width:270px;background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:28px;padding:14px 14px 20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 30px 60px rgba(0,0,0,.35)">
+          <div style="width:76px;height:5px;border-radius:99px;background:rgba(242,237,223,.2);margin:0 auto"></div>
+          <div style="font:600 13px 'Space Grotesk',sans-serif;text-align:center;color:rgba(242,237,223,.8)">Pigui Scan</div>
+          <div style="background:#0F2B21;border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="width:110px;height:110px;background:#F2EDDF;border-radius:12px;padding:10px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:3px">
+              <div style="background:#0F2B21;border-radius:2px"></div><div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div><div style="background:#0F2B21;border-radius:2px"></div>
+              <div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#E4B44C;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div>
+              <div></div><div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div><div></div>
+              <div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div>
+              <div style="background:#0F2B21;border-radius:2px"></div><div style="background:#0F2B21;border-radius:2px"></div><div></div><div style="background:#0F2B21;border-radius:2px"></div><div style="background:#0F2B21;border-radius:2px"></div>
+            </div>
+            <div style="font-size:12.5px;color:rgba(242,237,223,.6)">Scanning member QR…</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(228,180,76,.12);border:1px solid rgba(228,180,76,.4);border-radius:12px;padding:12px 14px">
+            <div style="display:flex;flex-direction:column;gap:1px"><div style="font-size:13.5px;font-weight:600">Diego M.</div><div style="font-size:11.5px;color:rgba(242,237,223,.6)">Visit #7</div></div>
+            <div style="font:700 16px 'Space Grotesk',sans-serif;color:#E4B44C">+12 pts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:72px;border-bottom:1px solid rgba(242,237,223,.12)">
+      <div style="display:flex;justify-content:center;order:1">
+        <div style="width:340px;background:linear-gradient(135deg,#E4B44C,#C99732);border-radius:20px;padding:22px 24px;color:#0F2B21;display:flex;flex-direction:column;gap:18px;box-shadow:0 30px 60px rgba(0,0,0,.35)">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font:700 16px 'Space Grotesk',sans-serif">Casa Verde Rewards</div>
+            <div style="width:22px;height:22px;border-radius:50%;background:#0F2B21"></div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px"><div style="font:700 44px/1 'Space Grotesk',sans-serif">84</div><div style="font-size:14px;font-weight:600">pts</div></div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="height:9px;border-radius:99px;background:rgba(15,43,33,.2);overflow:hidden"><div style="width:84%;height:100%;background:#0F2B21;border-radius:99px"></div></div>
+            <div style="font-size:12.5px;font-weight:600">16 pts to a free coffee</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px;order:2">
+        <div style="font:700 14px 'Space Grotesk',sans-serif;color:#E4B44C;letter-spacing:.1em">02 — EARN</div>
+        <div style="font:700 38px/1.1 'Space Grotesk',sans-serif;letter-spacing:-0.02em">Points, stamps, or cashback — your rules</div>
+        <div style="font-size:16.5px;line-height:1.6;color:rgba(242,237,223,.7)">The reward card lives in the customer's phone wallet with your brand on it. Every purchase moves the bar — and they can see it.</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:72px;border-bottom:1px solid rgba(242,237,223,.12)">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px">
+        <div style="font:700 14px 'Space Grotesk',sans-serif;color:#E4B44C;letter-spacing:.1em">03 — NUDGE</div>
+        <div style="font:700 38px/1.1 'Space Grotesk',sans-serif;letter-spacing:-0.02em">AI writes the message that brings them back</div>
+        <div style="font-size:16.5px;line-height:1.6;color:rgba(242,237,223,.7)">Not a blast to everyone. Pigui notices who's cooling off, picks the offer they respond to, and times it. You approve with a tap.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;max-width:440px;justify-self:center">
+        <div style="background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:16px 16px 16px 4px;padding:16px 20px;font-size:15px;line-height:1.5;color:#F2EDDF">Hola Ana 👋 It's been a while — this week your empanada combo earns <strong style="color:#E4B44C">double points</strong>.</div>
+        <div style="font-size:12px;color:rgba(242,237,223,.5);font-weight:500;padding-left:4px">WhatsApp · sent Tue 10:12 — Ana usually visits Tuesdays</div>
+        <div style="background:rgba(228,180,76,.12);border:1px solid rgba(228,180,76,.4);border-radius:16px 16px 4px 16px;padding:12px 18px;font-size:14px;color:#F2EDDF;align-self:flex-end">🙌 see you tomorrow!</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:72px">
+      <div style="display:flex;justify-content:center;order:1">
+        <div style="display:flex;flex-direction:column;gap:14px;width:360px">
+          <div style="background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;flex-direction:column;gap:2px"><div style="font-size:14.5px;font-weight:600">Ana redeemed: free coffee</div><div style="font-size:12px;color:rgba(242,237,223,.55)">visit #9 · came with 2 friends</div></div>
+            <div style="width:30px;height:30px;border-radius:50%;background:rgba(228,180,76,.2);display:flex;align-items:center;justify-content:center;color:#E4B44C;font-weight:700">✓</div>
+          </div>
+          <div style="background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14.5px;font-weight:600">Ticket vs. non-members</div>
+            <div style="font:700 20px 'Space Grotesk',sans-serif;color:#E4B44C">+31%</div>
+          </div>
+          <div style="background:#143528;border:1px solid rgba(242,237,223,.16);border-radius:14px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14.5px;font-weight:600">Loop restarts</div>
+            <div style="font:700 20px 'Space Grotesk',sans-serif;color:#E4B44C">↻</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:480px;order:2">
+        <div style="font:700 14px 'Space Grotesk',sans-serif;color:#E4B44C;letter-spacing:.1em">04 — RETURN</div>
+        <div style="font:700 38px/1.1 'Space Grotesk',sans-serif;letter-spacing:-0.02em">They come back — and bring friends</div>
+        <div style="font-size:16.5px;line-height:1.6;color:rgba(242,237,223,.7)">Redemptions feel like winning, not couponing. The sale is recorded, the points update, and the loop starts again.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- testimonial -->
+  <div style="border-top:1px solid rgba(242,237,223,.12);padding:84px 72px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center">
+    <div style="font:italic 400 40px/1.25 'Instrument Serif',serif;max-width:760px;color:#F2EDDF;text-wrap:balance">"Since Pigui, Tuesday mornings look like Saturdays."</div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:48px;height:48px;border-radius:50%;background:repeating-linear-gradient(45deg,#143528,#143528 5px,#1B4433 5px,#1B4433 10px);display:flex;align-items:center;justify-content:center;font:500 8px ui-monospace,monospace;color:rgba(242,237,223,.6)">photo</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+        <div style="font-size:15px;font-weight:600">Owner name</div>
+        <div style="font-size:13px;color:rgba(242,237,223,.55)">Bakery · Austin, TX — sample quote</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="margin:0 72px 72px;background:#E4B44C;border-radius:28px;padding:64px;display:flex;align-items:center;justify-content:space-between;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:700 42px/1.05 'Space Grotesk',sans-serif;color:#0F2B21;letter-spacing:-0.02em">Put your business on repeat.</div>
+      <div style="font-size:17px;color:rgba(15,43,33,.75)">Free for your first 100 members. Live in 12 minutes.</div>
+    </div>
+    <div style="background:#0F2B21;color:#F2EDDF;font-size:18px;font-weight:700;padding:18px 36px;border-radius:999px;cursor:pointer;flex:none" style-hover="background:#143528">Start free</div>
+  </div>
+
+  <!-- footer -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:26px 72px;border-top:1px solid rgba(242,237,223,.12);font-size:13.5px;color:rgba(242,237,223,.55)">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:18px;height:18px;border-radius:50%;background:#E4B44C"></div>
+      <div style="font:700 15px 'Space Grotesk',sans-serif;color:#F2EDDF">pigui</div>
+      <div>© 2026 Pigui AI</div>
+    </div>
+    <div style="display:flex;gap:26px"><div>Pricing</div><div>Pigui Scan</div><div>Privacy</div><div>Terms</div><div>Contact</div></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ============================== OPTION 1C ============================== -->
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>The Ledger — outcome-first, email capture in the hero · shortest path to sign-up</div>
+<sc-if value="{{ showRationale }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:640px;font:400 11.5px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.55);background:#FFF9E8;border:1px solid rgba(0,0,0,.09);border-radius:6px;padding:8px 12px">Leads with the economic argument instead of features — built for the skeptical owner. Email field sits in the hero (one action above the fold), and the page reads like a ledger: problem, fix, proof, price, questions. Least decoration, most conversion pressure.</div>
+</sc-if>
+<div class="dv-card" style="width:1440px" data-screen-label="1c Ledger home">
+<div style="background:#F4F0E6;color:#17140E;font-family:'Archivo',sans-serif">
+
+  <!-- top bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:26px;height:26px;border-radius:50%;background:#4238B8;display:flex;align-items:center;justify-content:center"><div style="width:9px;height:9px;border-radius:50%;background:#F4F0E6"></div></div>
+      <div style="font:600 20px 'Archivo',sans-serif;letter-spacing:-0.01em">pigui</div>
+      <div style="font:400 12px ui-monospace,monospace;color:#5D574A;margin-left:6px">AI loyalty for small business</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:28px;font-size:14.5px;font-weight:500">
+      <div style="color:#5D574A">Log in</div>
+      <div style="color:#4238B8;font-weight:600;border-bottom:2px solid #4238B8;padding-bottom:2px;cursor:pointer">Start free →</div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="padding:96px 80px 88px;display:flex;flex-direction:column;gap:34px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 84px/1.04 'Instrument Serif',serif;letter-spacing:-0.015em;max-width:1100px;text-wrap:balance">Repeat customers spend <em style="color:#4238B8">67% more</em>.<br>How many do you have?</div>
+    <div style="font-size:20px;line-height:1.55;color:#5D574A;max-width:640px;text-wrap:pretty">Pigui is the AI loyalty platform for small business. Launch a rewards program before lunch — and know your regulars by name by Friday.</div>
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:560px">
+      <div style="display:flex;align-items:stretch;gap:0;border:2px solid #17140E;border-radius:0">
+        <div style="flex:1;display:flex;align-items:center;background:#fff;padding:0 20px;font-size:16.5px;color:#8A8271">you@yourshop.com</div>
+        <div style="background:#17140E;color:#F4F0E6;font-size:16.5px;font-weight:600;padding:18px 32px;cursor:pointer;display:flex;align-items:center" style-hover="background:#4238B8">Start free</div>
+      </div>
+      <div style="font:400 13px ui-monospace,monospace;color:#8A8271">No credit card · 10-minute setup · first 100 members free</div>
+    </div>
+  </div>
+
+  <!-- 01 problem -->
+  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding:72px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 15px ui-monospace,monospace;color:#8A8271">№ 01 — THE PROBLEM</div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div style="font:400 46px/1.12 'Instrument Serif',serif;max-width:820px;text-wrap:balance">You never see 7 out of 10 first-time customers again.</div>
+      <div style="font-size:17px;line-height:1.6;color:#5D574A;max-width:640px">They liked the coffee. They meant to come back. But nothing reminded them — and the shop across the street had a punch card. Loyalty isn't a nice-to-have; it's where small-business margin lives.</div>
+      <div style="display:flex;gap:0;border:1.5px solid rgba(23,20,14,.25);max-width:820px">
+        <div style="flex:7;background:#17140E;color:#F4F0E6;padding:16px 18px;display:flex;flex-direction:column;gap:2px"><div style="font:600 22px 'Archivo',sans-serif">70%</div><div style="font-size:12.5px;opacity:.7">walk out and never return</div></div>
+        <div style="flex:3;background:#4238B8;color:#F4F0E6;padding:16px 18px;display:flex;flex-direction:column;gap:2px"><div style="font:600 22px 'Archivo',sans-serif">30%</div><div style="font-size:12.5px;opacity:.8">come back — these pay your rent</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 fix -->
+  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding:72px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 15px ui-monospace,monospace;color:#8A8271">№ 02 — THE FIX</div>
+    <div style="display:flex;flex-direction:column;gap:36px">
+      <div style="font:400 46px/1.12 'Instrument Serif',serif;max-width:820px">A rewards program that runs itself.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1.5px solid rgba(23,20,14,.25)">
+        <div style="padding:28px;border-right:1.5px solid rgba(23,20,14,.25);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 14px ui-monospace,monospace;color:#4238B8">a.</div>
+          <div style="font-size:19px;font-weight:600">Launch</div>
+          <div style="font-size:15px;line-height:1.55;color:#5D574A">Name your rewards, print your QR. Ten minutes, from your phone.</div>
+        </div>
+        <div style="padding:28px;border-right:1.5px solid rgba(23,20,14,.25);display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 14px ui-monospace,monospace;color:#4238B8">b.</div>
+          <div style="font-size:19px;font-weight:600">Scan</div>
+          <div style="font-size:15px;line-height:1.55;color:#5D574A">Customers join at the counter. Staff use Pigui Scan — any phone works.</div>
+        </div>
+        <div style="padding:28px;display:flex;flex-direction:column;gap:10px">
+          <div style="font:400 14px ui-monospace,monospace;color:#4238B8">c.</div>
+          <div style="font-size:19px;font-weight:600">Retain</div>
+          <div style="font-size:15px;line-height:1.55;color:#5D574A">AI spots who's slipping away and sends the offer that brings them back.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 proof -->
+  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding:72px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 15px ui-monospace,monospace;color:#8A8271">№ 03 — THE DIFFERENCE</div>
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <div style="font:400 46px/1.12 'Instrument Serif',serif;max-width:820px">Guesswork vs. Pigui.</div>
+      <div style="display:flex;flex-direction:column;border:1.5px solid rgba(23,20,14,.25);max-width:900px">
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;background:#17140E;color:#F4F0E6">
+          <div style="padding:14px 20px;font:400 13px ui-monospace,monospace;opacity:.7">RUNNING LOYALTY…</div>
+          <div style="padding:14px 20px;font-size:14.5px;font-weight:600;border-left:1.5px solid rgba(244,240,230,.2)">Without Pigui</div>
+          <div style="padding:14px 20px;font-size:14.5px;font-weight:600;border-left:1.5px solid rgba(244,240,230,.2);color:#C9C2FF">With Pigui</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;border-top:1.5px solid rgba(23,20,14,.25)">
+          <div style="padding:16px 20px;font-size:15.5px;font-weight:500">Who your regulars are</div>
+          <div style="padding:16px 20px;font-size:15px;color:#5D574A;border-left:1.5px solid rgba(23,20,14,.25)">A hunch</div>
+          <div style="padding:16px 20px;font-size:15px;font-weight:600;color:#4238B8;border-left:1.5px solid rgba(23,20,14,.25)">A list, ranked by value</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;border-top:1.5px solid rgba(23,20,14,.25)">
+          <div style="padding:16px 20px;font-size:15.5px;font-weight:500">Reward timing</div>
+          <div style="padding:16px 20px;font-size:15px;color:#5D574A;border-left:1.5px solid rgba(23,20,14,.25)">Same coupon for everyone</div>
+          <div style="padding:16px 20px;font-size:15px;font-weight:600;color:#4238B8;border-left:1.5px solid rgba(23,20,14,.25)">Per-customer, AI-timed</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;border-top:1.5px solid rgba(23,20,14,.25)">
+          <div style="padding:16px 20px;font-size:15.5px;font-weight:500">Setup</div>
+          <div style="padding:16px 20px;font-size:15px;color:#5D574A;border-left:1.5px solid rgba(23,20,14,.25)">Punch cards &amp; spreadsheets</div>
+          <div style="padding:16px 20px;font-size:15px;font-weight:600;color:#4238B8;border-left:1.5px solid rgba(23,20,14,.25)">10 minutes, one QR</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;border-top:1.5px solid rgba(23,20,14,.25)">
+          <div style="padding:16px 20px;font-size:15.5px;font-weight:500">Winning customers back</div>
+          <div style="padding:16px 20px;font-size:15px;color:#5D574A;border-left:1.5px solid rgba(23,20,14,.25)">You notice too late</div>
+          <div style="padding:16px 20px;font-size:15px;font-weight:600;color:#4238B8;border-left:1.5px solid rgba(23,20,14,.25)">Flagged &amp; nudged automatically</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 price -->
+  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding:72px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 15px ui-monospace,monospace;color:#8A8271">№ 04 — THE PRICE</div>
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <div style="font:400 46px/1.12 'Instrument Serif',serif;max-width:820px">Start free. Upgrade when it's working.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid rgba(23,20,14,.25);max-width:900px">
+        <div style="padding:32px;border-right:1.5px solid rgba(23,20,14,.25);display:flex;flex-direction:column;gap:12px">
+          <div style="font:400 14px ui-monospace,monospace;color:#8A8271">FREE</div>
+          <div style="font-size:22px;font-weight:600">Your first 100 members</div>
+          <div style="font-size:15px;line-height:1.6;color:#5D574A">Full program, Pigui Scan, QR joining. Enough to prove it works at your counter.</div>
+        </div>
+        <div style="padding:32px;display:flex;flex-direction:column;gap:12px;background:#fff">
+          <div style="font:400 14px ui-monospace,monospace;color:#4238B8">GROWTH</div>
+          <div style="font-size:22px;font-weight:600">Unlimited members + AI campaigns</div>
+          <div style="font-size:15px;line-height:1.6;color:#5D574A">Automatic win-back nudges, insights, WhatsApp &amp; email. Priced for a small shop — not a franchise.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 faq -->
+  <div style="display:grid;grid-template-columns:220px 1fr;gap:40px;padding:72px 80px;border-bottom:1px solid rgba(23,20,14,.18)">
+    <div style="font:400 15px ui-monospace,monospace;color:#8A8271">№ 05 — QUESTIONS</div>
+    <div style="display:flex;flex-direction:column;gap:0;max-width:820px">
+      <div style="display:flex;justify-content:space-between;gap:40px;padding:20px 0;border-bottom:1px solid rgba(23,20,14,.15)">
+        <div style="font-size:17px;font-weight:600">Do my customers need to download an app?</div>
+        <div style="font-size:16px;color:#5D574A;max-width:380px;text-align:right">No — they scan a QR and the card lives in their phone wallet.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:40px;padding:20px 0;border-bottom:1px solid rgba(23,20,14,.15)">
+        <div style="font-size:17px;font-weight:600">What do I need at the counter?</div>
+        <div style="font-size:16px;color:#5D574A;max-width:380px;text-align:right">Any phone with Pigui Scan. No hardware, no POS change.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:40px;padding:20px 0">
+        <div style="font-size:17px;font-weight:600">How long does setup take?</div>
+        <div style="font-size:16px;color:#5D574A;max-width:380px;text-align:right">About 10 minutes. Most shops launch the same day they sign up.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- final -->
+  <div style="padding:96px 80px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+    <div style="font:400 64px/1.08 'Instrument Serif',serif;letter-spacing:-0.01em;max-width:900px;text-wrap:balance">Make loyalty your <em style="color:#4238B8">unfair advantage</em>.</div>
+    <div style="display:flex;align-items:stretch;gap:0;border:2px solid #17140E;width:560px">
+      <div style="flex:1;display:flex;align-items:center;background:#fff;padding:0 20px;font-size:16.5px;color:#8A8271">you@yourshop.com</div>
+      <div style="background:#17140E;color:#F4F0E6;font-size:16.5px;font-weight:600;padding:18px 32px;cursor:pointer;display:flex;align-items:center" style-hover="background:#4238B8">Start free</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 80px;border-top:1px solid rgba(23,20,14,.18);font-size:13.5px;color:#8A8271">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:16px;height:16px;border-radius:50%;background:#4238B8"></div>
+      <div style="font-weight:600;color:#17140E">pigui</div>
+      <div>© 2026 Pigui AI</div>
+    </div>
+    <div style="display:flex;gap:26px"><div>Pricing</div><div>Pigui Scan</div><div>Privacy</div><div>Terms</div><div>Contact</div></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "merge <a class="dv-oid" href="#1b">1b</a>'s loop into <a class="dv-oid" href="#1a">1a</a>" · "make <a class="dv-oid" href="#1a">1a</a> bilingual EN/ES" · "mobile version of <a class="dv-oid" href="#1a">1a</a>"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;showRationale&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Canvas&quot;},
+  &quot;heroEmailCapture&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Option 1a&quot;, &quot;description&quot;: &quot;Replace 1a hero buttons with an email capture field&quot;}
+}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document.getElementById('3a');
+    if (!root || root.dataset.animInit) return;
+    root.dataset.animInit = '1';
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    root.querySelectorAll('[data-anim]').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(28px)';
+      el.style.transition = 'opacity .8s cubic-bezier(.2,.7,.2,1) ' + ((i % 3) * 0.1) + 's, transform .8s cubic-bezier(.2,.7,.2,1) ' + ((i % 3) * 0.1) + 's';
+      io.observe(el);
+    });
+  }
+
+  renderVals() {
+    const email = this.props.heroEmailCapture ?? false;
+    return {
+      showRationale: this.props.showRationale ?? true,
+      heroEmail: email,
+      heroButtons: !email
+    };
+  }
+}
+</script>
+</body>
+</html>
