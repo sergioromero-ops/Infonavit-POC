@@ -170,15 +170,16 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 /* Landing v2 (brief) */
 .logo-infonavit{display:flex;align-items:center;gap:11px}
 .logo-infonavit svg{flex-shrink:0}
-.hero2{background:var(--rojo);color:#fff;padding:64px 0 150px}
-.hero2 .contenedor{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
-@media(max-width:860px){.hero2 .contenedor{grid-template-columns:1fr}}
+.hero2{background:#8E2239;color:#fff;position:relative;overflow:hidden;min-height:560px;display:flex;align-items:center;padding:40px 0 96px}
+.hero2 .video-capa{position:absolute;inset:0;display:flex;justify-content:flex-end;pointer-events:none}
+.hero2 .video-capa video{height:100%;width:auto;object-fit:contain}
+@media(max-width:860px){.hero2 .video-capa{opacity:.3;justify-content:center}}
+.hero2 .contenedor{position:relative;z-index:2;width:100%}
+.hero2 .texto-hero{max-width:560px}
 .hero2 h1{font-size:clamp(32px,4.6vw,50px);line-height:1.1;letter-spacing:-.02em;font-weight:800}
 .hero2 .acciones{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
 .hero2 .btn.blanco{background:#fff;color:var(--rojo)}
 .hero2 .btn.borde{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55)}
-.hero2 .ilustracion{width:100%;max-width:520px;justify-self:end}
-@media(max-width:860px){.hero2 .ilustracion{justify-self:center}}
 /* Modal de entrada */
 .modal-fondo{position:fixed;inset:0;background:rgba(20,8,12,.62);z-index:950;display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-caja{background:#fff;border-radius:14px;max-width:640px;width:100%;padding:36px 40px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35)}
@@ -245,68 +246,16 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
   </header>
 
   <div class="hero2">
+    <div class="video-capa"><video src="assets/hero-familia.mp4" autoplay muted loop playsinline></video></div>
     <div class="contenedor">
-      <div>
+      <div class="texto-hero">
         <h1>Una vivienda digna, con un camino claro hasta la entrega.</h1>
         <div class="acciones">
           <button class="btn blanco" onclick="irVista('b2c')">Verificar si soy elegible →</button>
           <button class="btn borde" onclick="document.getElementById('como').scrollIntoView()">Conocer el programa</button>
         </div>
       </div>
-      <svg class="ilustracion" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" aria-label="Familia recibiendo las llaves de su casa">
-        <!-- casa al fondo -->
-        <rect x="140" y="150" width="250" height="170" rx="6" fill="#FFFFFF"/>
-        <path d="M120 160 L265 62 L410 160 Z" fill="#6E1830"/>
-        <rect x="238" y="230" width="56" height="90" rx="4" fill="#E9C46A"/>
-        <circle cx="284" cy="276" r="4" fill="#6E1830"/>
-        <rect x="168" y="185" width="46" height="40" rx="4" fill="#F6E8EC"/>
-        <rect x="318" y="185" width="46" height="40" rx="4" fill="#F6E8EC"/>
-        <line x1="191" y1="185" x2="191" y2="225" stroke="#C05C74" stroke-width="3"/>
-        <line x1="341" y1="185" x2="341" y2="225" stroke="#C05C74" stroke-width="3"/>
-        <ellipse cx="265" cy="330" rx="190" ry="14" fill="#7C1A33"/>
-        <!-- sol -->
-        <circle cx="452" cy="66" r="26" fill="#C05C74" opacity=".8"/>
-        <!-- papá con llave -->
-        <g>
-          <circle cx="118" cy="212" r="17" fill="#E8B88A"/>
-          <path d="M104 203 q14 -14 28 0 l0 -8 q-14 -10 -28 0 Z" fill="#3B2A20"/>
-          <rect x="100" y="229" width="36" height="58" rx="12" fill="#FFFFFF"/>
-          <rect x="104" y="285" width="12" height="42" rx="5" fill="#5E1024"/>
-          <rect x="120" y="285" width="12" height="42" rx="5" fill="#5E1024"/>
-          <path d="M132 240 q22 -26 30 -46" stroke="#E8B88A" stroke-width="10" stroke-linecap="round" fill="none"/>
-          <!-- llave en alto -->
-          <g transform="translate(162,178) rotate(30)">
-            <circle cx="0" cy="0" r="9" fill="none" stroke="#E9C46A" stroke-width="5"/>
-            <rect x="7" y="-2.5" width="26" height="5" rx="2" fill="#E9C46A"/>
-            <rect x="24" y="-2.5" width="4" height="9" fill="#E9C46A"/>
-            <rect x="30" y="-2.5" width="4" height="7" fill="#E9C46A"/>
-          </g>
-        </g>
-        <!-- mamá -->
-        <g>
-          <circle cx="172" cy="222" r="16" fill="#EDBE93"/>
-          <path d="M158 214 q14 -13 28 0 l2 12 q-16 -8 -32 0 Z" fill="#4A3423"/>
-          <path d="M154 238 h36 l6 60 h-48 Z" fill="#F6E8EC"/>
-          <rect x="160" y="296" width="10" height="32" rx="4" fill="#8A5A44"/>
-          <rect x="176" y="296" width="10" height="32" rx="4" fill="#8A5A44"/>
-        </g>
-        <!-- hijo -->
-        <g>
-          <circle cx="360" cy="252" r="13" fill="#E8B88A"/>
-          <path d="M349 245 q11 -10 22 0 l0 -6 q-11 -8 -22 0 Z" fill="#2E2118"/>
-          <rect x="347" y="266" width="26" height="38" rx="9" fill="#FFFFFF"/>
-          <rect x="350" y="303" width="9" height="26" rx="4" fill="#5E1024"/>
-          <rect x="362" y="303" width="9" height="26" rx="4" fill="#5E1024"/>
-        </g>
-        <!-- niña -->
-        <g>
-          <circle cx="404" cy="258" r="12" fill="#EDBE93"/>
-          <path d="M393 252 q11 -10 22 0 l3 10 q-14 -6 -28 0 Z" fill="#4A3423"/>
-          <path d="M392 271 h24 l5 34 h-34 Z" fill="#E9C46A"/>
-          <rect x="398" y="305" width="8" height="24" rx="4" fill="#8A5A44"/>
-          <rect x="409" y="305" width="8" height="24" rx="4" fill="#8A5A44"/>
-        </g>
-      </svg>
+      
     </div>
   </div>
 
