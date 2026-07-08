@@ -7,7 +7,7 @@ const AuthContext = createContext();
 class AuthProvider extends Component {
   state = {
     auth,
-    isAuthenticated: auth.isAuthenticated,
+    isAuthenticated: () => auth.isAuthenticated(),
   };
 
   render() {
