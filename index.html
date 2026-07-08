@@ -166,77 +166,180 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 </div>
 
 <!-- ============ VISTA: LANDING PÚBLICA ============ -->
+<style>
+/* Landing v2 (brief) */
+.logo-infonavit{display:flex;align-items:center;gap:11px}
+.logo-infonavit svg{flex-shrink:0}
+.hero2{background:var(--rojo);color:#fff;padding:64px 0 150px}
+.hero2 .contenedor{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
+@media(max-width:860px){.hero2 .contenedor{grid-template-columns:1fr}}
+.hero2 h1{font-size:clamp(32px,4.6vw,50px);line-height:1.1;letter-spacing:-.02em;font-weight:800}
+.hero2 .acciones{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.hero2 .btn.blanco{background:#fff;color:var(--rojo)}
+.hero2 .btn.borde{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+.hero2 .ilustracion{width:100%;max-width:520px;justify-self:end}
+@media(max-width:860px){.hero2 .ilustracion{justify-self:center}}
+/* Modal de entrada */
+.modal-fondo{position:fixed;inset:0;background:rgba(20,8,12,.62);z-index:950;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-caja{background:#fff;border-radius:14px;max-width:640px;width:100%;padding:36px 40px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal-caja .logos{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:22px;color:var(--gris-900)}
+.modal-caja .logos .sep{width:1px;height:34px;background:var(--gris-300)}
+.modal-caja p.msj{font-size:15px;line-height:1.65;color:var(--gris-700)}
+.modal-caja p.msj b{color:var(--rojo)}
+.modal-caja p.preg{font-size:15px;font-weight:800;margin-top:16px;color:var(--vino)}
+.modal-caja .botones{display:flex;gap:14px;justify-content:center;margin-top:24px}
+.modal-caja .botones .btn{min-width:150px}
+/* Métricas con iconos */
+.cifra{text-align:center}
+.cifra .ico{font-size:26px;display:block;margin-bottom:8px}
+/* Carrusel 5 pasos */
+.carrusel{max-width:860px;margin:40px auto 0;position:relative}
+.carrusel-vista{overflow:hidden;border-radius:18px}
+.carrusel-pista{display:flex;transition:transform .5s ease}
+.slide{min-width:100%;display:grid;grid-template-columns:1fr 1.2fr;background:#fff;border:1px solid var(--gris-100);box-shadow:var(--sombra)}
+@media(max-width:700px){.slide{grid-template-columns:1fr}}
+.slide .visual{background:var(--rojo-claro);display:flex;align-items:center;justify-content:center;font-size:84px;min-height:230px}
+.slide .texto{padding:32px 34px;display:flex;flex-direction:column;justify-content:center}
+.slide .texto .num{width:34px;height:34px;border-radius:10px;background:var(--rojo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px}
+.slide .texto h3{font-size:19px;margin-bottom:8px}
+.slide .texto p{font-size:14px;color:var(--gris-500);line-height:1.6}
+.carrusel .flecha{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;background:#fff;box-shadow:var(--sombra-md);font-size:17px;color:var(--rojo);z-index:5}
+.carrusel .flecha.izq{left:-16px}.carrusel .flecha.der{right:-16px}
+.carrusel-puntos{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.carrusel-puntos button{width:9px;height:9px;border-radius:50%;border:none;background:var(--gris-300);transition:.2s}
+.carrusel-puntos button.activo{background:var(--rojo);transform:scale(1.3)}
+</style>
 <section id="vista-landing" class="vista activa">
+
+  <!-- Pop-up de entrada -->
+  <div id="modal-entrada" class="modal-fondo" style="display:none">
+    <div class="modal-caja">
+      <div class="logos">
+        <b style="font-size:15px">Gobierno de<br>México</b>
+        <span class="sep"></span>
+        <span class="logo-infonavit">
+          <svg width="44" height="30" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg>
+          <b style="font-size:15px;color:var(--rojo)">INFONAVIT</b>
+        </span>
+      </div>
+      <p class="msj"><b>La Presidenta de México, Claudia Sheinbaum Pardo</b>, instruyó la construcción de viviendas para derechohabientes que ganan hasta 2 salarios mínimos y no tienen casa propia.</p>
+      <p class="preg">¿Cumples con estos requisitos y te interesaría comprar una de estas viviendas?</p>
+      <div class="botones">
+        <button class="btn primario" onclick="cerrarModalEntrada(true)">Sí</button>
+        <button class="btn primario" onclick="cerrarModalEntrada(false)">No</button>
+      </div>
+    </div>
+  </div>
+
   <header class="land-head">
     <div class="contenedor">
-      <div class="logo">
-        <div class="marca">IV</div>
-        <div>Vivienda del Bienestar<small>Infonavit · Gobierno de México</small></div>
+      <div class="logo-infonavit">
+        <svg width="52" height="36" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg>
+        <div style="font-weight:800;font-size:16px;letter-spacing:-.01em">Infonavit<small style="display:block;font-size:10.5px;font-weight:600;color:var(--gris-500)">Gobierno de México</small></div>
       </div>
       <nav class="land-nav">
-        <a href="#programa">El programa</a>
+        <a href="#como">El programa</a>
         <a href="#como">Cómo funciona</a>
-        <a href="#accesos">Accesos</a>
-        <a href="#faq">Preguntas</a>
       </nav>
     </div>
   </header>
 
-  <div class="hero">
+  <div class="hero2">
     <div class="contenedor">
-      <span class="kicker">Programa de Vivienda para el Bienestar</span>
-      <h1>Una vivienda digna, con un camino claro hasta la entrega.</h1>
-      <p class="sub">Si ganas hasta dos salarios mínimos, este programa es para ti. Consulta si eres elegible, elige tu vivienda, completa tus documentos y llega a la firma acompañado en cada paso.</p>
-      <div class="acciones">
-        <button class="btn blanco" onclick="irVista('b2c')">Verificar si soy elegible →</button>
-        <button class="btn borde" onclick="document.getElementById('como').scrollIntoView()">Conocer el programa</button>
+      <div>
+        <h1>Una vivienda digna, con un camino claro hasta la entrega.</h1>
+        <div class="acciones">
+          <button class="btn blanco" onclick="irVista('b2c')">Verificar si soy elegible →</button>
+          <button class="btn borde" onclick="document.getElementById('como').scrollIntoView()">Conocer el programa</button>
+        </div>
       </div>
-      <p style="margin-top:14px;font-size:12.5px;opacity:.85">✦ Copiloto comercial en esta página: precalifica, resuelve dudas y agenda una llamada.</p>
+      <svg class="ilustracion" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" aria-label="Familia recibiendo las llaves de su casa">
+        <!-- casa al fondo -->
+        <rect x="140" y="150" width="250" height="170" rx="6" fill="#FFFFFF"/>
+        <path d="M120 160 L265 62 L410 160 Z" fill="#6E1830"/>
+        <rect x="238" y="230" width="56" height="90" rx="4" fill="#E9C46A"/>
+        <circle cx="284" cy="276" r="4" fill="#6E1830"/>
+        <rect x="168" y="185" width="46" height="40" rx="4" fill="#F6E8EC"/>
+        <rect x="318" y="185" width="46" height="40" rx="4" fill="#F6E8EC"/>
+        <line x1="191" y1="185" x2="191" y2="225" stroke="#C05C74" stroke-width="3"/>
+        <line x1="341" y1="185" x2="341" y2="225" stroke="#C05C74" stroke-width="3"/>
+        <ellipse cx="265" cy="330" rx="190" ry="14" fill="#7C1A33"/>
+        <!-- sol -->
+        <circle cx="452" cy="66" r="26" fill="#C05C74" opacity=".8"/>
+        <!-- papá con llave -->
+        <g>
+          <circle cx="118" cy="212" r="17" fill="#E8B88A"/>
+          <path d="M104 203 q14 -14 28 0 l0 -8 q-14 -10 -28 0 Z" fill="#3B2A20"/>
+          <rect x="100" y="229" width="36" height="58" rx="12" fill="#FFFFFF"/>
+          <rect x="104" y="285" width="12" height="42" rx="5" fill="#5E1024"/>
+          <rect x="120" y="285" width="12" height="42" rx="5" fill="#5E1024"/>
+          <path d="M132 240 q22 -26 30 -46" stroke="#E8B88A" stroke-width="10" stroke-linecap="round" fill="none"/>
+          <!-- llave en alto -->
+          <g transform="translate(162,178) rotate(30)">
+            <circle cx="0" cy="0" r="9" fill="none" stroke="#E9C46A" stroke-width="5"/>
+            <rect x="7" y="-2.5" width="26" height="5" rx="2" fill="#E9C46A"/>
+            <rect x="24" y="-2.5" width="4" height="9" fill="#E9C46A"/>
+            <rect x="30" y="-2.5" width="4" height="7" fill="#E9C46A"/>
+          </g>
+        </g>
+        <!-- mamá -->
+        <g>
+          <circle cx="172" cy="222" r="16" fill="#EDBE93"/>
+          <path d="M158 214 q14 -13 28 0 l2 12 q-16 -8 -32 0 Z" fill="#4A3423"/>
+          <path d="M154 238 h36 l6 60 h-48 Z" fill="#F6E8EC"/>
+          <rect x="160" y="296" width="10" height="32" rx="4" fill="#8A5A44"/>
+          <rect x="176" y="296" width="10" height="32" rx="4" fill="#8A5A44"/>
+        </g>
+        <!-- hijo -->
+        <g>
+          <circle cx="360" cy="252" r="13" fill="#E8B88A"/>
+          <path d="M349 245 q11 -10 22 0 l0 -6 q-11 -8 -22 0 Z" fill="#2E2118"/>
+          <rect x="347" y="266" width="26" height="38" rx="9" fill="#FFFFFF"/>
+          <rect x="350" y="303" width="9" height="26" rx="4" fill="#5E1024"/>
+          <rect x="362" y="303" width="9" height="26" rx="4" fill="#5E1024"/>
+        </g>
+        <!-- niña -->
+        <g>
+          <circle cx="404" cy="258" r="12" fill="#EDBE93"/>
+          <path d="M393 252 q11 -10 22 0 l3 10 q-14 -6 -28 0 Z" fill="#4A3423"/>
+          <path d="M392 271 h24 l5 34 h-34 Z" fill="#E9C46A"/>
+          <rect x="398" y="305" width="8" height="24" rx="4" fill="#8A5A44"/>
+          <rect x="409" y="305" width="8" height="24" rx="4" fill="#8A5A44"/>
+        </g>
+      </svg>
     </div>
   </div>
 
   <div class="cifras contenedor">
     <div class="grid">
-      <div class="cifra"><b>1.2 millones</b><span>de viviendas durante la administración</span></div>
-      <div class="cifra"><b>400,000</b><span>viviendas por contratar en 2026</span></div>
-      <div class="cifra"><b>689,748</b><span>viviendas con necesidad identificada (abril 2026)</span></div>
-      <div class="cifra"><b>32 estados</b><span>con desarrollos del programa</span></div>
+      <div class="cifra"><span class="ico">🏘️</span><b>1.2 millones</b><span>de viviendas durante la administración</span></div>
+      <div class="cifra"><span class="ico">📝</span><b>400,000</b><span>viviendas por contratar en 2026</span></div>
+      <div class="cifra"><span class="ico">📍</span><b>689,748</b><span>viviendas con necesidad identificada</span></div>
+      <div class="cifra"><span class="ico">🗺️</span><b>32 estados</b><span>con desarrollos del programa</span></div>
     </div>
   </div>
 
   <div id="como" class="seccion contenedor">
     <h2>Tu camino a casa, en 5 pasos</h2>
-    <p class="intro">Sin filas, sin incertidumbre. La plataforma te dice exactamente en qué paso vas y qué sigue.</p>
-    <div class="grid pasos">
-      <div class="paso"><div class="num">1</div><h3>Verifica tu elegibilidad</h3><p>Con tu NSS confirmamos en segundos si eres sujeto del programa.</p></div>
-      <div class="paso"><div class="num">2</div><h3>Explora viviendas reales</h3><p>Desarrollos disponibles cerca de ti, con precios, avance y fecha de entrega.</p></div>
-      <div class="paso"><div class="num">3</div><h3>Elige y aparta</h3><p>Selecciona torre, piso y departamento. Tu apartado se protege 72 horas.</p></div>
-      <div class="paso"><div class="num">4</div><h3>Completa documentos</h3><p>Checklist claro, recordatorios y ayuda del copiloto en todo momento.</p></div>
-      <div class="paso"><div class="num">5</div><h3>Firma y recibe</h3><p>Te asignamos notaría, agendas tu firma y sabes cuándo recibes llaves y escritura.</p></div>
-    </div>
-  </div>
-
-  <div id="accesos" class="seccion" style="background:#fff">
-    <div class="contenedor">
-      <h2>Dos capas: comunicación abierta y cerrada</h2>
-      <p class="intro">01 · Esta web pública es la capa abierta: sin login, para elegibilidad y captación. 02 · La web privada enruta por rol a cinco apps autenticadas, cada una con IA personalizada y objetivos definidos.</p>
-      <div class="grid roles-grid">
-        <div class="rol-card" onclick="irVista('b2c')"><div class="ic">🏠</div><h3>Soy derechohabiente</h3><p>Capa abierta, sin cuenta: verifica tu elegibilidad y encuentra tu vivienda. Al avanzar, tu proceso continúa con login. IA con fines comerciales y operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="entrarPorHub('colab')"><div class="ic">🧑‍💼</div><h3>Soy colaborador Infonavit</h3><p>Tareas internas: pagos, fianzas, verificaciones y validaciones. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="entrarPorHub('b2b')"><div class="ic">🏗️</div><h3>Soy constructor</h3><p>Actualiza avance de obra, servicios, fianzas e inventario de tus desarrollos. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="entrarPorHub('b2o')"><div class="ic">📋</div><h3>Soy operador</h3><p>Notarios, valuadores y verificadores: valida trámites y destraba entregas. IA con fines operativos.</p><span class="lnk">Entrar →</span></div>
-        <div class="rol-card" onclick="entrarPorHub('b2g')"><div class="ic">🏛️</div><h3>Soy el Director</h3><p>Torre de control nacional: metas, avances, bloqueos y escrituración. IA con fines comerciales, operativos y financieros.</p><span class="lnk">Entrar →</span></div>
+    <div class="carrusel">
+      <div class="carrusel-vista">
+        <div class="carrusel-pista" id="pista-pasos">
+          <div class="slide"><div class="visual">🪪</div><div class="texto"><span class="num">1</span><h3>Verifica tu elegibilidad</h3><p>Con tu NSS confirmamos en segundos si eres sujeto del programa. Sin filas y sin papeleo inicial.</p></div></div>
+          <div class="slide"><div class="visual">🏘️</div><div class="texto"><span class="num">2</span><h3>Explora viviendas reales</h3><p>Desarrollos disponibles cerca de ti, con precios, avance de obra y fecha de entrega.</p></div></div>
+          <div class="slide"><div class="visual">📌</div><div class="texto"><span class="num">3</span><h3>Elige y aparta</h3><p>Selecciona torre, piso y departamento. Tu apartado se protege 72 horas mientras completas el proceso.</p></div></div>
+          <div class="slide"><div class="visual">📄</div><div class="texto"><span class="num">4</span><h3>Completa documentos</h3><p>Checklist claro, recordatorios automáticos y ayuda del copiloto en todo momento.</p></div></div>
+          <div class="slide"><div class="visual">🔑</div><div class="texto"><span class="num">5</span><h3>Firma y recibe</h3><p>Te asignamos notaría, agendas tu firma y sabes exactamente cuándo recibes llaves y escritura.</p></div></div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div id="faq" class="seccion contenedor">
-    <h2>Preguntas frecuentes</h2>
-    <div class="faq">
-      <details><summary>¿Quién puede participar en el programa?</summary><p>Personas trabajadoras derechohabientes con ingresos de hasta dos salarios mínimos. La plataforma valida tu elegibilidad automáticamente con tu NSS.</p></details>
-      <details><summary>¿Cuánto cuesta la vivienda y cómo se paga?</summary><p>Las viviendas del programa tienen precios accesibles y esquemas de pago diseñados para tu nivel de ingreso. Al elegir una vivienda verás la mensualidad estimada.</p></details>
-      <details><summary>¿Qué documentos necesito?</summary><p>Identificación oficial, CURP, comprobante de domicilio y estado de cuenta. La plataforma te da un checklist personalizado y recordatorios.</p></details>
-      <details><summary>¿Qué pasa después de apartar mi vivienda?</summary><p>Tu apartado se protege por 72 horas mientras completas documentos. Después te asignamos notaría, agendas firma y recibes fecha de entrega.</p></details>
+      <button class="flecha izq" onclick="pasoMover(-1)">←</button>
+      <button class="flecha der" onclick="pasoMover(1)">→</button>
+      <div class="carrusel-puntos" id="puntos-pasos">
+        <button class="activo" onclick="pasoIr(0)"></button>
+        <button onclick="pasoIr(1)"></button>
+        <button onclick="pasoIr(2)"></button>
+        <button onclick="pasoIr(3)"></button>
+        <button onclick="pasoIr(4)"></button>
+      </div>
     </div>
   </div>
 
@@ -1376,6 +1479,21 @@ function validarEscrituras(){
   toast('✓ 25 firmas programadas. Derechohabientes notificados.');
   pintarB2G();
 }
+
+/* ================= LANDING V2: MODAL + CARRUSEL ================= */
+function cerrarModalEntrada(si){
+  document.getElementById('modal-entrada').style.display='none';
+  if(si){ irVista('b2c'); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista==='b2c')); }
+}
+window.addEventListener('load',()=>{ const m=document.getElementById('modal-entrada'); if(m) m.style.display='flex'; });
+let pasoIdx=0, pasoTimer=setInterval(()=>pasoMover(1),5000);
+function pasoIr(n){
+  pasoIdx=(n+5)%5;
+  document.getElementById('pista-pasos').style.transform='translateX(-'+(pasoIdx*100)+'%)';
+  document.querySelectorAll('#puntos-pasos button').forEach((b,i)=>b.classList.toggle('activo',i===pasoIdx));
+  clearInterval(pasoTimer); pasoTimer=setInterval(()=>pasoMover(1),5000);
+}
+function pasoMover(d){ pasoIr(pasoIdx+d); }
 
 /* ================= HUB PRIVADO ================= */
 let hubDestino=null;
