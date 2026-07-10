@@ -77,7 +77,10 @@ const now = () => new Date().toISOString();
 
 export function seed(force = false) {
   const hasData = db.prepare(`SELECT COUNT(*) n FROM desarrollos`).get().n > 0;
-  if (hasData && !force) return;
+  // Auto-migración: si la base es de una versión anterior (sin unidades en todos los desarrollos), re-sembrar
+  const desactualizada = hasData && !db.prepare(`SELECT 1 FROM unidades WHERE id='valle-A-301'`).get();
+  if (hasData && !force && !desactualizada) return;
+  if (desactualizada) console.log('↺ Base de datos de versión anterior detectada: re-sembrando');
 
   db.exec(`
     DELETE FROM documentos; DELETE FROM nps; DELETE FROM reservas;
