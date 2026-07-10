@@ -942,9 +942,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       <div class="grid dos-col">
         <div>
           <div class="tarea"><div class="ic" style="background:var(--rojo-sem-claro)">🛡️</div><div><b>Validar renovación de fianza · Bosques del Bienestar</b><p>Hábitat Jalisco envió póliza de renovación ($48.2 MDP). Jurídico debe validar en 48 h para bajar el riesgo del desarrollo.</p></div><div class="acciones"><button class="btn primario chico" id="btn-validar-fianza" onclick="validarFianza()">Validar póliza</button></div></div>
-          <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">💰</div><div><b>Liberar estimación 7 · Valle Angelópolis</b><p>Grupo Angelópolis cargó evidencia de urbanización. Tesorería espera visto bueno regional. Monto: $18.2 MDP.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: estimación liberada a tesorería')">Dar visto bueno</button></div></div>
-          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🔍</div><div><b>Programar verificación de obra · etapa 3</b><p>Bosques del Bienestar reporta 82% físico. Verificador debe confirmar en sitio antes del 15 de julio.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: visita programada 11 jul, 10:00 h')">Programar visita</button></div></div>
-          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Gestión con Ayto. de Tlajomulco · drenaje</b><p>El constructor solicitó apoyo institucional para destrabar el colector municipal (54 viviendas).</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: mesa de trabajo solicitada al municipio')">Abrir gestión</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">💰</div><div><b>Liberar estimación 7 · Valle Angelópolis</b><p>Grupo Angelópolis cargó evidencia de urbanización. Tesorería espera visto bueno regional. Monto: $18.2 MDP.</p></div><div class="acciones"><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: estimación liberada a tesorería')">Dar visto bueno</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🔍</div><div><b>Programar verificación de obra · etapa 3</b><p>Bosques del Bienestar reporta 82% físico. Verificador debe confirmar en sitio antes del 15 de julio.</p></div><div class="acciones"><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: visita programada 11 jul, 10:00 h')">Programar visita</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Gestión con Ayto. de Tlajomulco · drenaje</b><p>El constructor solicitó apoyo institucional para destrabar el colector municipal (54 viviendas).</p></div><div class="acciones"><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: mesa de trabajo solicitada al municipio')">Abrir gestión</button></div></div>
         </div>
         <div class="copiloto-caja">
           <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Colaborador</h4><small>IA personalizada · objetivos operativos</small></div></div>
@@ -1193,10 +1193,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <table class="tabla">
           <thead><tr><th>Documento</th><th>Desarrollo</th><th>Monto / vigencia</th><th>Estatus</th><th></th></tr></thead>
           <tbody>
-            <tr><td><b>Fianza de cumplimiento</b></td><td>Bosques del Bienestar</td><td>$48.2 MDP · vence 17 jul 2026</td><td><span class="chip rojo" id="doc-fianza-chip">Por vencer</span></td><td><button class="btn secundario chico" onclick="toast('Prototipo: póliza de renovación enviada a revisión de Infonavit')">Renovar</button></td></tr>
+            <tr><td><b>Fianza de cumplimiento</b></td><td>Bosques del Bienestar</td><td>$48.2 MDP · vence 17 jul 2026</td><td><span class="chip rojo" id="doc-fianza-chip">Por vencer</span></td><td><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: póliza de renovación enviada a revisión de Infonavit')">Renovar</button></td></tr>
             <tr><td><b>Fianza de anticipo</b></td><td>Bosques del Bienestar</td><td>$21.5 MDP · vence 02 dic 2026</td><td><span class="chip verde">Vigente</span></td><td></td></tr>
             <tr><td><b>Licencia de construcción et. 3</b></td><td>Bosques del Bienestar</td><td>Ayto. Tlajomulco</td><td><span class="chip verde">Vigente</span></td><td></td></tr>
-            <tr><td><b>Factibilidad de agua</b></td><td>Lomas del Salto</td><td>SIAPA · en trámite</td><td><span class="chip ambar">Pendiente</span></td><td><button class="btn secundario chico" onclick="toast('Prototipo: documento cargado')">Subir</button></td></tr>
+            <tr><td><b>Factibilidad de agua</b></td><td>Lomas del Salto</td><td>SIAPA · en trámite</td><td><span class="chip ambar">Pendiente</span></td><td><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: documento cargado')">Subir</button></td></tr>
             <tr><td><b>Fianza de cumplimiento</b></td><td>Jardines de Tesistán</td><td>$39.8 MDP · vence 20 mar 2027</td><td><span class="chip verde">Vigente</span></td><td></td></tr>
           </tbody>
         </table>
@@ -1252,8 +1252,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div>
           <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏗️</div><div><b>UVE-14 (Unidad de Verificación externa) · Validar avance físico etapa 3</b><p>El constructor reporta 82%. Tu validación en sitio habilita la autorización de su estimación 2/2 y el pago en 3 días hábiles.</p></div><div class="acciones"><button class="btn primario chico" id="btn-uve" onclick="validarAvanceUVE()">Validar avance de obra</button></div></div>
           <div class="tarea"><div class="ic" style="background:var(--rojo-sem-claro)">📜</div><div><b>Bosques del Bienestar · 25 escrituras listas para firma</b><p>Expedientes completos y validados. La IA priorizó este lote: destrabaría el semáforo rojo del desarrollo.</p></div><div class="acciones"><button class="btn primario chico" id="btn-validar-escrituras" onclick="validarEscrituras()">Programar 25 firmas</button></div></div>
-          <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">📄</div><div><b>Bosques del Bienestar · 23 expedientes incompletos</b><p>Faltan documentos del derechohabiente (14) y avalúos (9). Se enviaron recordatorios automáticos.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: recordatorios reenviados a 14 derechohabientes')">Reenviar aviso</button></div></div>
-          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Jardines de Tesistán · 18 escrituras firmadas por registrar</b><p>Pendientes de inscripción en Registro Público de la Propiedad.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: lote enviado a Registro Público')">Enviar a RPP</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">📄</div><div><b>Bosques del Bienestar · 23 expedientes incompletos</b><p>Faltan documentos del derechohabiente (14) y avalúos (9). Se enviaron recordatorios automáticos.</p></div><div class="acciones"><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: recordatorios reenviados a 14 derechohabientes')">Reenviar aviso</button></div></div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Jardines de Tesistán · 18 escrituras firmadas por registrar</b><p>Pendientes de inscripción en Registro Público de la Propiedad.</p></div><div class="acciones"><button class="btn secundario chico" onclick="accionHecha(this,'Prototipo: lote enviado a Registro Público')">Enviar a RPP</button></div></div>
         </div>
         <div class="copiloto-caja">
           <div class="cab"><div class="ia">✦</div><div><h4>Copiloto Operativo</h4><small>IA personalizada · objetivos operativos</small></div></div>
@@ -1616,7 +1616,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             </div>
           </div>
           <button class="btn primario btn-full" onclick="confirmarFirma()">Confirmar mi cita de firma ✍️</button>
-          <button class="btn secundario btn-full" style="margin-top:8px" onclick="toast('Prototipo: recordatorios activados por WhatsApp y SMS')">Recordármelo por WhatsApp</button>
+          <button class="btn secundario btn-full" style="margin-top:8px" onclick="accionHecha(this,'Prototipo: recordatorios activados por WhatsApp y SMS')">Recordármelo por WhatsApp</button>
         </div>
 
         <!-- P7: Entrega -->
@@ -2126,6 +2126,15 @@ function impulsarB2C(btn,nombre){
   btn.textContent='✓ Priorizado'; btn.disabled=true; btn.style.opacity=.6;
   toast('📣 '+nombre+' se priorizó en las recomendaciones del mapa B2C');
 }
+
+/* Acciones secundarias: completan de verdad (marcan hecho + evento en la bitácora del sandbox) */
+async function accionHecha(btn,msj){
+  if(btn&&!btn.disabled){
+    btn.disabled=true; btn.style.opacity=.6;
+    if(!/✓/.test(btn.textContent)) btn.textContent='✓ '+btn.textContent.trim();
+  }
+  toast('✓ '+msj.replace(/^Prototipo: /,'').replace(/^Sandbox: /,''));
+}
 function tarjetaTarea(t){
   const ic=t.prioridad==='urgente'?['rojo','🧾']:['ambar','⚡'];
   const chip=t.prioridad==='urgente'?'<span class="chip rojo">Urgente</span>':'<span class="chip ambar">En curso</span>';
@@ -2210,14 +2219,24 @@ function elegirDepto(el,num){
 }
 async function apartarDepto(){
   if(API_OK){
-    const unidad=(_devSel||'bosques')+'-A-'+(window._deptoNum||'304');
+    const dev=_devSel||'bosques';
+    let num=window._deptoNum||'304';
     try{
-      const j=await apiPost('/api/reservas',{nss:window._nssActivo||NSS_DEMO,unidad_id:unidad});
-      RESERVA=j.reserva;
+      RESERVA=(await apiPost('/api/reservas',{nss:window._nssActivo||NSS_DEMO,unidad_id:dev+'-A-'+num})).reserva;
     }catch(e){
       if(/apartado activo/.test(e.message)){
         RESERVA=await apiGet('/api/reservas/activa?nss='+(window._nssActivo||NSS_DEMO));
         toast('Ya tenías un apartado activo: retomamos tu proceso');
+      } else if(/apartada o vendida/.test(e.message)){
+        // Reasignación automática: toma la siguiente unidad libre del mismo desarrollo
+        try{
+          const libres=(await apiGet('/api/desarrollos/'+dev+'/unidades')).filter(u=>u.estado==='disponible');
+          if(!libres.length){ toast('⚠ Ese desarrollo ya no tiene unidades libres. Reinicia el sandbox (↺) o elige otro.'); return; }
+          num=libres[0].numero;
+          RESERVA=(await apiPost('/api/reservas',{nss:window._nssActivo||NSS_DEMO,unidad_id:libres[0].id})).reserva;
+          const s=document.getElementById('sel-depto'); if(s) s.textContent='Torre A · Piso '+libres[0].piso+' · Depto '+num;
+          toast('El '+ (window._deptoNum||'304') +' ya estaba tomado: te asignamos el '+num+' ✓');
+        }catch(e2){ toast('⚠ '+e2.message); return; }
       } else { toast('⚠ '+e.message); return; }
     }
     pintarDocs();
@@ -2496,7 +2515,7 @@ function seleccionarEdo(p){
   if(!d){
     lado.innerHTML = `<div class="titulo-seccion" style="margin-top:0"><h3>${p.dataset.nombre}</h3><span class="chip gris">Sin zonas prioritarias</span></div>
       <p style="font-size:13px;color:var(--gris-500);margin-bottom:14px">Este estado no tiene zonas prioritarias cargadas en la demo. Los datos completos estarán disponibles al conectar el archivo nacional de metas.</p>
-      <button class="btn secundario chico" style="width:100%" onclick="toast('Prototipo: datos completos disponibles al conectar el archivo de metas')">Solicitar carga de datos</button>`;
+      <button class="btn secundario chico" style="width:100%" onclick="accionHecha(this,'Prototipo: datos completos disponibles al conectar el archivo de metas')">Solicitar carga de datos</button>`;
     return;
   }
   const esJal = p.id==='MXJAL';
@@ -2511,7 +2530,7 @@ function seleccionarEdo(p){
       <div><span class="mini-lbl">Escrituras pend.</span><b style="font-size:18px">${d.escrit}</b></div>
     </div>
     <button class="btn primario chico" style="width:100%;margin-bottom:8px" onclick="${esJal?'verDetalleBosques()':`toast('Prototipo: el detalle completo está disponible para Jalisco')`}">Ver desarrollos del estado</button>
-    <button class="btn secundario chico" style="width:100%" onclick="toast('Solicitud de actualización enviada a los constructores de ${p.dataset.nombre}')">Solicitar actualización</button>`;
+    <button class="btn secundario chico" style="width:100%" onclick="accionHecha(this,'Solicitud de actualización enviada a los constructores de ${p.dataset.nombre}')">Solicitar actualización</button>`;
 }
 
 

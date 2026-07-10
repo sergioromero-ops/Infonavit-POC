@@ -112,6 +112,11 @@ try {
   const fin = await api('/api/estado');
   chk(fin.bosques.semaforo === 'rojo' && fin.flags.dh === false, 'reset → estado inicial');
 
+  console.log('— NSS desconocido (auto-registro del sandbox)');
+  const nuevo = await api('/api/elegibilidad', { body: { nss: '77788899911' } });
+  chk(nuevo.elegible === true, 'NSS desconocido → registrado y elegible');
+  chk((await api('/api/reservas', { body: { nss: '77788899911', unidad_id: 'toluca-A-303' } })).reserva?.id > 0, 'NSS nuevo puede apartar');
+
   console.log('— Flujo B2C desde otro desarrollo (Querétaro)');
   chk((await api('/api/desarrollos/qro/unidades')).length === 18, 'qro tiene 18 unidades');
   r = await api('/api/reservas', { body: { nss: '92099142066', unidad_id: 'qro-A-303' } });

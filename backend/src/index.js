@@ -243,8 +243,14 @@ GET('/api/tareas', ({ json }) => json(200, db.prepare(`SELECT * FROM tareas ORDE
 POST('/api/elegibilidad', ({ body, json }) => {
   const nss = String(body.nss || '').replace(/\D/g, '');
   if (nss.length !== 11) return json(400, { error: 'El NSS debe tener 11 dígitos' });
-  const d = db.prepare(`SELECT * FROM derechohabientes WHERE nss=?`).get(nss);
-  if (!d) return json(404, { error: 'NSS no encontrado en el sandbox. Prueba 92099142066.' });
+  let d = db.prepare(`SELECT * FROM derechohabientes WHERE nss=?`).get(nss);
+  if (!d) {
+    // Sandbox: cualquier NSS válido desconocido se registra como derechohabiente elegible
+    db.prepare(`INSERT INTO derechohabientes (nss,nombre,conyuge,meses_cotizando,salario_sm,credito_activo,credito_monto,ciudad) VALUES (?,?,NULL,24,1.5,0,650000,'Guadalajara')`)
+      .run(nss, 'Derechohabiente invitado');
+    d = db.prepare(`SELECT * FROM derechohabientes WHERE nss=?`).get(nss);
+    logEvento('derechohabiente_autoregistro', 'derechohabiente', { nss });
+  }
   const razones = [];
   if (d.meses_cotizando < 6) razones.push('Menos de 6 meses de aportaciones');
   if (d.salario_sm < 1 || d.salario_sm > 2) razones.push('Ingreso fuera del rango de 1 a 2 salarios mínimos');
