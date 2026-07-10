@@ -261,10 +261,10 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 
   <div class="cifras contenedor">
     <div class="grid">
-      <div class="cifra"><span class="ico">🏘️</span><b>1.2 millones</b><span>de viviendas durante la administración</span></div>
-      <div class="cifra"><span class="ico">📝</span><b>400,000</b><span>viviendas por contratar en 2026</span></div>
-      <div class="cifra"><span class="ico">📍</span><b>689,748</b><span>viviendas con necesidad identificada</span></div>
-      <div class="cifra"><span class="ico">🗺️</span><b>32 estados</b><span>con desarrollos del programa</span></div>
+      <div class="cifra"><span class="ico">🏘️</span><b id="cif-1">1.2 millones</b><span>de viviendas durante la administración</span></div>
+      <div class="cifra"><span class="ico">📝</span><b id="cif-2">400,000</b><span>viviendas por contratar en 2026</span></div>
+      <div class="cifra"><span class="ico">📍</span><b id="cif-3">689,748</b><span>viviendas con necesidad identificada</span></div>
+      <div class="cifra"><span class="ico">🗺️</span><b id="cif-4">32 estados</b><span>con desarrollos del programa</span></div>
     </div>
   </div>
 
@@ -295,7 +295,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
   <footer class="land-pie">
     <div class="contenedor">
       <span>© 2026 Infonavit · Programa de Vivienda para el Bienestar · Prototipo con datos simulados</span>
-      <span>Aviso de privacidad · Términos · Infonatel 800 008 3900</span>
+      <span><a href="#" style="color:inherit" onclick="event.preventDefault();toast('Aviso de privacidad — documento simulado del prototipo')">Aviso de privacidad</a> · <a href="#" style="color:inherit" onclick="event.preventDefault();toast('Términos y condiciones — documento simulado del prototipo')">Términos</a> · <a href="tel:8000083900" style="color:inherit">Infonatel 800 008 3900</a></span>
     </div>
   </footer>
 </section>
@@ -321,6 +321,8 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .kpi b{display:block;font-size:24px;letter-spacing:-.02em;margin-top:4px}
 .kpi .delta{font-size:11.5px;font-weight:700}
 .kpi .delta.up{color:var(--verde)}.kpi .delta.down{color:var(--rojo-sem)}
+.kpi.clic-kpi{cursor:pointer;transition:.15s}
+.kpi.clic-kpi:hover{transform:translateY(-2px);box-shadow:var(--sombra-md);border-color:var(--rojo)}
 .banner-alerta{display:flex;align-items:center;gap:12px;background:var(--rojo-sem-claro);border:1px solid #FDA29B;border-radius:var(--radio);padding:14px 18px;margin-bottom:20px;font-size:13.5px}
 .banner-alerta.ambar{background:var(--ambar-claro);border-color:#F8C572}
 .banner-alerta.verde{background:var(--verde-claro);border-color:#8FDBB2}
@@ -435,11 +437,11 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       </div>
       <div class="grid kpis">
         <div class="kpi"><span class="lbl">Meta 2026</span><b>400,000</b><span class="delta">viviendas por contratar</span></div>
-        <div class="kpi"><span class="lbl">Contratadas</span><b>312,480</b><span class="delta up">78.1% de la meta</span></div>
+        <div class="kpi clic-kpi" onclick="irPanel('b2g','mapa')" title="Ver mapa por estado"><span class="lbl">Contratadas</span><b>312,480</b><span class="delta up">78.1% de la meta</span></div>
         <div class="kpi"><span class="lbl">Terminadas</span><b>154,210</b></div>
         <div class="kpi"><span class="lbl">Entregadas</span><b id="k-entregadas">121,875</b><span class="delta up" id="k-entregadas-d">39% de contratadas</span></div>
-        <div class="kpi"><span class="lbl">Terminadas sin servicios</span><b id="k-sinservicios">18,404</b><span class="delta down">bloqueadas para entrega</span></div>
-        <div class="kpi"><span class="lbl">Escrituradas</span><b id="k-escrituradas">98,442</b><span class="delta down" id="k-escr-d">12,440 pendientes de firma</span></div>
+        <div class="kpi clic-kpi" onclick="irPanel('b2g','bloqueos')" title="Ver bloqueos de servicios"><span class="lbl">Terminadas sin servicios</span><b id="k-sinservicios">18,404</b><span class="delta down">bloqueadas para entrega</span></div>
+        <div class="kpi clic-kpi" onclick="irPanel('b2g','bloqueos')" title="Ver bloqueos de escrituración"><span class="lbl">Escrituradas</span><b id="k-escrituradas">98,442</b><span class="delta down" id="k-escr-d">12,440 pendientes de firma</span></div>
       </div>
 
       <div class="grid dos-col" style="margin-top:20px">
@@ -482,10 +484,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
   <div id="panel-b2g-mapa" class="panel">
     <div class="contenedor">
       <div class="filtros">
-        <select><option>Todos los estados</option><option>Jalisco</option><option>Nuevo León</option><option>Puebla</option><option>Edo. de México</option><option>Querétaro</option></select>
-        <select><option>Todos los estatus</option><option>En meta</option><option>Atención</option><option>Riesgo</option></select>
-        <select><option>Todos los desarrolladores</option><option>Hábitat Jalisco Constructora</option><option>Constructora Regia del Norte</option><option>Grupo Angelópolis Vivienda</option></select>
-        <select><option>Ordenar por meta</option><option>Ordenar por avance</option><option>Ordenar por riesgo</option></select>
+        <select id="f-estado" onchange="filtrarZonas()"><option>Todos los estados</option><option>Jalisco</option><option>Nuevo León</option><option>Puebla</option><option>Edo. de México</option><option>Querétaro</option><option>Guanajuato</option><option>Chihuahua</option><option>Baja California</option><option>Coahuila</option><option>San Luis Potosí</option></select>
+        <select id="f-estatus" onchange="filtrarZonas()"><option>Todos los estatus</option><option>En meta</option><option>Atención</option><option>Riesgo</option></select>
+        <select id="f-orden" onchange="filtrarZonas()"><option value="meta">Ordenar por meta</option><option value="avance">Ordenar por avance</option><option value="riesgo">Ordenar por riesgo</option><option value="sinserv">Ordenar por sin servicios</option></select>
+        <span id="f-conteo" class="chip gris" style="align-self:center">10 zonas</span>
       </div>
       <div class="card" style="margin-bottom:16px">
         <div class="titulo-seccion" style="margin-top:0"><h3>República Mexicana · semáforo por estado</h3><span class="chip gris">Pasa el mouse y haz clic en un estado</span></div>
@@ -539,7 +541,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         </div>
       </div>
       <div class="card">
-        <table class="tabla">
+        <table class="tabla" id="tabla-zonas">
           <thead><tr><th>Zona (metas abril 2026)</th><th>Meta</th><th>Contratadas</th><th>Terminadas</th><th>Entregadas</th><th>Sin servicios</th><th>Escrituras pend.</th><th>Semáforo</th></tr></thead>
           <tbody>
             <tr class="clic" onclick="verDetalleBosques()"><td><b>Guadalajara y conurbados</b>, Jal.</td><td>89,040</td><td>54,315</td><td>28,410</td><td>19,220</td><td style="color:var(--rojo-sem);font-weight:700">4,180</td><td>3,905</td><td><span class="chip rojo"><span class="punto rojo"></span>Riesgo</span></td></tr>
@@ -674,12 +676,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </tbody></table>
           <span class="mini-lbl">Variación mensual de pagos (últimos 6 meses)</span>
           <div style="display:flex;align-items:flex-end;gap:10px;height:120px;margin-top:12px;padding:0 4px">
-            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:52px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Feb</small></div>
-            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:64px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Mar</small></div>
-            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:58px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Abr</small></div>
-            <div style="flex:1;text-align:center"><div style="background:var(--rojo);opacity:.55;height:78px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">May</small></div>
-            <div style="flex:1;text-align:center"><div style="background:var(--rojo);opacity:.75;height:92px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Jun</small></div>
-            <div style="flex:1;text-align:center"><div style="background:var(--rojo);height:104px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Jul</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:52px;border-radius:6px 6px 0 0;cursor:help" title="$2,480 MDP · febrero"></div><small style="font-size:10.5px;color:var(--gris-500)">Feb</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:64px;border-radius:6px 6px 0 0;cursor:help" title="$3,050 MDP · marzo"></div><small style="font-size:10.5px;color:var(--gris-500)">Mar</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:58px;border-radius:6px 6px 0 0;cursor:help" title="$2,760 MDP · abril"></div><small style="font-size:10.5px;color:var(--gris-500)">Abr</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--rojo);opacity:.55;height:78px;border-radius:6px 6px 0 0;cursor:help" title="$3,720 MDP · mayo"></div><small style="font-size:10.5px;color:var(--gris-500)">May</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--rojo);opacity:.75;height:92px;border-radius:6px 6px 0 0;cursor:help" title="$4,380 MDP · junio"></div><small style="font-size:10.5px;color:var(--gris-500)">Jun</small></div>
+            <div style="flex:1;text-align:center"><div style="background:var(--rojo);height:104px;border-radius:6px 6px 0 0;cursor:help" title="$4,950 MDP · julio"></div><small style="font-size:10.5px;color:var(--gris-500)">Jul</small></div>
           </div>
         </div>
         <div class="card">
@@ -1327,7 +1329,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div style="padding:16px 20px 0">
             <div class="b2c-head" style="margin-bottom:10px"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:auto" id="btn-toggle-mapa" onclick="toggleListaMapa()">☰ Lista</button></div>
             <div class="progreso" style="margin-bottom:12px"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
-            <div class="buscador-pill">🔍 <div><b>Guadalajara y alrededores</b><small>1–2 SM · 2+ recámaras · programa Bienestar</small></div><span style="margin-left:auto">⚙️</span></div>
+            <div class="buscador-pill">🔍 <div><b>Guadalajara y alrededores</b><small>1–2 SM · 2+ recámaras · programa Bienestar</small></div><span style="margin-left:auto;cursor:pointer" onclick="toast('Filtros: precio, recámaras y fecha de entrega — usa los chips de abajo')">⚙️</span></div>
             <div class="cat-chips" id="chips-mapa">
               <button class="activo" onclick="filtrarMapa('casa',this)">🏠 Cerca de ti</button><button onclick="filtrarMapa('trabajo',this)">💼 Cerca del trabajo</button><button onclick="filtrarMapa('parque',this)">🌳 Con parque</button><button onclick="filtrarMapa('entrega',this)">📅 Entrega 2026</button>
             </div>
@@ -1454,13 +1456,13 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="progreso"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
           <p style="font-size:13px;color:var(--gris-700);margin-bottom:4px"><b>Bosques del Bienestar · Torre A</b></p>
           <p style="font-size:12px;color:var(--gris-500)">Elige piso y departamento, como si eligieras tu asiento de avión ✈️</p>
-          <div class="selector-piso">
-            <button onclick="toast('Prototipo: disponibilidad cargada del piso 1')">Piso 1</button>
-            <button onclick="toast('Prototipo: disponibilidad cargada del piso 2')">Piso 2</button>
-            <button class="activo">Piso 3</button>
-            <button onclick="toast('Prototipo: disponibilidad cargada del piso 4')">Piso 4</button>
+          <div class="selector-piso" id="selector-piso">
+            <button onclick="cambiarPiso(1,this)">Piso 1 <small style="font-weight:600">· 1 libre</small></button>
+            <button onclick="cambiarPiso(2,this)">Piso 2 <small style="font-weight:600">· 3 libres</small></button>
+            <button class="activo" onclick="cambiarPiso(3,this)">Piso 3 <small style="font-weight:600">· 4 libres</small></button>
+            <button onclick="cambiarPiso(4,this)">Piso 4 <small style="font-weight:600">· 6 libres</small></button>
           </div>
-          <div class="mapa-deptos">
+          <div class="mapa-deptos" id="mapa-deptos">
             <div class="depto ocupado">301<small>Ocupado</small></div>
             <div class="depto ocupado">302<small>Ocupado</small></div>
             <div class="depto libre" onclick="elegirDepto(this,'303')">303<small>Libre</small></div>
@@ -1615,23 +1617,39 @@ function solicitarActualizacion(){
   b.textContent='✓ Solicitud enviada a Hábitat Jalisco'; b.disabled=true; b.style.opacity=.6;
   toast('Solicitud enviada. El constructor la verá en su portal.');
 }
+function respuestaB2G(tipo){
+  if(tipo==='bosques') return 'Tres causas: <b>1)</b> 68 viviendas terminadas sin conexión CFE (trámite detenido 31 días), <b>2)</b> 48 escrituras pendientes —25 ya podrían firmarse esta semana—, y <b>3)</b> fianza de cumplimiento que vence en 9 días sin evidencia de renovación. Además va 1/2 en estimaciones del mes. Recomiendo activar al constructor, a la Notaría 121 y a la UVE.';
+  if(tipo==='servicios') return 'El mayor bloqueo nacional es <b>electrificación</b>: 4,210 viviendas en 12 desarrollos, concentradas en Jalisco y Chihuahua. Le siguen agua potable (2,180) y drenaje (1,764). Si CFE resuelve los 3 trámites prioritarios de Jalisco, se destraban 2,340 entregas en agosto.';
+  if(tipo==='escrituras') return S.operador? 'Mejorando: la Notaría 121 programó <b>25 firmas</b> de Bosques del Bienestar hoy. Quedan 12,415 pendientes a nivel nacional; el cuello principal ahora es Registro Público (4,890).' : 'Hay <b>12,440 escrituras pendientes</b>: 5,120 en notarías, 4,890 en Registro Público y 2,430 por documentos del derechohabiente. La acción más rápida: las 25 escrituras listas de Bosques del Bienestar, que la Notaría 121 puede firmar esta semana.';
+  if(tipo==='estim') return S.estimacion? 'Hábitat Jalisco ya cargó su <b>estimación 2/2</b> ($12.4 MDP): está autorizada y el pago corre en 3 días hábiles. Quedan 8 estimaciones detenidas por $129.6 MDP; la más antigua lleva 9 días en autorización.' : 'Hay <b>9 estimaciones detenidas</b> en autorización por $142 MDP y <b>7 constructores</b> van con menos de 2 estimaciones este mes — incluido Hábitat Jalisco (1/2). Sin estimación no hay pago y la obra se frena.';
+  if(tipo==='fianza') return 'A nivel nacional hay <b>23 fianzas por vencer</b> ($612 MDP) y 6 vencidas. La más urgente: Bosques del Bienestar, $48.2 MDP, vence en 9 días sin evidencia de renovación.';
+  return 'Puedo explicarle causas raíz de riesgo, servicios faltantes, escrituración, fianzas y estimaciones, y redactar solicitudes accionables. Pruebe: "¿por qué está en rojo Bosques?", "¿cómo van las estimaciones?" o "¿qué fianzas vencen?".';
+}
 function preguntarB2G(tipo){
   const chat=document.getElementById('chat-b2g');
   const input=document.getElementById('input-b2g');
-  let q, r;
-  if(tipo==='bosques'){ q='¿Por qué está en rojo Bosques del Bienestar?';
-    r='Tres causas: <b>1)</b> 68 viviendas terminadas sin conexión CFE (trámite detenido 31 días), <b>2)</b> 48 escrituras pendientes —25 ya podrían firmarse esta semana—, y <b>3)</b> fianza de cumplimiento que vence en 9 días sin evidencia de renovación. Recomiendo: solicitar actualización al constructor y activar a la Notaría 121.'; }
-  else if(tipo==='servicios'){ q='¿Dónde faltan más servicios?';
-    r='El mayor bloqueo nacional es <b>electrificación</b>: 4,210 viviendas en 12 desarrollos, concentradas en Jalisco y Chihuahua. Le siguen agua potable (2,180) y drenaje (1,764). Si CFE resuelve los 3 trámites prioritarios de Jalisco, se destraban 2,340 entregas en agosto.'; }
-  else if(tipo==='escrituras'){ q='¿Cómo va la escrituración?';
-    r=S.operador? 'Mejorando: la Notaría 121 programó <b>25 firmas</b> de Bosques del Bienestar hoy. Quedan 12,415 pendientes a nivel nacional; el cuello principal ahora es Registro Público (4,890).' : 'Hay <b>12,440 escrituras pendientes</b>: 5,120 en notarías, 4,890 en Registro Público y 2,430 por documentos del derechohabiente. La acción más rápida: las 25 escrituras listas de Bosques del Bienestar, que la Notaría 121 puede firmar esta semana.'; }
-  else if(tipo==='estim'){ q='¿Qué estimaciones están detenidas?';
-    r=S.estimacion? 'Hábitat Jalisco ya cargó su <b>estimación 2/2</b> ($12.4 MDP): está autorizada y el pago corre en 3 días hábiles. Quedan 8 estimaciones detenidas por $129.6 MDP; la más antigua lleva 9 días en autorización.' : 'Hay <b>9 estimaciones detenidas</b> en autorización por $142 MDP y <b>7 constructores</b> van con menos de 2 estimaciones este mes — incluido Hábitat Jalisco (1/2). Sin estimación no hay pago y la obra se frena. ¿Le redacto la solicitud de estimación al constructor?'; }
-  else { q=input.value.trim(); if(!q) return; input.value='';
-    r='Con datos simulados del prototipo: la respuesta completa integraría reportes de avance, servicios, escrituración y tesorería en tiempo real. En la demo, prueba las preguntas sugeridas para ver el análisis de causa raíz.'; }
+  let q;
+  if(tipo==='libre'){
+    q=input.value.trim(); if(!q) return; input.value='';
+    const t=q.toLowerCase();
+    tipo=/servici|cfe|agua|drenaje|luz/.test(t)?'servicios':/escritur|notar|firma/.test(t)?'escrituras':/estimac|prefactur|factur|pago/.test(t)?'estim':/fianza/.test(t)?'fianza':/bosques|rojo|jalisco|riesgo|detenid/.test(t)?'bosques':'nada';
+  } else {
+    q={bosques:'¿Por qué está en rojo Bosques del Bienestar?',servicios:'¿Dónde faltan más servicios?',escrituras:'¿Cómo va la escrituración?',estim:'¿Qué estimaciones están detenidas?'}[tipo];
+  }
+  const r=respuestaB2G(tipo);
+  const accion=(tipo==='bosques'||tipo==='estim'||tipo==='fianza')&&!S.solicitud?'<br><button class="btn primario chico" style="margin-top:9px" onclick="redactarSolicitud()">✍️ Redactar solicitud al constructor</button>':'';
   chat.insertAdjacentHTML('beforeend','<div class="burbuja yo">'+q+'</div>');
-  setTimeout(()=>{ chat.insertAdjacentHTML('beforeend','<div class="burbuja ia">'+r+'</div>'); chat.scrollTop=chat.scrollHeight; },450);
+  setTimeout(()=>{ chat.insertAdjacentHTML('beforeend','<div class="burbuja ia">'+r+accion+'</div>'); chat.scrollTop=chat.scrollHeight; },450);
   chat.scrollTop=chat.scrollHeight;
+}
+function redactarSolicitud(){
+  const chat=document.getElementById('chat-b2g');
+  chat.insertAdjacentHTML('beforeend','<div class="burbuja ia">Borrador listo para enviar:<br><i>"Hábitat Jalisco: se requiere actualización de <b>Bosques del Bienestar</b> antes del 10 de julio — avance físico y de servicios con evidencia, estatus del trámite CFE, renovación de la fianza de cumplimiento ($48.2 MDP, vence 17 jul) y carga de la estimación 2/2 del mes. Sin la estimación no se libera el siguiente pago."</i><br><button class="btn primario chico" style="margin-top:9px" onclick="enviarSolicitudIA(this)">📨 Enviar a Hábitat Jalisco</button></div>');
+  chat.scrollTop=chat.scrollHeight;
+}
+function enviarSolicitudIA(btn){
+  btn.textContent='✓ Enviada al portal del constructor'; btn.disabled=true; btn.style.opacity=.6;
+  solicitarActualizacion();
 }
 
 /* ================= HISTORIA: B2B ================= */
@@ -1768,6 +1786,64 @@ function toggleListaMapa(){
   seleccionarPin('bosques');
 })();
 
+/* ================= FILTROS MAPA NACIONAL ================= */
+function filtrarZonas(){
+  const tabla=document.getElementById('tabla-zonas'); if(!tabla) return;
+  const edo=document.getElementById('f-estado').value, est=document.getElementById('f-estatus').value, ord=document.getElementById('f-orden').value;
+  const abrev={'Jalisco':'Jal.','Nuevo León':'N.L.','Puebla':'Pue.','Edo. de México':'Méx.','Querétaro':'Qro.','Guanajuato':'Gto.','Chihuahua':'Chih.','Baja California':'B.C.','Coahuila':'Coah.','San Luis Potosí':'S.L.P.'};
+  const tb=tabla.tBodies[0], filas=[...tb.rows];
+  let visibles=0;
+  filas.forEach(f=>{
+    const okE=edo==='Todos los estados'||f.textContent.includes(abrev[edo]||'@@');
+    const okS=est==='Todos los estatus'||f.textContent.includes(est);
+    f.style.display=(okE&&okS)?'':'none'; if(okE&&okS)visibles++;
+  });
+  const num=(f,i)=>parseInt((f.cells[i]?.textContent||'0').replace(/,/g,''))||0;
+  const riesgoVal=f=>f.textContent.includes('Riesgo')?0:f.textContent.includes('Atención')?1:2;
+  filas.sort((a,b)=>{
+    if(ord==='meta') return num(b,1)-num(a,1);
+    if(ord==='avance') return (num(b,2)/Math.max(1,num(b,1)))-(num(a,2)/Math.max(1,num(a,1)));
+    if(ord==='sinserv') return num(b,5)-num(a,5);
+    return riesgoVal(a)-riesgoVal(b);
+  }).forEach(f=>tb.appendChild(f));
+  document.getElementById('f-conteo').textContent=visibles+(visibles===1?' zona':' zonas');
+}
+
+/* ================= SEMBRADO POR PISO ================= */
+let pisoActual=3;
+const SEMBRADO={
+  1:[["101","Ocupado",0],["102","Ocupado",0],["103","Ocupado",0],["104","Ocupado",0],["105","Jardín",1],["106","Ocupado",0],["107","Ocupado",0],["108","Ocupado",0]],
+  2:[["201","Ocupado",0],["202","Libre",1],["203","Libre",1],["204","Ocupado",0],["205","Ocupado",0],["206","Libre",1],["207","Ocupado",0],["208","Ocupado",0]],
+  3:[["301","Ocupado",0],["302","Ocupado",0],["303","Libre",1],["304","Vista al parque",1],["305","Libre",1],["306","Ocupado",0],["307","Libre",1],["308","Ocupado",0]],
+  4:[["401","Roof cerca",1],["402","Libre",1],["403","Ocupado",0],["404","Libre",1],["405","Libre",1],["406","Libre",1],["407","Ocupado",0],["408","Libre",1]]
+};
+const RECOMENDADO={1:"105",2:"202",3:"304",4:"404"};
+function cambiarPiso(n,btn){
+  pisoActual=n;
+  document.querySelectorAll('#selector-piso button').forEach(b=>b.classList.toggle('activo',b===btn));
+  const cont=document.getElementById('mapa-deptos');
+  cont.innerHTML=SEMBRADO[n].map(([num,tag,libre])=>libre
+    ? '<div class="depto libre'+(num===RECOMENDADO[n]?' sel':'')+'" onclick="elegirDepto(this,\''+num+'\')">'+num+'<small>'+tag+'</small></div>'
+    : '<div class="depto ocupado">'+num+'<small>'+tag+'</small></div>').join('');
+  document.getElementById('sel-depto').textContent='Torre A · Piso '+n+' · Depto '+RECOMENDADO[n];
+  toast('Piso '+n+': '+SEMBRADO[n].filter(d=>d[2]).length+' unidades disponibles');
+}
+
+/* ================= CIFRAS ANIMADAS ================= */
+function animarCifras(){
+  const defs=[['cif-1',1.2,1,' millones'],['cif-2',400000,0,''],['cif-3',689748,0,''],['cif-4',32,0,' estados']];
+  defs.forEach(([id,fin,dec,suf])=>{
+    const el=document.getElementById(id); if(!el) return;
+    const t0=performance.now(), dur=1500;
+    requestAnimationFrame(function paso(t){
+      const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3), v=fin*e;
+      el.textContent=(dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US'))+suf;
+      if(p<1) requestAnimationFrame(paso);
+    });
+  });
+}
+window.addEventListener('load',animarCifras);
+
 /* ================= ESTIMACIONES / UVE / NPS / TAREAS IA ================= */
 function generarEstimacion(){
   S.estimacion=true;
@@ -1852,7 +1928,7 @@ function elegirDepto(el,num){
   if(el.classList.contains('ocupado'))return;
   document.querySelectorAll('.depto').forEach(d=>d.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById('sel-depto').textContent='Torre A · Piso 3 · Depto '+num;
+  document.getElementById('sel-depto').textContent='Torre A · Piso '+pisoActual+' · Depto '+num;
 }
 function apartarDepto(){ irPantalla(5); iniciarCrono(); toast('🔒 Departamento apartado por 72 horas'); }
 let cronoInt=null, cronoSeg=72*3600-79;
