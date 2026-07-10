@@ -122,20 +122,22 @@ export function seed(force = false) {
   dev.run('tesistan', 'Jardines de Tesistán', 'Jalisco', 'Zapopan', 'Hábitat Jalisco', 360, 92, 88, 310, 298, 12, 6, 'verde', 'vigente', 39.8, '2027-03-20', 2, 2, now());
   dev.run('lomas', 'Lomas del Salto', 'Jalisco', 'El Salto', 'Hábitat Jalisco', 288, 64, 57, 120, 98, 22, 11, 'ambar', 'vigente', 31.5, '2027-01-15', 2, 2, now());
   dev.run('chapala', 'Vistas de Chapala', 'Jalisco', 'Ixtlahuacán', 'Hábitat Jalisco', 380, 85, 81, 260, 244, 16, 9, 'verde', 'vigente', 41.2, '2027-06-30', 2, 2, now());
-  dev.run('valle-mty', 'Valle del Bienestar', 'Nuevo León', 'Apodaca', 'Constructora Regia', 67305, 72, 64, 210, 180, 30, 22, 'ambar', 'vigente', 61.0, '2027-02-10', 2, 2, now());
-  dev.run('puebla-sur', 'Angelópolis Bienestar', 'Puebla', 'Puebla', 'GP Vivienda', 29719, 68, 61, 140, 122, 18, 15, 'ambar', 'vigente', 38.5, '2026-12-01', 2, 2, now());
-  dev.run('toluca-norte', 'Toluca Bienestar', 'Edo. de México', 'Toluca', 'Casas del Centro', 21336, 84, 79, 190, 178, 12, 8, 'verde', 'vigente', 42.0, '2027-05-20', 2, 2, now());
-  dev.run('qro-centro', 'Querétaro Bienestar', 'Querétaro', 'Querétaro', 'Vive QRO', 12570, 91, 88, 110, 106, 4, 3, 'verde', 'vigente', 27.3, '2027-08-15', 2, 2, now());
+  dev.run('valle', 'Valle del Bienestar', 'Nuevo León', 'Apodaca', 'Constructora Regia', 67305, 72, 64, 210, 180, 30, 22, 'ambar', 'vigente', 61.0, '2027-02-10', 2, 2, now());
+  dev.run('angelopolis', 'Angelópolis Bienestar', 'Puebla', 'Puebla', 'GP Vivienda', 29719, 68, 61, 140, 122, 18, 15, 'ambar', 'vigente', 38.5, '2026-12-01', 2, 2, now());
+  dev.run('toluca', 'Toluca Bienestar', 'Edo. de México', 'Toluca', 'Casas del Centro', 21336, 84, 79, 190, 178, 12, 8, 'verde', 'vigente', 42.0, '2027-05-20', 2, 2, now());
+  dev.run('qro', 'Querétaro Bienestar', 'Querétaro', 'Querétaro', 'Vive QRO', 12570, 91, 88, 110, 106, 4, 3, 'verde', 'vigente', 27.3, '2027-08-15', 2, 2, now());
 
-  // Unidades de Bosques del Bienestar · Torre A pisos 2-4
+  // Unidades · Torre A pisos 2-4 en TODOS los desarrollos (flujo B2C completo desde cualquier pin)
   const unidad = db.prepare(`INSERT INTO unidades (id,desarrollo_id,torre,piso,numero,precio,estado) VALUES (?,?,?,?,?,?,?)`);
-  for (const piso of [2, 3, 4]) {
-    for (let n = 1; n <= 6; n++) {
-      const num = `${piso}0${n}`;
-      // algunos ocupados para realismo
-      const ocupados = ['201', '203', '206', '302', '305', '401', '404'];
-      unidad.run(`bosques-A-${num}`, 'bosques', 'A', piso, num, 620000 + piso * 15000 + n * 3000,
-        ocupados.includes(num) ? 'vendida' : 'disponible');
+  const PRECIOS_BASE = { bosques: 598000, tesistan: 612000, lomas: 645000, chapala: 589000, valle: 585000, angelopolis: 560000, toluca: 572000, qro: 618000 };
+  const ocupados = ['201', '203', '206', '302', '305', '401', '404'];
+  for (const [devId, base] of Object.entries(PRECIOS_BASE)) {
+    for (const piso of [2, 3, 4]) {
+      for (let n = 1; n <= 6; n++) {
+        const num = `${piso}0${n}`;
+        unidad.run(`${devId}-A-${num}`, devId, 'A', piso, num, base + piso * 1500 + n * 300,
+          ocupados.includes(num) ? 'vendida' : 'disponible');
+      }
     }
   }
 

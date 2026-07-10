@@ -180,15 +180,16 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .mp-item{display:flex;align-items:center;gap:9px;width:100%;padding:11px 14px;border:none;background:none;font-size:13px;font-weight:600;color:var(--gris-900);cursor:pointer;text-align:left}
 .mp-item:hover{background:var(--gris-50)}
 #mp-pass input{width:100%;padding:9px 11px;border:1.5px solid var(--gris-300);border-radius:8px;margin-bottom:8px;font-size:13px}
-/* Mapa Leaflet (tipo Google Maps) */
-#mapa-real .leaflet-container,.leaflet-container{background:#0C1220;font-family:inherit}
-.leaflet-control-attribution{background:rgba(13,20,32,.75)!important;color:#5E7BA0!important;font-size:9px!important}
-.leaflet-control-attribution a{color:#7DD3FC!important}
-.pin-leaflet{position:absolute!important;left:0;top:0;transform:translate(-50%,-100%);white-space:nowrap;z-index:5;box-shadow:0 0 0 1.5px rgba(125,211,252,.35),0 6px 18px rgba(0,0,0,.5)}
+/* Mapa Leaflet (estilo app de mapas, tema claro) */
+#mapa-real{background:#EAE8E4!important}
+#mapa-real .leaflet-container,.leaflet-container{background:#EAE8E4;font-family:inherit}
+.leaflet-control-attribution{background:rgba(255,255,255,.8)!important;color:#8A8A8A!important;font-size:9px!important}
+.leaflet-control-attribution a{color:#666!important}
+.pin-leaflet{position:absolute!important;left:0;top:0;transform:translate(-50%,-100%);white-space:nowrap;z-index:5;box-shadow:0 1px 2px rgba(0,0,0,.14),0 5px 14px rgba(16,24,40,.18)}
 .pin-leaflet.sel{transform:translate(-50%,-100%) scale(1.12)}
 .marc-leaflet{position:absolute!important;left:0;top:0;transform:translate(-50%,-50%)}
-.marc-leaflet small{background:rgba(13,20,32,.85);color:#BFDBFE;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700}
-.marc-leaflet i{font-size:17px;font-style:normal;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.marc-leaflet small{background:#fff;color:var(--gris-900);padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700;box-shadow:0 1px 4px rgba(16,24,40,.2)}
+.marc-leaflet i{font-size:17px;font-style:normal;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35))}
 /* Bloqueos críticos: layout ejecutivo */
 .grid-bloqueos{gap:18px}
 .grid-bloqueos .card{padding:22px 24px}
@@ -1496,7 +1497,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
 
           <div id="b2c-mapa" class="mapa-wrap">
-            <div id="mapa-real" style="position:absolute;inset:0;background:#0C1220;z-index:1"></div>
+            <div id="mapa-real" style="position:absolute;inset:0;background:#EAE8E4;z-index:1"></div>
             <div id="mapa-lienzo" class="mapa-lienzo tech" style="display:none"></div>
             <div class="mapa-conteo">8 desarrollos del programa · 5 estados</div>
             <div class="mapa-zoom"><button onclick="zoomMapa(1)">＋</button><button onclick="zoomMapa(-1)">－</button><button onclick="mapaTodoPais()" title="Ver todo el país">🇲🇽</button></div>
@@ -1536,7 +1537,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="pantalla" id="p-4">
           <div class="b2c-head"><button class="volver" onclick="irPantalla(3)">←</button><span class="titulo">Elige tu departamento</span></div>
           <div class="progreso"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
-          <p style="font-size:13px;color:var(--gris-700);margin-bottom:4px"><b>Bosques del Bienestar · Torre A</b></p>
+          <p style="font-size:13px;color:var(--gris-700);margin-bottom:4px" id="p4-titulo"><b>Bosques del Bienestar · Torre A</b></p>
           <p style="font-size:12px;color:var(--gris-500)">Elige piso y departamento, como si eligieras tu asiento de avión ✈️</p>
           <div class="selector-piso" id="selector-piso">
             <button onclick="cambiarPiso(1,this)">Piso 1 <small style="font-weight:600">· 1 libre</small></button>
@@ -1561,8 +1562,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
           <div class="card" style="padding:14px;margin-bottom:14px">
             <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:var(--gris-500)">Tu selección</span><b id="sel-depto">Torre A · Piso 3 · Depto 304</b></div>
-            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Precio del programa</span><b>$598,000 · ≈ $3,150/mes</b></div>
-            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Valor comercial equivalente</span><b style="color:var(--verde)">≈ $1,000,000</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Precio del programa</span><b id="p4-precio">$598,000 · ≈ $3,150/mes</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Valor comercial equivalente</span><b style="color:var(--verde)" id="p4-valor">≈ $1,000,000</b></div>
           </div>
           <button class="btn primario btn-full" onclick="apartarDepto()">Apartar ahora — toma minutos 🔒</button>
         </div>
@@ -1902,7 +1903,7 @@ function montarLeaflet(){
   const cont=document.getElementById('mapa-real'); if(!cont||MAPA) return;
   MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true});
   MAPA.attributionControl.setPrefix('');
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
   MAPA.fitBounds(PAIS_BOUNDS);
   // Pins de precio en coordenadas reales
   Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
@@ -1948,8 +1949,19 @@ function seleccionarPin(id){
   const pin=document.getElementById('pin-'+id); if(pin) pin.classList.add('sel');
   const d=DESARROLLOS_MAPA[id], c=document.getElementById('pin-card');
   if(!d||!c) return;
-  c.innerHTML='<div class="foto" style="background:'+d.cl+'">Programa Bienestar</div><div class="info"><h4>'+d.n+' <span class="match" style="font-size:9.5px">'+d.match+'</span></h4><p>'+d.d+'</p><div class="precio-fila"><b>'+d.p+'</b><small style="color:var(--gris-500)">'+d.m+'</small><span style="margin-left:auto;font-size:11px;font-weight:700">'+d.r+'</span></div><button class="btn primario chico" style="margin-top:7px;width:100%" onclick="'+(d.cta?'irPantalla(4)':'toast(\'Sandbox: la selecci\u00f3n contin\u00faa con Bosques del Bienestar\')')+'">'+(d.cta?'Elegir mi unidad \u2192':'Ver desarrollo')+'</button></div><button class="cerrar" onclick="event.stopPropagation();document.getElementById(\'pin-card\').classList.remove(\'ver\')">\u2715</button>';
+  c.innerHTML='<div class="foto" style="background:'+d.cl+'">Programa Bienestar</div><div class="info"><h4>'+d.n+' <span class="match" style="font-size:9.5px">'+d.match+'</span></h4><p>'+d.d+'</p><div class="precio-fila"><b>'+d.p+'</b><small style="color:var(--gris-500)">'+d.m+'</small><span style="margin-left:auto;font-size:11px;font-weight:700">'+d.r+'</span></div><button class="btn primario chico" style="margin-top:7px;width:100%" onclick="elegirDesarrollo(\''+id+'\')">Elegir mi unidad \u2192</button></div><button class="cerrar" onclick="event.stopPropagation();document.getElementById(\'pin-card\').classList.remove(\'ver\')">\u2715</button>';
   c.classList.add('ver');
+}
+/* Continuar el flujo con CUALQUIER desarrollo del mapa */
+let _devSel='bosques';
+function elegirDesarrollo(id){
+  _devSel=id;
+  const d=DESARROLLOS_MAPA[id];
+  const t=document.getElementById('p4-titulo'); if(t) t.innerHTML='<b>'+d.n+' \u00b7 Torre A</b>';
+  const p=document.getElementById('p4-precio'); if(p) p.textContent=d.p+' \u00b7 '+d.m;
+  const v=document.getElementById('p4-valor');
+  if(v){ const num=parseInt(d.p.replace(/[^0-9]/g,'')); v.textContent='\u2248 $'+(Math.round(num*1.67/10000)*10000).toLocaleString('en-US'); }
+  irPantalla(4);
 }
 function toggleListaMapa(){
   const m=document.getElementById('b2c-mapa'), li=document.getElementById('b2c-lista'), b=document.getElementById('btn-toggle-mapa');
@@ -2182,7 +2194,7 @@ function elegirDepto(el,num){
 }
 async function apartarDepto(){
   if(API_OK){
-    const unidad='bosques-A-'+(window._deptoNum||'304');
+    const unidad=(_devSel||'bosques')+'-A-'+(window._deptoNum||'304');
     try{
       const j=await apiPost('/api/reservas',{nss:window._nssActivo||NSS_DEMO,unidad_id:unidad});
       RESERVA=j.reserva;

@@ -111,6 +111,14 @@ try {
   await api('/api/reset', { body: {} });
   const fin = await api('/api/estado');
   chk(fin.bosques.semaforo === 'rojo' && fin.flags.dh === false, 'reset → estado inicial');
+
+  console.log('— Flujo B2C desde otro desarrollo (Querétaro)');
+  chk((await api('/api/desarrollos/qro/unidades')).length === 18, 'qro tiene 18 unidades');
+  r = await api('/api/reservas', { body: { nss: '92099142066', unidad_id: 'qro-A-303' } });
+  chk(r.reserva?.desarrollo_id === 'qro', 'reserva creada en Querétaro Bienestar');
+  await api(`/api/reservas/${r.reserva.id}/documentos/biometria`, { body: {} });
+  await api(`/api/reservas/${r.reserva.id}/documentos/constancia_sat`, { body: {} });
+  chk((await api(`/api/reservas/${r.reserva.id}/firmar`, { method: 'POST', body: {} })).ok === true, 'firma completa en desarrollo alterno');
 } catch (err) {
   bad('excepción: ' + err.message);
 } finally {
