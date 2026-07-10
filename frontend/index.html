@@ -200,6 +200,9 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .grid-bloqueos .causa b{font-size:13.5px;line-height:1.35}
 .grid-bloqueos .causa p{font-size:12.5px;margin-top:3px}
 .grid-bloqueos .causa .meta .chip{white-space:nowrap}
+/* Widget ElevenLabs embebido en el teléfono B2C (modo pequeño) */
+.telefono{transform:translateZ(0)}  /* confina el widget fijo al marco del teléfono */
+#convai-slot-b2c elevenlabs-convai{transform:scale(.68);transform-origin:100% 100%}
 </style>
 
 <script>
@@ -1642,7 +1645,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div id="nps-gracias"></div>
         </div>
 
-        <!-- El acompañamiento del derechohabiente lo da el agente de voz/chat de ElevenLabs (widget flotante) -->
+        <!-- Widget ElevenLabs embebido en el flujo (modo pequeño, anclado al teléfono) -->
+        <div id="convai-slot-b2c"></div>
       </div>
     </div>
 
@@ -2566,7 +2570,13 @@ const AGENTES_VOZ={
   b2c:"agent_1601kx1sfh3fe6bbt7ygnwnegw6x"
 };
 function montarVoz(v){
-  const slot=document.getElementById("convai-slot");
+  // En la vista del derechohabiente el widget vive DENTRO del teléfono (modo pequeño);
+  // en el resto, flotante global.
+  const global=document.getElementById("convai-slot");
+  const embebido=document.getElementById("convai-slot-b2c");
+  const slot=(v==="b2c"&&embebido)?embebido:global;
+  const otro=(slot===global)?embebido:global;
+  if(otro) otro.innerHTML="";
   const id=AGENTES_VOZ[v]||AGENTES_VOZ.landing;
   const actual=slot.firstElementChild;
   if(actual && actual.getAttribute("agent-id")===id) return;
