@@ -1,0 +1,13 @@
+{
+  "name": "vivienda-bienestar-backend",
+  "version": "1.0.0",
+  "description": "API sandbox — Control Inteligente de Vivienda del Bienestar (datos simulados, flujos reales, cero dependencias)",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node --no-warnings src/index.js",
+    "dev": "node --no-warnings --watch src/index.js",
+    "seed": "node --no-warnings src/db.js --reset"
+  },
+  "engines": { "node": ">=22.5" }
+}

@@ -78,14 +78,22 @@ table.tabla tr.clic{cursor:pointer}
 
 /* ============ MAPA REAL DE MÉXICO ============ */
 .mapa-mx-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:stretch}
-.mapa-mx-svg{position:relative}
-#mapa-mx{width:100%;height:auto;display:block}
-#mapa-mx .edo{fill:#E5E7EB;stroke:#fff;stroke-width:.8;cursor:pointer;transition:fill .15s,filter .15s}
-#mapa-mx .edo.verde{fill:#57B98B}
-#mapa-mx .edo.ambar{fill:#E8A94E}
-#mapa-mx .edo.rojo{fill:#E4695E}
-#mapa-mx .edo:hover{filter:brightness(.82) saturate(1.25)}
-#mapa-mx .edo.sel{stroke:var(--gris-900);stroke-width:1.6;filter:brightness(.88) saturate(1.3)}
+.mapa-mx-svg{position:relative;background:radial-gradient(ellipse at 30% 15%,#1B2735 0%,#0C1220 75%);border-radius:14px;overflow:hidden;padding:8px;touch-action:none}
+.mapa-mx-svg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(99,179,237,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,.045) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;z-index:1}
+#mapa-mx{width:100%;height:auto;display:block;cursor:grab;position:relative;z-index:2}
+#mapa-mx.arrastrando{cursor:grabbing}
+#mapa-mx .edo{fill:#243247;stroke:#3E5372;stroke-width:.7;cursor:pointer;transition:fill .2s,filter .2s}
+#mapa-mx .edo.verde{fill:#11553C;stroke:#34D399;stroke-width:.8}
+#mapa-mx .edo.ambar{fill:#63490F;stroke:#FBBF24;stroke-width:.8}
+#mapa-mx .edo.rojo{fill:#76202C;stroke:#FB7185;stroke-width:.9;animation:pulsoEdo 2.4s ease-in-out infinite}
+#mapa-mx .edo:hover{filter:brightness(1.55) saturate(1.2)}
+#mapa-mx .edo.sel{stroke:#7DD3FC;stroke-width:1.5;filter:brightness(1.4) drop-shadow(0 0 5px rgba(125,211,252,.9))}
+@keyframes pulsoEdo{0%,100%{filter:drop-shadow(0 0 1px rgba(251,113,133,.4))}50%{filter:drop-shadow(0 0 6px rgba(251,113,133,.95)) brightness(1.25)}}
+.mapa-ctrl{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px;z-index:10}
+.mapa-ctrl button{width:36px;height:36px;border-radius:10px;border:1px solid rgba(125,211,252,.35);background:rgba(13,20,32,.85);color:#7DD3FC;font-size:16px;font-weight:800;backdrop-filter:blur(4px);transition:.15s}
+.mapa-ctrl button:hover{background:rgba(125,211,252,.18)}
+.mapa-hud{position:absolute;left:16px;bottom:12px;font-size:10px;color:#5E7BA0;letter-spacing:.1em;text-transform:uppercase;pointer-events:none;z-index:10;font-weight:700}
+.mapa-hud b{color:#7DD3FC}
 #mapa-tip{position:absolute;pointer-events:none;background:var(--gris-900);color:#fff;font-size:12px;line-height:1.45;padding:8px 11px;border-radius:8px;box-shadow:var(--sombra-md);display:none;z-index:50;white-space:nowrap}
 #mapa-tip b{font-size:12.5px}
 #mapa-tip .tip-sem{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
@@ -151,9 +159,58 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 </head>
 <body>
 
+<script>
+/* ============ SANDBOX: CAPA DE CONEXIÓN A LA API ============ */
+const API_BASE=(()=>{
+  const q=new URLSearchParams(location.search).get('api');
+  if(q) localStorage.setItem('api_base',q.replace(/\/+$/,''));
+  const guardada=localStorage.getItem('api_base');
+  if(guardada) return guardada;
+  // Servido por el propio backend (local o Cloud Run) → mismo origen
+  if(location.protocol.startsWith('http') && !location.host.endsWith('github.io')) return location.origin;
+  return 'http://localhost:8080';
+})();
+const SES={ tokens:{},
+  cargar(){ try{ this.tokens=JSON.parse(localStorage.getItem('ses_tokens')||'{}') }catch{ this.tokens={} } },
+  guardar(){ localStorage.setItem('ses_tokens',JSON.stringify(this.tokens)) } };
+SES.cargar();
+const CUENTAS={director:'director@infonavit.gob.mx',colaborador:'colaborador@infonavit.gob.mx',constructor:'constructor@habitatjalisco.mx',operador:'operador@notaria121.mx',derechohabiente:'ana@correo.mx'};
+const NSS_DEMO='92099142066';
+let API_OK=false, RESERVA=null;
+
+async function apiFetch(ruta,opciones={},rol=null){
+  const h={'content-type':'application/json'};
+  if(rol){ const t=await tokenPara(rol); if(t) h.authorization='Bearer '+t; }
+  const r=await fetch(API_BASE+ruta,{...opciones,headers:{...h,...(opciones.headers||{})}});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(j.error||('Error '+r.status));
+  return j;
+}
+const apiGet=ruta=>apiFetch(ruta);
+const apiPost=(ruta,body,rol)=>apiFetch(ruta,{method:'POST',body:JSON.stringify(body||{})},rol);
+async function tokenPara(rol){
+  // Sandbox: si el rol aún no inició sesión, entra automático con la cuenta sembrada
+  if(SES.tokens[rol]) return SES.tokens[rol];
+  try{
+    const j=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email:CUENTAS[rol],password:'bienestar2026'})});
+    SES.tokens[rol]=j.token; SES.guardar(); return j.token;
+  }catch{ return null; }
+}
+function marcarApi(ok){
+  API_OK=ok;
+  const t=document.getElementById('proto-tag');
+  if(t) t.innerHTML=ok?'🟢 Sandbox · API conectada':'⚪ Prototipo · sin API (solo lectura)';
+}
+async function reiniciarSandbox(){
+  try{ await apiPost('/api/reset'); localStorage.removeItem('ses_tokens'); toast('↺ Sandbox reiniciado'); setTimeout(()=>location.reload(),600); }
+  catch(e){ toast('⚠ '+e.message); }
+}
+</script>
+
 <!-- ============ SELECTOR DE ROL (barra de prototipo) ============ -->
 <div class="proto-bar">
-  <span class="tag">Prototipo · Datos simulados</span>
+  <span class="tag" id="proto-tag">Prototipo · Datos simulados</span>
+  <button class="rol-btn" style="flex-shrink:0" onclick="reiniciarSandbox()" title="Regresa el sandbox al estado inicial">↺</button>
   <div class="roles">
     <button class="rol-btn activo" data-vista="landing" onclick="irVista('landing',this)">🌐 Web pública para derechohabientes</button>
     <button class="rol-btn" data-vista="hub" onclick="entrarPorHub(null)">🔐 Web privada</button>
@@ -404,10 +461,18 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       </div>
       <div id="hub-login" class="card" style="max-width:400px;margin:0 auto;padding:26px">
         <form class="formulario" onsubmit="event.preventDefault();hubEntrar()">
-          <div><label>Correo o NSS</label><input type="text" value="usuario@vivienda.gob.mx"></div>
-          <div><label>Contraseña</label><input type="text" value="••••••••" style="letter-spacing:.2em"></div>
+          <div><label>Correo</label>
+            <select id="hub-email">
+              <option value="director@infonavit.gob.mx">director@infonavit.gob.mx</option>
+              <option value="colaborador@infonavit.gob.mx">colaborador@infonavit.gob.mx</option>
+              <option value="constructor@habitatjalisco.mx">constructor@habitatjalisco.mx</option>
+              <option value="operador@notaria121.mx">operador@notaria121.mx</option>
+              <option value="ana@correo.mx">ana@correo.mx</option>
+            </select>
+          </div>
+          <div><label>Contraseña</label><input type="password" id="hub-pass" value="bienestar2026"></div>
           <button class="btn primario btn-full">Iniciar sesión</button>
-          <p style="font-size:11px;color:var(--gris-500);text-align:center">Prototipo: no se valida ninguna credencial</p>
+          <p style="font-size:11px;color:var(--gris-500);text-align:center">Sandbox: credenciales reales validadas por la API · contraseña <b>bienestar2026</b></p>
         </form>
       </div>
       <div id="hub-roles" style="display:none">
@@ -558,9 +623,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
         </div>
         <div class="mapa-leyenda">
-          <span><i style="background:#57B98B"></i>En meta</span>
-          <span><i style="background:#E8A94E"></i>Atención</span>
-          <span><i style="background:#E4695E"></i>Riesgo</span>
+          <span><i style="background:#34D399"></i>En meta</span>
+          <span><i style="background:#FBBF24"></i>Atención</span>
+          <span><i style="background:#FB7185"></i>Riesgo</span>
           <span><i style="background:#E5E7EB"></i>Sin zonas prioritarias en la demo</span>
         </div>
       </div>
@@ -1641,7 +1706,9 @@ function irPanel(vista, panel, btn){
 function verDetalleBosques(){ irVista('b2g'); irPanel('b2g','desarrollos'); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista==='b2g')); }
 
 /* ================= HISTORIA: B2G ================= */
-function solicitarActualizacion(){
+async function solicitarActualizacion(){
+  try{ if(API_OK) await apiPost('/api/acciones/solicitar-actualizacion',{},'director'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   S.solicitud=true;
   document.getElementById('aviso-b2b').classList.add('ver');
   const b=document.getElementById('btn-solicitar');
@@ -1656,7 +1723,7 @@ function respuestaB2G(tipo){
   if(tipo==='fianza') return 'A nivel nacional hay <b>23 fianzas por vencer</b> ($612 MDP) y 6 vencidas. La más urgente: Bosques del Bienestar, $48.2 MDP, vence en 9 días sin evidencia de renovación.';
   return 'Puedo explicarle causas raíz de riesgo, servicios faltantes, escrituración, fianzas y estimaciones, y redactar solicitudes accionables. Pruebe: "¿por qué está en rojo Bosques?", "¿cómo van las estimaciones?" o "¿qué fianzas vencen?".';
 }
-function preguntarB2G(tipo){
+async function preguntarB2G(tipo){
   const chat=document.getElementById('chat-b2g');
   const input=document.getElementById('input-b2g');
   let q;
@@ -1667,12 +1734,38 @@ function preguntarB2G(tipo){
   } else {
     q={bosques:'¿Por qué está en rojo Bosques del Bienestar?',servicios:'¿Dónde faltan más servicios?',escrituras:'¿Cómo va la escrituración?',estim:'¿Qué estimaciones están detenidas?'}[tipo];
   }
-  const r=respuestaB2G(tipo);
   const accion=(tipo==='bosques'||tipo==='estim'||tipo==='fianza')&&!S.solicitud?'<br><button class="btn primario chico" style="margin-top:9px" onclick="redactarSolicitud()">✍️ Redactar solicitud al constructor</button>':'';
   chat.insertAdjacentHTML('beforeend','<div class="burbuja yo">'+q+'</div>');
-  setTimeout(()=>{ chat.insertAdjacentHTML('beforeend','<div class="burbuja ia">'+r+accion+'</div>'); chat.scrollTop=chat.scrollHeight; },450);
+  const esp=document.createElement('div'); esp.className='burbuja ia'; esp.innerHTML='<i>Analizando datos vivos…</i>';
+  chat.appendChild(esp); chat.scrollTop=chat.scrollHeight;
+  let r;
+  try{ r=(await apiPost('/api/copilot',{rol:'director',pregunta:q})).texto; }
+  catch{ r=respuestaB2G(tipo); }
+  esp.innerHTML=r+accion;
   chat.scrollTop=chat.scrollHeight;
 }
+
+/* Chat genérico del copiloto para otros roles (colaborador, constructor, operador) */
+async function preguntarCopiloto(rol,chatId,inputId){
+  const chat=document.getElementById(chatId), input=document.getElementById(inputId);
+  const q=input.value.trim(); if(!q) return; input.value='';
+  chat.insertAdjacentHTML('beforeend','<div class="burbuja yo">'+q+'</div>');
+  const esp=document.createElement('div'); esp.className='burbuja ia'; esp.innerHTML='<i>Analizando datos vivos…</i>';
+  chat.appendChild(esp); chat.scrollTop=chat.scrollHeight;
+  try{ esp.innerHTML=(await apiPost('/api/copilot',{rol,pregunta:q})).texto; }
+  catch(e){ esp.innerHTML='No pude conectar con la API ('+e.message+').'; }
+  chat.scrollTop=chat.scrollHeight;
+}
+// Agrega input de chat a los copilotos que no lo tienen
+window.addEventListener('load',()=>{
+  [['chat-colab','colaborador','Pregúntale a tu copiloto…'],['chat-estim','constructor','Pregunta sobre tus estimaciones…'],['chat-b2o','operador','Pregúntale a tu copiloto…']].forEach(([id,rol,ph])=>{
+    const chat=document.getElementById(id); if(!chat) return;
+    const iid='input-'+id;
+    chat.insertAdjacentHTML('afterend',
+      '<div class="chat-input"><input id="'+iid+'" type="text" placeholder="'+ph+'" onkeydown="if(event.key===\'Enter\')preguntarCopiloto(\''+rol+'\',\''+id+'\',\''+iid+'\')">'+
+      '<button class="btn primario chico" onclick="preguntarCopiloto(\''+rol+'\',\''+id+'\',\''+iid+'\')">Enviar</button></div>');
+  });
+});
 function redactarSolicitud(){
   const chat=document.getElementById('chat-b2g');
   chat.insertAdjacentHTML('beforeend','<div class="burbuja ia">Borrador listo para enviar:<br><i>"Hábitat Jalisco: se requiere actualización de <b>Bosques del Bienestar</b> antes del 10 de julio — avance físico y de servicios con evidencia, estatus del trámite CFE, renovación de la fianza de cumplimiento ($48.2 MDP, vence 17 jul) y carga de la estimación 2/2 del mes. Sin la estimación no se libera el siguiente pago."</i><br><button class="btn primario chico" style="margin-top:9px" onclick="enviarSolicitudIA(this)">📨 Enviar a Hábitat Jalisco</button></div>');
@@ -1684,7 +1777,9 @@ function enviarSolicitudIA(btn){
 }
 
 /* ================= HISTORIA: B2B ================= */
-function enviarActualizacion(){
+async function enviarActualizacion(){
+  try{ if(API_OK) await apiPost('/api/acciones/actualizar-desarrollo',{avance_fisico:82,avance_servicios:71},'constructor'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   S.constructor=true;
   toast('✓ Actualización enviada. El tablero del Director ya refleja el avance.');
   // Refleja en tarjetas B2B
@@ -1700,7 +1795,9 @@ function enviarActualizacion(){
 }
 
 /* ================= HISTORIA: B2O ================= */
-function validarEscrituras(){
+async function validarEscrituras(){
+  try{ if(API_OK) await apiPost('/api/acciones/validar-escrituras',{},'operador'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   S.operador=true;
   const b=document.getElementById('btn-validar-escrituras');
   b.textContent='✓ 25 firmas programadas'; b.disabled=true; b.style.opacity=.6;
@@ -1747,10 +1844,19 @@ function pasoMover(d){ pasoIr(pasoIdx+d); }
 /* ================= HUB PRIVADO ================= */
 let hubDestino=null;
 function entrarPorHub(rol){ hubDestino=rol; irVista('hub'); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.remove('activo')); document.getElementById('hub-login').style.display='block'; document.getElementById('hub-roles').style.display='none'; }
-function hubEntrar(){
+async function hubEntrar(){
+  const email=document.getElementById('hub-email').value.trim();
+  const pass=document.getElementById('hub-pass').value;
+  let nombre='';
+  try{
+    const j=await apiFetch('/api/auth/login',{method:'POST',body:JSON.stringify({email,password:pass})});
+    SES.tokens[j.user.rol]=j.token; SES.guardar(); nombre=j.user.nombre;
+  }catch(e){
+    if(API_OK){ toast('⚠ '+e.message); return; }   // API viva pero credenciales malas → bloquea
+  }
   document.getElementById('hub-login').style.display='none';
-  if(hubDestino){ const d=hubDestino; hubDestino=null; toast('Sesión iniciada · redirigiendo a tu app…'); setTimeout(()=>{ irVista(d); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista===d)); },800); }
-  else{ document.getElementById('hub-roles').style.display='block'; }
+  if(hubDestino){ const d=hubDestino; hubDestino=null; toast('Sesión iniciada'+(nombre?': '+nombre:'')+' · redirigiendo a tu app…'); setTimeout(()=>{ irVista(d); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista===d)); },800); }
+  else{ document.getElementById('hub-roles').style.display='block'; if(nombre) toast('Sesión iniciada: '+nombre); }
 }
 
 /* ================= MAPA INTERACTIVO B2C ================= */
@@ -1876,7 +1982,9 @@ function animarCifras(){
 window.addEventListener('load',animarCifras);
 
 /* ================= ESTIMACIONES / UVE / NPS / TAREAS IA ================= */
-function generarEstimacion(){
+async function generarEstimacion(){
+  try{ if(API_OK) await apiPost('/api/acciones/generar-estimacion',{},'constructor'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   S.estimacion=true;
   const b=document.getElementById('btn-gen-est'); b.textContent='✓ Estimación 2/2 enviada'; b.disabled=true; b.style.opacity=.6;
   const est=[["pipe-1","chip verde","Listo"],["pipe-2","chip ambar","En autorización"],["pipe-3","chip gris","Sigue"],["pipe-4","chip gris","—"],["pipe-5","chip gris","3 días hábiles"]];
@@ -1887,7 +1995,9 @@ function generarEstimacion(){
   toast('✓ Estimación 2/2 enviada a autorización');
   pintarB2G();
 }
-function validarAvanceUVE(){
+async function validarAvanceUVE(){
+  try{ if(API_OK) await apiPost('/api/acciones/validar-uve',{},'operador'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   S.verificado=true;
   const b=document.getElementById('btn-uve'); b.textContent='✓ Avance validado'; b.disabled=true; b.style.opacity=.6;
   ponTexto('b2o-uve','0');
@@ -1900,10 +2010,17 @@ function estrella(sp){
   kids.forEach((k,j)=>k.classList.toggle('on',j<=i));
   sp.parentElement.dataset.v=i+1;
 }
-function enviarNPS(){
+async function enviarNPS(){
   const ASPECTOS=['la ubicación','los servicios cercanos','el transporte a tu trabajo','la calidad de la vivienda','el desarrollador'];
   const vals=[...document.querySelectorAll('#nps-lista .nps-est')].map(e=>+(e.dataset.v||0));
   if(vals.every(v=>v===0)){ toast('Toca las estrellas para calificar'); return; }
+  if(API_OK){
+    try{
+      const j=await apiPost('/api/nps',{ubicacion:vals[0],servicios:vals[1],transporte:vals[2],calidad:vals[3],desarrollador:vals[4],reserva_id:RESERVA?.id||null});
+      const v=document.getElementById('det-nps-val'), n=document.getElementById('det-nps-n');
+      if(v){ v.textContent='★ '+j.promedio; n.textContent=j.encuestas+' encuestas NPS · 1 nueva hoy'; }
+    }catch(e){ toast('⚠ '+e.message); return; }
+  }
   const idxBajo=vals.findIndex(v=>v>0&&v<=3);
   if(idxBajo>=0){
     document.getElementById('nps-gracias').innerHTML='<div class="card" style="margin-top:14px;padding:14px;display:flex;gap:11px;align-items:flex-start"><div class="avatar" style="background:var(--rojo);flex-shrink:0">▶</div><div style="font-size:12.5px"><b>Inés · vocera IA</b><p style="color:var(--gris-700);margin-top:3px">Vi que calificaste bajo <b>'+ASPECTOS[idxBajo]+'</b>. ¿Qué es lo que más pesa?</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px"><button class="btn secundario chico" onclick="npsDetalle(this)">Tiempo / frecuencia</button><button class="btn secundario chico" onclick="npsDetalle(this)">Costo</button><button class="btn secundario chico" onclick="npsDetalle(this)">Calidad / estado</button></div></div></div>';
@@ -1924,17 +2041,37 @@ function impulsarB2C(btn,nombre){
   btn.textContent='✓ Priorizado'; btn.disabled=true; btn.style.opacity=.6;
   toast('📣 '+nombre+' se priorizó en las recomendaciones del mapa B2C');
 }
-function desglosarTareasIA(){
-  const b=document.getElementById('btn-desglosar'); b.textContent='✓ 3 tareas asignadas por IA'; b.disabled=true; b.style.opacity=.6;
-  document.getElementById('tareas-ia').innerHTML=
-   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:10px"><div class="ic azul">🔍</div><div><b>Programar verificación UVE · Bosques del Bienestar</b><p>Asignada a: Laura Mendoza (verificación) · vence 11 jul</p></div><div class="meta"><span class="chip ambar">En curso</span></div></div>'+
-   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic rojo">🧾</div><div><b>Requerir estimación 2/2 a Hábitat Jalisco</b><p>Asignada a: R. Cortés (tesorería regional) · vence 12 jul</p></div><div class="meta"><span class="chip rojo">Urgente</span></div></div>'+
-   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic ambar">⚡</div><div><b>Mesa CFE servicios Jalisco (4,180 viviendas)</b><p>Asignada a: M. Ávila (servicios) · vence 14 jul</p></div><div class="meta"><span class="chip ambar">En curso</span></div></div>';
-  toast('✦ La IA desglosó el mensaje en 3 tareas según el perfil de cada colaborador');
+function tarjetaTarea(t){
+  const ic=t.prioridad==='urgente'?['rojo','🧾']:['ambar','⚡'];
+  const chip=t.prioridad==='urgente'?'<span class="chip rojo">Urgente</span>':'<span class="chip ambar">En curso</span>';
+  const vence=(t.vence||'').slice(5).replace('-',' ');
+  return '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic '+ic[0]+'">'+ic[1]+'</div><div><b>'+t.texto+'</b><p>Asignada a: '+t.asignado+' · vence '+vence+'</p></div><div class="meta">'+chip+'</div></div>';
+}
+async function desglosarTareasIA(){
+  const b=document.getElementById('btn-desglosar');
+  const mensaje='Quiero todos los desarrollos de Jalisco con servicios validados y estimaciones al corriente antes del 15 de julio.';
+  b.textContent='✦ Desglosando con IA…'; b.disabled=true;
+  let tareas;
+  try{
+    if(!API_OK) throw new Error('sin API');
+    const j=await apiPost('/api/tareas/desglosar',{mensaje},'director');
+    tareas=j.tareas;
+  }catch{
+    tareas=[
+      {texto:'Programar verificación UVE · Bosques del Bienestar',asignado:'Laura Mendoza (verificación)',vence:'2026-07-11',prioridad:'normal'},
+      {texto:'Requerir estimación 2/2 a Hábitat Jalisco',asignado:'R. Cortés (tesorería regional)',vence:'2026-07-12',prioridad:'urgente'},
+      {texto:'Mesa CFE servicios Jalisco (4,180 viviendas)',asignado:'M. Ávila (servicios)',vence:'2026-07-14',prioridad:'normal'}
+    ];
+  }
+  b.textContent='✓ '+tareas.length+' tareas asignadas por IA'; b.style.opacity=.6;
+  document.getElementById('tareas-ia').innerHTML=tareas.map(tarjetaTarea).join('');
+  toast('✦ La IA desglosó el mensaje en '+tareas.length+' tareas según el perfil de cada colaborador');
 }
 
 /* ================= HISTORIA: COLABORADOR ================= */
-function validarFianza(){
+async function validarFianza(){
+  try{ if(API_OK) await apiPost('/api/acciones/validar-fianza',{},'colaborador'); }
+  catch(e){ toast('⚠ '+e.message); return; }
   const b=document.getElementById('btn-validar-fianza');
   b.textContent='✓ Fianza validada'; b.disabled=true; b.style.opacity=.6;
   document.getElementById('colab-fianzas').textContent='0';
@@ -1967,21 +2104,58 @@ function irPantalla(n){
   };
   if(c && msjs[n]!==undefined) c.innerHTML=msjs[n];
 }
-function validarNSS(){
+async function validarNSS(){
   const v=document.getElementById('nss').value.replace(/\D/g,'');
   if(v.length<11){ toast('El NSS debe tener 11 dígitos'); return; }
   toast('Validando con Infonavit…');
+  if(API_OK){
+    try{
+      const j=await apiPost('/api/elegibilidad',{nss:v});
+      if(!j.elegible){ toast('❌ No eres sujeto del programa: '+j.razones.join(' · ')); return; }
+      window._nssActivo=v;
+      toast('✓ '+j.nombre+', eres sujeto del programa');
+      setTimeout(()=>irPantalla(2),500);
+      return;
+    }catch(e){ toast('⚠ '+e.message); return; }
+  }
   setTimeout(()=>irPantalla(2),700);
 }
 function elegirDepto(el,num){
   if(el.classList.contains('ocupado'))return;
   document.querySelectorAll('.depto').forEach(d=>d.classList.remove('sel'));
   el.classList.add('sel');
+  window._deptoNum=num;
   document.getElementById('sel-depto').textContent='Torre A · Piso '+pisoActual+' · Depto '+num;
 }
-function apartarDepto(){ irPantalla(5); iniciarCrono(); toast('🔒 Departamento apartado por 72 horas'); }
+async function apartarDepto(){
+  if(API_OK){
+    const unidad='bosques-A-'+(window._deptoNum||'304');
+    try{
+      const j=await apiPost('/api/reservas',{nss:window._nssActivo||NSS_DEMO,unidad_id:unidad});
+      RESERVA=j.reserva;
+    }catch(e){
+      if(/apartado activo/.test(e.message)){
+        RESERVA=await apiGet('/api/reservas/activa?nss='+(window._nssActivo||NSS_DEMO));
+        toast('Ya tenías un apartado activo: retomamos tu proceso');
+      } else { toast('⚠ '+e.message); return; }
+    }
+    pintarDocs();
+    irPantalla(5); iniciarCrono(RESERVA.segundos_restantes);
+    toast('🔒 Departamento apartado por 72 horas (persistente en el sandbox)');
+    return;
+  }
+  irPantalla(5); iniciarCrono(); toast('🔒 Departamento apartado por 72 horas');
+}
+/* Pinta el checklist de documentos desde el servidor */
+function pintarDocs(){
+  if(!RESERVA) return;
+  const est=t=>RESERVA.documentos.find(d=>d.tipo===t)?.estado==='validado';
+  if(est('constancia_sat')&&!_docConstancia) subirConstanciaUI();
+  if(est('biometria')&&!_docBio) verificarBioUI();
+}
 let cronoInt=null, cronoSeg=72*3600-79;
-function iniciarCrono(){
+function iniciarCrono(seg){
+  if(typeof seg==='number') cronoSeg=seg;
   if(cronoInt)return;
   cronoInt=setInterval(()=>{ cronoSeg--;
     const h=String(Math.floor(cronoSeg/3600)).padStart(2,'0'), m=String(Math.floor(cronoSeg%3600/60)).padStart(2,'0'), s=String(cronoSeg%60).padStart(2,'0');
@@ -1995,23 +2169,41 @@ function checarDocs(){
     toast('✓ ¡Expediente completo! Ya puedes continuar a firma.');
   }
 }
-function subirConstancia(){
+function subirConstanciaUI(){
   const d=document.getElementById('doc-constancia');
   d.classList.add('ok');
   d.innerHTML='<div class="ic">🧾</div><div><b>Constancia de situación fiscal</b><small>Validada automáticamente ✓</small></div><span class="accion chip verde">Listo</span>';
   _docConstancia=true;
-  if(!_docBio) toast('✓ Constancia validada. Falta tu verificación biométrica.');
   checarDocs();
 }
-function verificarBio(){
+async function subirConstancia(){
+  if(API_OK&&RESERVA){
+    try{ RESERVA=(await apiPost('/api/reservas/'+RESERVA.id+'/documentos/constancia_sat')).reserva; }
+    catch(e){ toast('⚠ '+e.message); return; }
+  }
+  subirConstanciaUI();
+  if(!_docBio) toast('✓ Constancia validada. Falta tu verificación biométrica.');
+}
+function verificarBioUI(){
   const d=document.getElementById('doc-bio');
   d.classList.add('ok');
   d.innerHTML='<div class="ic">🤳</div><div><b>Verificación biométrica</b><small>Selfie + prueba de vida validadas (estándar bancario) ✓</small></div><span class="accion chip verde">Listo</span>';
   _docBio=true;
-  if(!_docConstancia) toast('✓ Identidad verificada. Falta tu constancia del SAT.');
   checarDocs();
 }
-function confirmarFirma(){
+async function verificarBio(){
+  if(API_OK&&RESERVA){
+    try{ RESERVA=(await apiPost('/api/reservas/'+RESERVA.id+'/documentos/biometria')).reserva; }
+    catch(e){ toast('⚠ '+e.message); return; }
+  }
+  verificarBioUI();
+  if(!_docConstancia) toast('✓ Identidad verificada. Falta tu constancia del SAT.');
+}
+async function confirmarFirma(){
+  if(API_OK&&RESERVA){
+    try{ await apiPost('/api/reservas/'+RESERVA.id+'/firmar'); }
+    catch(e){ toast('⚠ '+e.message); return; }
+  }
   S.dh=true; irPantalla(7); pintarB2G();
   toast('✍️ Cita confirmada: 15 de julio, 11:00 h · Notaría 121');
 }
@@ -2065,6 +2257,72 @@ function pintarB2G(){
     bn.innerHTML='<span style="font-size:19px">'+(S.operador?'🟢':'🟡')+'</span><span><b>Impacto de las últimas 24 h:</b> Bosques del Bienestar pasó de rojo a amarillo. Avance 78→82%, servicios 54→71%, entregables 92→117'+(S.operador?', escrituras pendientes 48→23 y 25 firmas programadas':'')+(S.estimacion?', estimación 2/2 autorizada → pago en 3 días hábiles':'')+(S.dh?'. Ana y Luis Hernández confirmaron firma para el 15 de julio.':'.')+'</span><button class="btn primario chico" onclick="verDetalleBosques()">Ver detalle →</button>';
   }
 }
+
+/* ================= RESTAURAR ESTADO DESDE LA API (persistencia real) ================= */
+async function cargarEstadoRemoto(){
+  let e;
+  try{ e=await apiGet('/api/estado'); marcarApi(true); }
+  catch{ marcarApi(false); return; }
+  Object.assign(S,e.flags);
+  pintarB2G();
+  // Director: solicitud ya enviada
+  if(S.solicitud){
+    const b=document.getElementById('btn-solicitar'); if(b){b.textContent='✓ Solicitud enviada a Hábitat Jalisco';b.disabled=true;b.style.opacity=.6;}
+    const av=document.getElementById('aviso-b2b'); if(av) av.classList.add('ver');
+  }
+  // Constructor: avance ya actualizado
+  if(S.constructor){
+    ponTexto('b2b-bosques-pct','82%'); ponAncho('b2b-bosques-bar','82%');
+    ponTexto('b2b-bosques-serv','71%'); ponAncho('b2b-bosques-serv-bar','71%');
+    const sem=document.getElementById('b2b-bosques-sem'); if(sem){sem.className='chip ambar';sem.innerHTML='<span class="punto ambar"></span>Amarillo';}
+    const k=document.getElementById('b2b-fianzas-kpi'); if(k) k.textContent='0';
+    const fz=document.getElementById('doc-fianza-chip'); if(fz){fz.className='chip ambar';fz.textContent='Renovación en revisión';}
+    const av=document.getElementById('aviso-b2b');
+    if(av){ av.innerHTML='<span style="font-size:17px">✅</span><span><b>Actualización enviada.</b> Infonavit confirmó recepción de avance, servicios y fianza de Bosques del Bienestar.</span>'; av.classList.add('ver'); }
+  }
+  // Constructor: estimación 2/2
+  if(S.estimacion){
+    const b=document.getElementById('btn-gen-est'); if(b){b.textContent='✓ Estimación 2/2 enviada';b.disabled=true;b.style.opacity=.6;}
+    [["pipe-1","chip verde","Listo"],["pipe-2","chip ambar","En autorización"],["pipe-3","chip gris","Sigue"],["pipe-4","chip gris","—"],["pipe-5","chip gris","3 días hábiles"]]
+      .forEach(([id,cl,tx])=>{const el=document.getElementById(id); if(el){el.className=cl;el.textContent=tx;}});
+    ponTexto('est-contador','2 / 2'); const k1=document.getElementById('est-contador'); if(k1) k1.style.color='var(--verde)';
+    ponTexto('b2b-est-kpi','2 / 2'); const k2=document.getElementById('b2b-est-kpi'); if(k2) k2.style.color='var(--verde)';
+  }
+  // Operador: firmas programadas
+  if(S.operador){
+    const b=document.getElementById('btn-validar-escrituras'); if(b){b.textContent='✓ 25 firmas programadas';b.disabled=true;b.style.opacity=.6;}
+    ponTexto('b2o-listas','0'); ponTexto('b2o-firmadas','109');
+    const v=document.getElementById('val-analuis'); if(v){v.className='chip verde';v.textContent='Lista para firma · 15 jul';}
+  }
+  // Operador: UVE validó
+  if(S.verificado){
+    const b=document.getElementById('btn-uve'); if(b){b.textContent='✓ Avance validado';b.disabled=true;b.style.opacity=.6;}
+    ponTexto('b2o-uve','0');
+    const u=document.getElementById('det-uve'); if(u) u.textContent='· Avance validado por UVE-14 ✓';
+  }
+  // Colaborador: fianza validada (estado real del desarrollo)
+  if(e.bosques && e.bosques.fianza_estado==='vigente'){
+    const b=document.getElementById('btn-validar-fianza'); if(b){b.textContent='✓ Fianza validada';b.disabled=true;b.style.opacity=.6;}
+    const cf=document.getElementById('colab-fianzas'); if(cf) cf.textContent='0';
+    const v=document.getElementById('val-fianza-colab'); if(v){v.className='chip verde';v.textContent='Validada · hoy';}
+    const ft=document.getElementById('causa-fianza-t'), fp=document.getElementById('causa-fianza-p'), fc=document.getElementById('causa-fianza-chip');
+    if(ft){ ft.textContent='Fianza renovada y validada por jurídico'; fp.textContent='Póliza $48.2 MDP vigente hasta julio 2027.'; fc.className='chip verde'; fc.textContent='Resuelto'; }
+  }
+  // Tareas IA persistidas
+  if(e.tareas && e.tareas.length){
+    const cont=document.getElementById('tareas-ia');
+    if(cont){ cont.innerHTML=e.tareas.slice(0,3).map(tarjetaTarea).join(''); }
+    const b=document.getElementById('btn-desglosar'); if(b){b.textContent='✓ '+Math.min(e.tareas.length,3)+' tareas asignadas por IA';b.disabled=true;b.style.opacity=.6;}
+  }
+  // NPS real
+  if(e.nps && e.nps.n){ const v=document.getElementById('det-nps-val'), n=document.getElementById('det-nps-n'); if(v){v.textContent='★ '+e.nps.p; n.textContent=e.nps.n+' encuestas NPS';} }
+  // B2C: reserva activa persistida
+  try{
+    RESERVA=await apiGet('/api/reservas/activa?nss='+NSS_DEMO);
+    if(RESERVA){ pintarDocs(); if(RESERVA.estado==='activa') iniciarCrono(RESERVA.segundos_restantes); }
+  }catch{}
+}
+window.addEventListener('load',cargarEstadoRemoto);
 </script>
 <script>
 function irVista(v, btn){
@@ -2107,8 +2365,43 @@ if(mapaSvg){
         : `<b>${p.dataset.nombre}</b><br><span style="opacity:.75">Sin zonas prioritarias en la demo</span>`;
     });
     p.addEventListener('mouseleave',()=>tip.style.display='none');
-    p.addEventListener('click',()=>seleccionarEdo(p));
+    p.addEventListener('click',()=>{ if(!_mxMovio) seleccionarEdo(p); });
   });
+
+  /* ===== Navegación tech: zoom (rueda / doble clic / botones) + pan (arrastre) ===== */
+  const VB={x:0,y:0,w:1000,h:630};
+  const aplicarVB=()=>{ mapaSvg.setAttribute('viewBox',VB.x+' '+VB.y+' '+VB.w+' '+VB.h); actualizarHud(); };
+  const clampVB=()=>{ VB.x=Math.max(-120,Math.min(VB.x,1120-VB.w)); VB.y=Math.max(-80,Math.min(VB.y,710-VB.h)); };
+  const svgPt=e=>{ const r=mapaSvg.getBoundingClientRect(); return {x:VB.x+(e.clientX-r.left)/r.width*VB.w, y:VB.y+(e.clientY-r.top)/r.height*VB.h}; };
+  window.zoomMx=(factor,cx,cy)=>{
+    const nw=Math.min(1000,Math.max(110,VB.w/factor)), nh=nw*0.63;
+    cx=cx??VB.x+VB.w/2; cy=cy??VB.y+VB.h/2;
+    VB.x=cx-(cx-VB.x)*(nw/VB.w); VB.y=cy-(cy-VB.y)*(nh/VB.h);
+    VB.w=nw; VB.h=nh; clampVB(); aplicarVB();
+  };
+  window.resetMx=()=>{ VB.x=0;VB.y=0;VB.w=1000;VB.h=630; aplicarVB(); };
+  mapaSvg.addEventListener('wheel',e=>{ e.preventDefault(); const p=svgPt(e); zoomMx(e.deltaY<0?1.22:0.82,p.x,p.y); },{passive:false});
+  mapaSvg.addEventListener('dblclick',e=>{ e.preventDefault(); const p=svgPt(e); zoomMx(1.6,p.x,p.y); });
+  let _mxPan=null, _mxMovio=false;
+  mapaSvg.addEventListener('pointerdown',e=>{ _mxPan={x:e.clientX,y:e.clientY,vx:VB.x,vy:VB.y}; _mxMovio=false; mapaSvg.setPointerCapture(e.pointerId); });
+  mapaSvg.addEventListener('pointermove',e=>{
+    if(!_mxPan) return;
+    const r=mapaSvg.getBoundingClientRect();
+    const dx=e.clientX-_mxPan.x, dy=e.clientY-_mxPan.y;
+    if(Math.abs(dx)+Math.abs(dy)>4){ _mxMovio=true; mapaSvg.classList.add('arrastrando'); }
+    VB.x=_mxPan.vx-dx/r.width*VB.w; VB.y=_mxPan.vy-dy/r.height*VB.h;
+    clampVB(); aplicarVB();
+  });
+  ['pointerup','pointercancel'].forEach(ev=>mapaSvg.addEventListener(ev,()=>{ _mxPan=null; mapaSvg.classList.remove('arrastrando'); setTimeout(()=>_mxMovio=false,50); }));
+  // Controles + HUD
+  const cont=mapaSvg.parentElement;
+  const ctr=document.createElement('div'); ctr.className='mapa-ctrl';
+  ctr.innerHTML='<button title="Acercar" onclick="zoomMx(1.35)">＋</button><button title="Alejar" onclick="zoomMx(0.74)">−</button><button title="Ver todo el país" onclick="resetMx()">⤾</button>';
+  cont.appendChild(ctr);
+  const hud=document.createElement('div'); hud.className='mapa-hud'; hud.id='mapa-hud';
+  cont.appendChild(hud);
+  function actualizarHud(){ const z=Math.round(1000/VB.w*100)/100; hud.innerHTML='México · 32 estados · zoom <b>'+z+'×</b> · arrastra para navegar'; }
+  actualizarHud();
 }
 function seleccionarEdo(p){
   document.querySelectorAll('#mapa-mx .edo').forEach(e=>e.classList.remove('sel'));

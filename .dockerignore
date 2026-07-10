@@ -1,5 +1,6 @@
 .git
 .gitignore
+.github
 node_modules
 **/node_modules
 dist
@@ -9,3 +10,5 @@ dist
 *.log
 docs
 **/docs
+backend/data
+backend/test
