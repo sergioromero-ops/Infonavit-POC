@@ -200,6 +200,18 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .grid-bloqueos .causa b{font-size:13.5px;line-height:1.35}
 .grid-bloqueos .causa p{font-size:12.5px;margin-top:3px}
 .grid-bloqueos .causa .meta .chip{white-space:nowrap}
+/* Detalle de desarrollo (director): tarjetas ejecutivas */
+.stat-box{background:var(--gris-50);border:1px solid var(--gris-100);border-radius:11px;padding:13px 15px}
+.stat-box .mini-lbl{display:block}
+.stat-box .stat-num{display:block;font-size:23px;letter-spacing:-.02em;margin-top:5px}
+#detalle-bosques .titulo-seccion h3{font-size:17px}
+#detalle-bosques>p{line-height:1.7;margin-bottom:16px!important}
+#detalle-bosques .causa{padding:14px 0;align-items:flex-start}
+#detalle-bosques .causa b{font-size:13.5px;line-height:1.4}
+#detalle-bosques .causa p{font-size:12.5px;line-height:1.55;margin-top:3px}
+#detalle-bosques .causa .meta{min-width:74px;text-align:right}
+#panel-b2g-desarrollos .dos-col{gap:22px}
+#panel-b2g-desarrollos table.tabla td{padding:14px 12px}
 /* Widget ElevenLabs embebido en el teléfono B2C (modo pequeño) */
 .telefono{transform:translateZ(0)}  /* confina el widget fijo al marco del teléfono */
 #convai-slot-b2c elevenlabs-convai{transform:scale(.68);transform-origin:100% 100%}
@@ -727,13 +739,13 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="card" id="detalle-bosques">
           <div class="titulo-seccion" style="margin-top:0"><h3>Bosques del Bienestar</h3><span class="chip rojo" id="det-sem"><span class="punto rojo"></span>Semáforo rojo</span></div>
           <p style="font-size:12.5px;color:var(--gris-500);margin-bottom:14px">Tlajomulco de Zúñiga, Jalisco · Hábitat Jalisco Constructora · 420 viviendas · Última actualización: <b id="det-ult">hace 12 días</b> <span id="det-uve" style="color:var(--verde);font-weight:700"></span><br>Reputación de residentes: <b style="color:var(--ambar)" id="det-nps-val">★ 4.6</b> · <span id="det-nps-n">128 encuestas NPS</span></p>
-          <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-            <div><span class="mini-lbl">Avance físico</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-fisico-bar" style="width:78%"></span></div><b id="det-fisico">78%</b></div></div>
-            <div><span class="mini-lbl">Avance servicios</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-serv-bar" class="ambar" style="width:54%"></span></div><b id="det-serv">54%</b></div></div>
-            <div><span class="mini-lbl">Terminadas</span><b style="font-size:20px">160</b></div>
-            <div><span class="mini-lbl">Entregables</span><b style="font-size:20px" id="det-entregables">92</b></div>
-            <div><span class="mini-lbl">Sin servicios</span><b style="font-size:20px;color:var(--rojo-sem)" id="det-sinserv">68</b></div>
-            <div><span class="mini-lbl">Escrituras pendientes</span><b style="font-size:20px;color:var(--rojo-sem)" id="det-escrit">48</b></div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+            <div class="stat-box"><span class="mini-lbl">Avance físico</span><div class="fila-estado" style="margin-top:8px"><div class="barra"><span id="det-fisico-bar" style="width:78%"></span></div><b id="det-fisico">78%</b></div></div>
+            <div class="stat-box"><span class="mini-lbl">Avance servicios</span><div class="fila-estado" style="margin-top:8px"><div class="barra"><span id="det-serv-bar" class="ambar" style="width:54%"></span></div><b id="det-serv">54%</b></div></div>
+            <div class="stat-box"><span class="mini-lbl">Terminadas</span><b class="stat-num">160</b></div>
+            <div class="stat-box"><span class="mini-lbl">Entregables</span><b class="stat-num" id="det-entregables">92</b></div>
+            <div class="stat-box"><span class="mini-lbl">Sin servicios</span><b class="stat-num" style="color:var(--rojo-sem)" id="det-sinserv">68</b></div>
+            <div class="stat-box"><span class="mini-lbl">Escrituras pendientes</span><b class="stat-num" style="color:var(--rojo-sem)" id="det-escrit">48</b></div>
           </div>
           <div class="titulo-seccion" style="margin:14px 0 4px"><h3 style="font-size:14px">Causa raíz del bloqueo</h3><span class="chip azul">✦ Análisis IA</span></div>
           <div id="det-causas">
