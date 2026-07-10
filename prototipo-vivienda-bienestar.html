@@ -1214,31 +1214,38 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .burbuja-copiloto{position:absolute;bottom:16px;left:16px;right:16px;background:var(--gris-900);color:#fff;border-radius:15px;padding:13px 16px;font-size:12.5px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--sombra-md);z-index:10}
 .burbuja-copiloto .ia{width:26px;height:26px;border-radius:8px;background:var(--rojo);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
 /* ===== Mapa interactivo B2C (estilo Airbnb) ===== */
-.buscador-pill{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--gris-100);border-radius:99px;box-shadow:var(--sombra-md);padding:9px 16px;font-size:13px;margin-bottom:10px}
+.buscador-pill{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--gris-100);border-radius:99px;box-shadow:0 3px 12px rgba(16,24,40,.10);padding:9px 16px;font-size:13px;margin-bottom:10px}
 .buscador-pill small{display:block;font-size:10.5px;color:var(--gris-500)}
 .cat-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
 .cat-chips::-webkit-scrollbar{display:none}
-.cat-chips button{flex-shrink:0;border:1px solid var(--gris-300);background:#fff;border-radius:99px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--gris-700)}
+.cat-chips button{flex-shrink:0;border:1px solid var(--gris-100);background:#fff;border-radius:99px;padding:7px 13px;font-size:11.5px;font-weight:700;color:var(--gris-700);box-shadow:var(--sombra);transition:.15s}
 .cat-chips button.activo{background:var(--gris-900);color:#fff;border-color:var(--gris-900)}
-.mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#F2EDE4;user-select:none}
+.mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#F7F4EE;user-select:none}
 .mapa-lienzo{position:absolute;width:800px;height:800px;transform-origin:0 0;cursor:grab;will-change:transform}
 .mapa-lienzo:active{cursor:grabbing}
-.pin-precio{position:absolute;background:#fff;border:none;border-radius:99px;padding:7px 12px;font-size:12.5px;font-weight:800;box-shadow:0 2px 8px rgba(16,24,40,.25);cursor:pointer;transition:transform .12s;transform:translate(-50%,-50%)}
-.pin-precio:hover{transform:translate(-50%,-50%) scale(1.07)}
-.pin-precio.sel{background:var(--gris-900);color:#fff;z-index:4}
-.marcador{position:absolute;transform:translate(-50%,-50%);font-size:22px;text-align:center;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
-.marcador small{display:block;font-size:9.5px;font-weight:800;background:#fff;border-radius:99px;padding:1px 7px;margin-top:1px;color:var(--gris-900)}
-.mapa-conteo{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--gris-900);color:#fff;font-size:10.5px;font-weight:700;padding:5px 12px;border-radius:99px;z-index:5;box-shadow:var(--sombra-md);white-space:nowrap}
-.mapa-zoom{position:absolute;right:10px;top:52px;display:flex;flex-direction:column;gap:6px;z-index:5}
-.mapa-zoom button{width:34px;height:34px;border-radius:10px;border:none;background:#fff;box-shadow:var(--sombra-md);font-size:16px;font-weight:800;color:var(--gris-900)}
-.pin-card{position:absolute;left:10px;right:10px;bottom:64px;background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(16,24,40,.28);display:none;gap:0;overflow:hidden;z-index:6}
+.ruta-anim{animation:rutaFlujo 1.6s linear infinite}
+@keyframes rutaFlujo{to{stroke-dashoffset:-36}}
+.pin-precio{position:absolute;background:#fff;border:none;border-radius:99px;padding:8px 13px;font-size:12.5px;font-weight:800;color:var(--gris-900);box-shadow:0 1px 2px rgba(0,0,0,.14),0 5px 14px rgba(16,24,40,.16);cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background .15s;transform:translate(-50%,-118%)}
+.pin-precio::after{content:"";position:absolute;left:50%;bottom:-4px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px;z-index:-1}
+.pin-precio:hover{transform:translate(-50%,-118%) scale(1.08)}
+.pin-precio.sel{background:var(--gris-900);color:#fff;transform:translate(-50%,-118%) scale(1.1);z-index:4}
+.marcador{position:absolute;transform:translate(-50%,-50%);text-align:center;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:3px;z-index:2}
+.marcador i{font-style:normal;width:38px;height:38px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 10px rgba(16,24,40,.28);border:3px solid #fff;outline:2px solid rgba(159,34,65,.35)}
+.marcador small{font-size:9.5px;font-weight:800;background:var(--gris-900);color:#fff;border-radius:99px;padding:2px 9px;box-shadow:0 2px 6px rgba(16,24,40,.25)}
+.mapa-conteo{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(31,35,40,.92);backdrop-filter:blur(4px);color:#fff;font-size:10.5px;font-weight:700;padding:6px 14px;border-radius:99px;z-index:5;box-shadow:var(--sombra-md);white-space:nowrap}
+.mapa-zoom{position:absolute;right:12px;top:54px;display:flex;flex-direction:column;gap:0;z-index:5;background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(16,24,40,.18);overflow:hidden}
+.mapa-zoom button{width:38px;height:38px;border:none;background:#fff;font-size:16px;font-weight:800;color:var(--gris-900)}
+.mapa-zoom button:first-child{border-bottom:1px solid var(--gris-100)}
+.mapa-zoom button:active{background:var(--gris-100)}
+.pin-card{position:absolute;left:12px;right:12px;bottom:66px;background:#fff;border-radius:18px;box-shadow:0 10px 34px rgba(16,24,40,.30);display:none;gap:0;overflow:hidden;z-index:6;padding:9px;animation:cardSube .25s ease}
+@keyframes cardSube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .pin-card.ver{display:flex}
-.pin-card .foto{width:108px;flex-shrink:0;background:linear-gradient(135deg,#95B8A2,#5D8770);display:flex;align-items:flex-end;padding:6px;font-size:9.5px;color:#fff;font-weight:700}
-.pin-card .info{padding:10px 12px;flex:1;min-width:0}
-.pin-card .info h4{font-size:13.5px;display:flex;align-items:center;gap:6px}
+.pin-card .foto{width:104px;flex-shrink:0;border-radius:12px;display:flex;align-items:flex-end;padding:6px;font-size:9px;color:#fff;font-weight:700;min-height:104px}
+.pin-card .info{padding:4px 6px 4px 12px;flex:1;min-width:0}
+.pin-card .info h4{font-size:13.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .pin-card .info p{font-size:11px;color:var(--gris-500);margin-top:2px}
 .pin-card .info .precio-fila{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px}
-.pin-card .cerrar{position:absolute;top:6px;right:8px;background:rgba(0,0,0,.06);border:none;width:22px;height:22px;border-radius:50%;font-size:11px}
+.pin-card .cerrar{position:absolute;top:10px;right:10px;background:rgba(31,35,40,.07);border:none;width:24px;height:24px;border-radius:50%;font-size:11px;color:var(--gris-700)}
 .nps-est{display:flex;gap:2px}
 .nps-est span{font-size:21px;color:var(--gris-300);cursor:pointer;transition:.1s}
 .nps-est span.on{color:var(--ambar)}
@@ -1328,36 +1335,77 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div id="b2c-mapa" class="mapa-wrap">
             <div id="mapa-lienzo" class="mapa-lienzo">
               <svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="display:block">
-                <rect width="800" height="800" fill="#F2EDE4"/>
-                <path d="M0 640 Q160 700 300 780 L0 800 Z" fill="#BBD7EC"/>
-                <path d="M0 660 Q160 715 280 800" stroke="#A9CCE7" stroke-width="10" fill="none"/>
-                <ellipse cx="330" cy="240" rx="90" ry="60" fill="#CBE5C4"/>
-                <ellipse cx="640" cy="560" rx="70" ry="48" fill="#CBE5C4"/>
-                <ellipse cx="120" cy="430" rx="55" ry="40" fill="#D7E9D0"/>
-                <g fill="#E9E2D5">
-                  <rect x="60" y="60" width="130" height="90" rx="10"/><rect x="230" y="60" width="120" height="90" rx="10"/><rect x="470" y="40" width="140" height="100" rx="10"/><rect x="650" y="60" width="110" height="90" rx="10"/>
-                  <rect x="60" y="200" width="130" height="110" rx="10"/><rect x="470" y="190" width="140" height="120" rx="10"/><rect x="650" y="200" width="110" height="110" rx="10"/>
-                  <rect x="230" y="340" width="120" height="100" rx="10"/><rect x="400" y="360" width="150" height="90" rx="10"/><rect x="600" y="380" width="90" height="70" rx="10"/>
-                  <rect x="60" y="520" width="150" height="80" rx="10"/><rect x="260" y="500" width="120" height="90" rx="10"/><rect x="430" y="500" width="110" height="80" rx="10"/>
-                  <rect x="560" y="650" width="180" height="100" rx="10"/><rect x="300" y="650" width="180" height="90" rx="10"/>
+                <defs>
+                  <linearGradient id="agua2" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#BFDDF5"/><stop offset="1" stop-color="#A9CFEE"/>
+                  </linearGradient>
+                </defs>
+                <rect width="800" height="800" fill="#F7F4EE"/>
+                <!-- agua -->
+                <path d="M-20 600 Q140 640 240 720 Q300 768 320 820 L-20 820 Z" fill="url(#agua2)"/>
+                <path d="M-10 618 Q150 655 250 735" stroke="#FFFFFF" stroke-width="2.5" fill="none" opacity=".5"/>
+                <path d="M20 660 Q150 690 240 770" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity=".35"/>
+                <!-- manzanas -->
+                <g>
+                  <rect x="56" y="52" width="138" height="96" rx="14" fill="#EDE9E0"/>
+                  <rect x="226" y="52" width="128" height="96" rx="14" fill="#EFEBE3"/>
+                  <rect x="466" y="36" width="146" height="108" rx="14" fill="#EDE9E0"/>
+                  <rect x="646" y="56" width="118" height="92" rx="14" fill="#EFEBE3"/>
+                  <rect x="56" y="196" width="138" height="112" rx="14" fill="#EFEBE3"/>
+                  <rect x="466" y="188" width="146" height="122" rx="14" fill="#EDE9E0"/>
+                  <rect x="646" y="196" width="118" height="114" rx="14" fill="#EDE9E0"/>
+                  <rect x="226" y="344" width="128" height="104" rx="14" fill="#EDE9E0"/>
+                  <rect x="398" y="360" width="152" height="92" rx="14" fill="#EFEBE3"/>
+                  <rect x="596" y="376" width="98" height="76" rx="14" fill="#EFEBE3"/>
+                  <rect x="56" y="516" width="152" height="84" rx="14" fill="#EDE9E0"/>
+                  <rect x="256" y="500" width="126" height="94" rx="14" fill="#EFEBE3"/>
+                  <rect x="426" y="498" width="116" height="84" rx="14" fill="#EDE9E0"/>
+                  <rect x="556" y="646" width="188" height="104" rx="14" fill="#EFEBE3"/>
+                  <rect x="296" y="646" width="188" height="94" rx="14" fill="#EDE9E0"/>
+                  <rect x="60" y="646" width="180" height="104" rx="14" fill="#EFEBE3"/>
                 </g>
-                <g stroke="#FFFFFF" stroke-width="14" stroke-linecap="round">
-                  <path d="M0 170 H800"/><path d="M0 330 H800"/><path d="M0 480 H800"/><path d="M0 630 H620"/>
-                  <path d="M210 0 V800"/><path d="M380 0 V680"/><path d="M570 0 V800"/>
-                  <path d="M0 60 Q300 120 800 340"/>
+                <!-- huellas de edificios -->
+                <g fill="#E3DED2" opacity=".8">
+                  <rect x="76" y="70" width="34" height="24" rx="5"/><rect x="122" y="70" width="26" height="34" rx="5"/><rect x="76" y="108" width="26" height="26" rx="5"/>
+                  <rect x="488" y="56" width="38" height="26" rx="5"/><rect x="540" y="56" width="26" height="40" rx="5"/><rect x="488" y="96" width="28" height="30" rx="5"/>
+                  <rect x="248" y="366" width="30" height="26" rx="5"/><rect x="290" y="366" width="26" height="38" rx="5"/>
+                  <rect x="668" y="214" width="30" height="26" rx="5"/><rect x="668" y="252" width="42" height="26" rx="5"/>
+                  <rect x="278" y="664" width="40" height="26" rx="5"/><rect x="330" y="664" width="28" height="40" rx="5"/>
                 </g>
-                <g stroke="#F6F1E8" stroke-width="4" stroke-dasharray="10 12">
-                  <path d="M0 170 H800"/><path d="M0 330 H800"/><path d="M210 0 V800"/><path d="M570 0 V800"/>
+                <!-- calles menores -->
+                <g stroke="#FFFFFF" stroke-width="11" stroke-linecap="round">
+                  <path d="M0 168 H800"/><path d="M0 326 H800"/><path d="M0 472 H800"/><path d="M0 620 H560"/>
+                  <path d="M212 0 V800"/><path d="M566 0 V800"/><path d="M384 0 V640"/>
                 </g>
-                <g font-size="13" fill="#9A8F7E" font-family="inherit">
-                  <text x="240" y="160">Av. Tlajomulco</text>
-                  <text x="590" y="322">Av. del Bienestar</text>
-                  <text x="222" y="470" transform="rotate(-90 222 470)">Calz. Central</text>
-                  <text x="330" y="238" text-anchor="middle" fill="#7EA874">Parque Metropolitano</text>
+                <!-- avenidas -->
+                <g stroke="#FFFFFF" stroke-width="20" stroke-linecap="round">
+                  <path d="M-10 60 Q300 118 810 336"/><path d="M640 -10 Q612 300 700 810"/>
+                </g>
+                <g stroke="#FBE7BC" stroke-width="13" stroke-linecap="round">
+                  <path d="M-10 60 Q300 118 810 336"/><path d="M640 -10 Q612 300 700 810"/>
+                </g>
+                <!-- parques -->
+                <g>
+                  <path d="M258 196 Q330 158 402 198 Q436 246 396 284 Q322 312 270 276 Q236 234 258 196 Z" fill="#CDE7C5"/>
+                  <path d="M280 214 Q330 190 380 216 Q400 248 372 270 Q322 288 288 262 Q262 236 280 214 Z" fill="#BFE0B5" opacity=".7"/>
+                  <ellipse cx="642" cy="556" rx="66" ry="46" fill="#CDE7C5"/>
+                  <ellipse cx="118" cy="420" rx="52" ry="38" fill="#D8EBD0"/>
+                  <g fill="#9CC791"><circle cx="300" cy="230" r="5"/><circle cx="345" cy="215" r="6"/><circle cx="372" cy="245" r="5"/><circle cx="318" cy="262" r="6"/><circle cx="624" cy="546" r="5"/><circle cx="658" cy="566" r="6"/><circle cx="108" cy="414" r="5"/></g>
+                </g>
+                <!-- ruta casa → desarrollo → trabajo -->
+                <path class="ruta-anim" d="M150 600 Q240 480 400 330 Q520 240 640 180" stroke="#9F2241" stroke-width="3.5" stroke-dasharray="9 9" fill="none" stroke-linecap="round" opacity=".85"/>
+                <!-- etiquetas -->
+                <g font-family="inherit">
+                  <text x="248" y="158" font-size="12" fill="#A79D8B">Av. Tlajomulco</text>
+                  <text x="588" y="318" font-size="12" fill="#A79D8B">Av. del Bienestar</text>
+                  <text x="330" y="243" font-size="11.5" fill="#7FA877" text-anchor="middle" font-weight="700">PARQUE METROPOLITANO</text>
+                  <text x="120" y="740" font-size="13" fill="#8FB6D8" font-weight="700" letter-spacing="3">RÍO SANTIAGO</text>
+                  <text x="620" y="70" font-size="12" fill="#C0B7A6" letter-spacing="2.5" font-weight="700">ZAPOPAN</text>
+                  <text x="90" y="560" font-size="12" fill="#C0B7A6" letter-spacing="2.5" font-weight="700">TLAJOMULCO</text>
                 </g>
               </svg>
-              <div class="marcador" style="left:138px;top:582px">🏠<small>Tu casa</small></div>
-              <div class="marcador" style="left:628px;top:162px">💼<small>Tu trabajo</small></div>
+              <div class="marcador" style="left:138px;top:582px"><i>🏠</i><small>Tu casa</small></div>
+              <div class="marcador" style="left:628px;top:162px"><i>💼</i><small>Tu trabajo</small></div>
               <button class="pin-precio" id="pin-bosques" style="left:376px;top:312px" onclick="seleccionarPin('bosques')">$598,000</button>
               <button class="pin-precio" id="pin-tesistan" style="left:238px;top:168px" onclick="seleccionarPin('tesistan')">$612,000</button>
               <button class="pin-precio" id="pin-lomas" style="left:584px;top:462px" onclick="seleccionarPin('lomas')">$645,000</button>
