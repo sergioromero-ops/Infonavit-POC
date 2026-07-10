@@ -1213,6 +1213,32 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .lt-item p{font-size:12px;color:var(--gris-500)}
 .burbuja-copiloto{position:absolute;bottom:16px;left:16px;right:16px;background:var(--gris-900);color:#fff;border-radius:15px;padding:13px 16px;font-size:12.5px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--sombra-md);z-index:10}
 .burbuja-copiloto .ia{width:26px;height:26px;border-radius:8px;background:var(--rojo);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+/* ===== Mapa interactivo B2C (estilo Airbnb) ===== */
+.buscador-pill{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--gris-100);border-radius:99px;box-shadow:var(--sombra-md);padding:9px 16px;font-size:13px;margin-bottom:10px}
+.buscador-pill small{display:block;font-size:10.5px;color:var(--gris-500)}
+.cat-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+.cat-chips::-webkit-scrollbar{display:none}
+.cat-chips button{flex-shrink:0;border:1px solid var(--gris-300);background:#fff;border-radius:99px;padding:6px 12px;font-size:11.5px;font-weight:700;color:var(--gris-700)}
+.cat-chips button.activo{background:var(--gris-900);color:#fff;border-color:var(--gris-900)}
+.mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#F2EDE4;user-select:none}
+.mapa-lienzo{position:absolute;width:800px;height:800px;transform-origin:0 0;cursor:grab;will-change:transform}
+.mapa-lienzo:active{cursor:grabbing}
+.pin-precio{position:absolute;background:#fff;border:none;border-radius:99px;padding:7px 12px;font-size:12.5px;font-weight:800;box-shadow:0 2px 8px rgba(16,24,40,.25);cursor:pointer;transition:transform .12s;transform:translate(-50%,-50%)}
+.pin-precio:hover{transform:translate(-50%,-50%) scale(1.07)}
+.pin-precio.sel{background:var(--gris-900);color:#fff;z-index:4}
+.marcador{position:absolute;transform:translate(-50%,-50%);font-size:22px;text-align:center;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.marcador small{display:block;font-size:9.5px;font-weight:800;background:#fff;border-radius:99px;padding:1px 7px;margin-top:1px;color:var(--gris-900)}
+.mapa-conteo{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--gris-900);color:#fff;font-size:10.5px;font-weight:700;padding:5px 12px;border-radius:99px;z-index:5;box-shadow:var(--sombra-md);white-space:nowrap}
+.mapa-zoom{position:absolute;right:10px;top:52px;display:flex;flex-direction:column;gap:6px;z-index:5}
+.mapa-zoom button{width:34px;height:34px;border-radius:10px;border:none;background:#fff;box-shadow:var(--sombra-md);font-size:16px;font-weight:800;color:var(--gris-900)}
+.pin-card{position:absolute;left:10px;right:10px;bottom:64px;background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(16,24,40,.28);display:none;gap:0;overflow:hidden;z-index:6}
+.pin-card.ver{display:flex}
+.pin-card .foto{width:108px;flex-shrink:0;background:linear-gradient(135deg,#95B8A2,#5D8770);display:flex;align-items:flex-end;padding:6px;font-size:9.5px;color:#fff;font-weight:700}
+.pin-card .info{padding:10px 12px;flex:1;min-width:0}
+.pin-card .info h4{font-size:13.5px;display:flex;align-items:center;gap:6px}
+.pin-card .info p{font-size:11px;color:var(--gris-500);margin-top:2px}
+.pin-card .info .precio-fila{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12.5px}
+.pin-card .cerrar{position:absolute;top:6px;right:8px;background:rgba(0,0,0,.06);border:none;width:22px;height:22px;border-radius:50%;font-size:11px}
 .nps-est{display:flex;gap:2px}
 .nps-est span{font-size:21px;color:var(--gris-300);cursor:pointer;transition:.1s}
 .nps-est span.on{color:var(--ambar)}
@@ -1289,53 +1315,87 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         </div>
 
         <!-- P3: Desarrollos -->
-        <div class="pantalla" id="p-3">
-          <div class="b2c-head"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span></div>
-          <div class="progreso"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
-          <div style="border:1.5px solid var(--gris-100);border-radius:14px;overflow:hidden;margin-bottom:12px">
-            <svg viewBox="0 0 340 150" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
-              <rect width="340" height="150" fill="#EFF3F8"/>
-              <path d="M0 40 H340 M0 95 H340 M60 0 V150 M150 0 V150 M250 0 V150" stroke="#DDE5EE" stroke-width="6"/>
-              <path d="M0 40 H340 M0 95 H340 M60 0 V150 M150 0 V150 M250 0 V150" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 6"/>
-              <path d="M38 118 Q110 60 196 68" stroke="var(--rojo)" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
-              <path d="M196 68 Q250 74 300 38" stroke="#175CD3" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
-              <g font-size="10.5" font-weight="700" font-family="inherit">
-                <rect x="16" y="106" width="66" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="24" y="120">🏠 Tu casa</text>
-                <rect x="266" y="24" width="66" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="272" y="38">💼 Trabajo</text>
-                <rect x="160" y="52" width="76" height="22" rx="11" fill="var(--rojo)"/><text x="168" y="67" fill="#fff">$598,000 ★</text>
-                <rect x="84" y="18" width="60" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="90" y="32">$612,000</text>
-                <rect x="240" y="112" width="60" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="246" y="126">$645,000</text>
-              </g>
-            </svg>
-            <p style="font-size:11px;color:var(--gris-500);padding:8px 12px;background:#fff">📍 Detectamos tu casa y tu <b>centro de trabajo</b> (vía tu NSS → patrón) para recomendarte por tiempo real de traslado, no por distancia en línea recta.</p>
-          </div>
-          <div class="filtros" style="margin-bottom:12px">
-            <select style="flex:1"><option>Jalisco</option></select>
-            <select style="flex:1"><option>Tlajomulco</option><option>Zapopan</option><option>El Salto</option></select>
-          </div>
-          <div class="viv-card" onclick="irPantalla(4)">
-            <div class="viv-img a"><span class="chip verde" style="background:#fff">A 6.2 km de tu trabajo</span></div>
-            <div class="viv-cuerpo">
-              <div style="display:flex;align-items:center;gap:8px"><h4>Bosques del Bienestar</h4><span class="match">✓ 98% compatible</span></div>
-              <div class="fila"><span>🛏 2 recámaras</span><span>📐 62 m²</span><span>🏗 Entrega: nov 2026</span><span>🚌 22 min a tu trabajo</span><span>🌳 Parque y ciclovía</span></div>
-              <div class="viv-precio"><b>$598,000</b><small>· mensualidad ≈ $3,150</small></div>
+                <div class="pantalla" id="p-3" style="padding:0">
+          <div style="padding:16px 20px 0">
+            <div class="b2c-head" style="margin-bottom:10px"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:auto" id="btn-toggle-mapa" onclick="toggleListaMapa()">☰ Lista</button></div>
+            <div class="progreso" style="margin-bottom:12px"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
+            <div class="buscador-pill">🔍 <div><b>Guadalajara y alrededores</b><small>1–2 SM · 2+ recámaras · programa Bienestar</small></div><span style="margin-left:auto">⚙️</span></div>
+            <div class="cat-chips">
+              <button class="activo">🏠 Cerca de ti</button><button>💼 Cerca del trabajo</button><button>🌳 Con parque</button><button>📅 Entrega 2026</button>
             </div>
           </div>
-          <div class="viv-card" onclick="toast('Prototipo: la selección continúa con Bosques del Bienestar')">
-            <div class="viv-img"><span class="chip gris" style="background:#fff">A 11 km</span></div>
-            <div class="viv-cuerpo">
-              <div style="display:flex;align-items:center;gap:8px"><h4>Jardines de Tesistán</h4><span class="match">✓ 91% compatible</span></div>
-              <div class="fila"><span>🛏 2 recámaras</span><span>📐 58 m²</span><span>🏗 Entrega: sep 2026</span><span>🚌 35 min a tu trabajo</span></div>
-              <div class="viv-precio"><b>$612,000</b><small>· mensualidad ≈ $3,230</small></div>
+
+          <div id="b2c-mapa" class="mapa-wrap">
+            <div id="mapa-lienzo" class="mapa-lienzo">
+              <svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="display:block">
+                <rect width="800" height="800" fill="#F2EDE4"/>
+                <path d="M0 640 Q160 700 300 780 L0 800 Z" fill="#BBD7EC"/>
+                <path d="M0 660 Q160 715 280 800" stroke="#A9CCE7" stroke-width="10" fill="none"/>
+                <ellipse cx="330" cy="240" rx="90" ry="60" fill="#CBE5C4"/>
+                <ellipse cx="640" cy="560" rx="70" ry="48" fill="#CBE5C4"/>
+                <ellipse cx="120" cy="430" rx="55" ry="40" fill="#D7E9D0"/>
+                <g fill="#E9E2D5">
+                  <rect x="60" y="60" width="130" height="90" rx="10"/><rect x="230" y="60" width="120" height="90" rx="10"/><rect x="470" y="40" width="140" height="100" rx="10"/><rect x="650" y="60" width="110" height="90" rx="10"/>
+                  <rect x="60" y="200" width="130" height="110" rx="10"/><rect x="470" y="190" width="140" height="120" rx="10"/><rect x="650" y="200" width="110" height="110" rx="10"/>
+                  <rect x="230" y="340" width="120" height="100" rx="10"/><rect x="400" y="360" width="150" height="90" rx="10"/><rect x="600" y="380" width="90" height="70" rx="10"/>
+                  <rect x="60" y="520" width="150" height="80" rx="10"/><rect x="260" y="500" width="120" height="90" rx="10"/><rect x="430" y="500" width="110" height="80" rx="10"/>
+                  <rect x="560" y="650" width="180" height="100" rx="10"/><rect x="300" y="650" width="180" height="90" rx="10"/>
+                </g>
+                <g stroke="#FFFFFF" stroke-width="14" stroke-linecap="round">
+                  <path d="M0 170 H800"/><path d="M0 330 H800"/><path d="M0 480 H800"/><path d="M0 630 H620"/>
+                  <path d="M210 0 V800"/><path d="M380 0 V680"/><path d="M570 0 V800"/>
+                  <path d="M0 60 Q300 120 800 340"/>
+                </g>
+                <g stroke="#F6F1E8" stroke-width="4" stroke-dasharray="10 12">
+                  <path d="M0 170 H800"/><path d="M0 330 H800"/><path d="M210 0 V800"/><path d="M570 0 V800"/>
+                </g>
+                <g font-size="13" fill="#9A8F7E" font-family="inherit">
+                  <text x="240" y="160">Av. Tlajomulco</text>
+                  <text x="590" y="322">Av. del Bienestar</text>
+                  <text x="222" y="470" transform="rotate(-90 222 470)">Calz. Central</text>
+                  <text x="330" y="238" text-anchor="middle" fill="#7EA874">Parque Metropolitano</text>
+                </g>
+              </svg>
+              <div class="marcador" style="left:138px;top:582px">🏠<small>Tu casa</small></div>
+              <div class="marcador" style="left:628px;top:162px">💼<small>Tu trabajo</small></div>
+              <button class="pin-precio" id="pin-bosques" style="left:376px;top:312px" onclick="seleccionarPin('bosques')">$598,000</button>
+              <button class="pin-precio" id="pin-tesistan" style="left:238px;top:168px" onclick="seleccionarPin('tesistan')">$612,000</button>
+              <button class="pin-precio" id="pin-lomas" style="left:584px;top:462px" onclick="seleccionarPin('lomas')">$645,000</button>
+              <button class="pin-precio" id="pin-valle" style="left:150px;top:352px" onclick="seleccionarPin('valle')">$585,000</button>
+              <button class="pin-precio" id="pin-puerta" style="left:498px;top:588px" onclick="seleccionarPin('puerta')">$630,000</button>
+              <button class="pin-precio" id="pin-real" style="left:642px;top:288px" onclick="seleccionarPin('real')">$602,000</button>
             </div>
+            <div class="mapa-conteo">312 viviendas del programa en esta zona</div>
+            <div class="mapa-zoom"><button onclick="zoomMapa(1)">＋</button><button onclick="zoomMapa(-1)">－</button></div>
+            <div id="pin-card" class="pin-card"></div>
           </div>
-          <div class="viv-card" onclick="toast('Prototipo: la selección continúa con Bosques del Bienestar')">
-            <div class="viv-img b"><span class="chip gris" style="background:#fff">A 14 km</span></div>
-            <div class="viv-cuerpo">
-              <div style="display:flex;align-items:center;gap:8px"><h4>Lomas del Salto</h4><span class="match">✓ 86% compatible</span></div>
-              <div class="fila"><span>🛏 3 recámaras</span><span>📐 68 m²</span><span>🏗 Entrega: feb 2027</span><span>🚗 40 min a tu trabajo</span></div>
-              <div class="viv-precio"><b>$645,000</b><small>· mensualidad ≈ $3,400</small></div>
+
+          <div id="b2c-lista" style="display:none;padding:12px 20px 96px">
+            <div class="viv-card" onclick="irPantalla(4)">
+              <div class="viv-img a"><span class="chip verde" style="background:#fff">A 6.2 km de tu trabajo</span></div>
+              <div class="viv-cuerpo">
+                <div style="display:flex;align-items:center;gap:8px"><h4>Bosques del Bienestar</h4><span class="match">✓ 98% compatible</span></div>
+                <div class="fila"><span>🛏 2 recámaras</span><span>📐 62 m²</span><span>🏗 Entrega: nov 2026</span><span>🚌 22 min a tu trabajo</span><span>🌳 Parque y ciclovía</span></div>
+                <div class="viv-precio"><b>$598,000</b><small>· mensualidad ≈ $3,150</small></div>
+              </div>
             </div>
+            <div class="viv-card" onclick="toast('Prototipo: la selección continúa con Bosques del Bienestar')">
+              <div class="viv-img"><span class="chip gris" style="background:#fff">A 11 km</span></div>
+              <div class="viv-cuerpo">
+                <div style="display:flex;align-items:center;gap:8px"><h4>Jardines de Tesistán</h4><span class="match">✓ 91% compatible</span></div>
+                <div class="fila"><span>🛏 2 recámaras</span><span>📐 58 m²</span><span>🏗 Entrega: sep 2026</span><span>🚌 35 min a tu trabajo</span></div>
+                <div class="viv-precio"><b>$612,000</b><small>· mensualidad ≈ $3,230</small></div>
+              </div>
+            </div>
+            <div class="viv-card" onclick="toast('Prototipo: la selección continúa con Bosques del Bienestar')">
+              <div class="viv-img b"><span class="chip gris" style="background:#fff">A 14 km</span></div>
+              <div class="viv-cuerpo">
+                <div style="display:flex;align-items:center;gap:8px"><h4>Lomas del Salto</h4><span class="match">✓ 86% compatible</span></div>
+                <div class="fila"><span>🛏 3 recámaras</span><span>📐 68 m²</span><span>🏗 Entrega: feb 2027</span><span>🚗 40 min a tu trabajo</span></div>
+                <div class="viv-precio"><b>$645,000</b><small>· mensualidad ≈ $3,400</small></div>
+              </div>
+            </div>
+            <p style="font-size:11px;color:var(--gris-500);margin-top:4px">📍 Recomendado cruzando tu crédito, tu casa y tu centro de trabajo (detectado vía NSS → patrón).</p>
           </div>
         </div>
 
@@ -1594,6 +1654,48 @@ function hubEntrar(){
   if(hubDestino){ const d=hubDestino; hubDestino=null; toast('Sesión iniciada · redirigiendo a tu app…'); setTimeout(()=>{ irVista(d); document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo',b.dataset.vista===d)); },800); }
   else{ document.getElementById('hub-roles').style.display='block'; }
 }
+
+/* ================= MAPA INTERACTIVO B2C ================= */
+const DESARROLLOS_MAPA={
+  bosques:{n:"Bosques del Bienestar",d:"Tlajomulco · 🚌 22 min a tu trabajo",p:"$598,000",m:"≈ $3,150/mes",r:"★ 4.6 (128)",match:"✓ 98% compatible",cta:1,cl:"linear-gradient(135deg,#95B8A2,#5D8770)"},
+  tesistan:{n:"Jardines de Tesistán",d:"Zapopan · 🚌 35 min a tu trabajo",p:"$612,000",m:"≈ $3,230/mes",r:"★ 4.4 (86)",match:"✓ 91% compatible",cta:0,cl:"linear-gradient(135deg,#B8C4CE,#7E939F)"},
+  lomas:{n:"Lomas del Salto",d:"El Salto · 🚗 40 min a tu trabajo",p:"$645,000",m:"≈ $3,400/mes",r:"★ 4.2 (54)",match:"✓ 86% compatible",cta:0,cl:"linear-gradient(135deg,#C8A8B8,#8A5F76)"},
+  valle:{n:"Valle Verde Bienestar",d:"Tlajomulco · 🚌 28 min a tu trabajo",p:"$585,000",m:"≈ $3,080/mes",r:"★ 4.1 (39)",match:"✓ 84% compatible",cta:0,cl:"linear-gradient(135deg,#A8C0C8,#5F7E8A)"},
+  puerta:{n:"Puerta Sur",d:"Tlajomulco · 🚗 45 min a tu trabajo",p:"$630,000",m:"≈ $3,320/mes",r:"★ 3.9 (21)",match:"✓ 78% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)"},
+  real:{n:"Real del Bosque",d:"Zapopan · 🚌 26 min a tu trabajo",p:"$602,000",m:"≈ $3,170/mes",r:"★ 4.5 (97)",match:"✓ 93% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)"}
+};
+let mapaX=-205, mapaY=-165, mapaEsc=1, arrastre=null;
+function pintarMapa(){
+  const l=document.getElementById('mapa-lienzo'); if(!l) return;
+  const w=l.parentElement.clientWidth||390, hgt=452;
+  const min=x=>Math.min(0,Math.max(x,-(800*mapaEsc- (x===mapaX?w:hgt))));
+  mapaX=Math.min(0,Math.max(mapaX,-(800*mapaEsc-w)));
+  mapaY=Math.min(0,Math.max(mapaY,-(800*mapaEsc-hgt)));
+  l.style.transform='translate('+mapaX+'px,'+mapaY+'px) scale('+mapaEsc+')';
+}
+function zoomMapa(d){ mapaEsc=Math.min(1.7,Math.max(1,mapaEsc+d*0.25)); pintarMapa(); }
+function seleccionarPin(id){
+  document.querySelectorAll('.pin-precio').forEach(p=>p.classList.remove('sel'));
+  const pin=document.getElementById('pin-'+id); if(pin) pin.classList.add('sel');
+  const d=DESARROLLOS_MAPA[id], c=document.getElementById('pin-card');
+  c.innerHTML='<div class="foto" style="background:'+d.cl+'">Programa Bienestar</div><div class="info"><h4>'+d.n+' <span class="match" style="font-size:9.5px">'+d.match+'</span></h4><p>'+d.d+'</p><div class="precio-fila"><b>'+d.p+'</b><small style="color:var(--gris-500)">'+d.m+'</small><span style="margin-left:auto;font-size:11px;font-weight:700">'+d.r+'</span></div><button class="btn primario chico" style="margin-top:7px;width:100%" onclick="'+(d.cta?'irPantalla(4)':'toast(\'Prototipo: la selección continúa con Bosques del Bienestar\')')+'">'+(d.cta?'Elegir mi unidad →':'Ver desarrollo')+'</button></div><button class="cerrar" onclick="event.stopPropagation();document.getElementById(\'pin-card\').classList.remove(\'ver\')">✕</button>';
+  c.classList.add('ver');
+}
+function toggleListaMapa(){
+  const m=document.getElementById('b2c-mapa'), li=document.getElementById('b2c-lista'), b=document.getElementById('btn-toggle-mapa');
+  const aMapa=li.style.display!=='none';
+  m.style.display=aMapa?'none':'block'; li.style.display=aMapa?'block':'none';
+  if(!aMapa){ li.style.display='block'; m.style.display='none'; }
+  b.textContent=m.style.display==='none'?'🗺️ Mapa':'☰ Lista';
+}
+(function(){
+  const w=document.getElementById('b2c-mapa'); if(!w) return;
+  w.addEventListener('pointerdown',e=>{ if(e.target.closest('.pin-precio,.mapa-zoom,.pin-card')) return; arrastre={x:e.clientX,y:e.clientY,mx:mapaX,my:mapaY}; });
+  window.addEventListener('pointermove',e=>{ if(!arrastre) return; mapaX=arrastre.mx+(e.clientX-arrastre.x); mapaY=arrastre.my+(e.clientY-arrastre.y); pintarMapa(); });
+  window.addEventListener('pointerup',()=>arrastre=null);
+  pintarMapa();
+  seleccionarPin('bosques');
+})();
 
 /* ================= ESTIMACIONES / UVE / NPS / TAREAS IA ================= */
 function generarEstimacion(){
