@@ -1939,12 +1939,28 @@ function iniciarCrono(){
     const el=document.getElementById('crono-tiempo'); if(el) el.textContent=h+':'+m+':'+s;
   },1000);
 }
+let _docConstancia=false, _docBio=false;
+function checarDocs(){
+  if(_docConstancia && _docBio){
+    const b=document.getElementById('btn-docs'); b.disabled=false; b.style.opacity=1;
+    toast('✓ ¡Expediente completo! Ya puedes continuar a firma.');
+  }
+}
 function subirConstancia(){
   const d=document.getElementById('doc-constancia');
   d.classList.add('ok');
-  d.innerHTML='<div class="ic">🧾</div><div><b>Constancia de situación fiscal</b><small>Subida y validada ✓</small></div><span class="accion chip verde">Listo</span>';
-  const b=document.getElementById('btn-docs'); b.disabled=false; b.style.opacity=1;
-  toast('✓ Documento validado. ¡Expediente completo!');
+  d.innerHTML='<div class="ic">🧾</div><div><b>Constancia de situación fiscal</b><small>Validada automáticamente ✓</small></div><span class="accion chip verde">Listo</span>';
+  _docConstancia=true;
+  if(!_docBio) toast('✓ Constancia validada. Falta tu verificación biométrica.');
+  checarDocs();
+}
+function verificarBio(){
+  const d=document.getElementById('doc-bio');
+  d.classList.add('ok');
+  d.innerHTML='<div class="ic">🤳</div><div><b>Verificación biométrica</b><small>Selfie + prueba de vida validadas (estándar bancario) ✓</small></div><span class="accion chip verde">Listo</span>';
+  _docBio=true;
+  if(!_docConstancia) toast('✓ Identidad verificada. Falta tu constancia del SAT.');
+  checarDocs();
 }
 function confirmarFirma(){
   S.dh=true; irPantalla(7); pintarB2G();
