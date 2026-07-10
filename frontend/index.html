@@ -1641,10 +1641,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div id="nps-gracias"></div>
         </div>
 
-        <div class="burbuja-copiloto" id="copiloto-b2c">
-          <div class="ia">✦</div>
-          <span id="copiloto-b2c-txt"><b>Copiloto operativo:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.</span>
-        </div>
+        <!-- El acompañamiento del derechohabiente lo da el agente de voz/chat de ElevenLabs (widget flotante) -->
       </div>
     </div>
 
@@ -2159,20 +2156,6 @@ function irPantalla(n){
   document.getElementById('tel-cuerpo').scrollTop=0;
   pantallaActual=n;
   if(n===3&&typeof ajustarMapaB2C==='function') setTimeout(ajustarMapaB2C,80);
-  const c=document.getElementById('copiloto-b2c-txt');
-  const cb=document.getElementById('copiloto-b2c');
-  if(cb) cb.style.display=(n===5)?'none':'';
-  const msjs={
-    0:'<b>Copiloto operativo:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.',
-    1:'<b>Copiloto operativo:</b> Tu NSS son 11 números. ¿No lo encuentras? Está en tu recibo de nómina, arriba a la derecha.',
-    2:'<b>Copiloto operativo:</b> Tu crédito conjunto con Luis suma capacidad. La mensualidad nunca superará el 30% de su ingreso.',
-    3:'<b>Copiloto operativo:</b> Crucé tu crédito con la ubicación de tu casa y tu centro de trabajo (lo detecté por tu NSS, vía tu patrón). Bosques del Bienestar te queda a 22 min en Metrobús.',
-    4:'<b>Copiloto operativo:</b> El 304 tiene vista al parque y le da el sol de la mañana. Buena elección 😉',
-    6:'<b>Copiloto operativo:</b> El notario ya tiene todo. Ese día solo llevas tu INE y firmas. Duración: unos 40 minutos.',
-    7:'<b>Copiloto operativo:</b> De aquí en adelante yo te aviso: no necesitas llamar ni ir a un CESI a preguntar cómo va.',
-    8:'<b>Inés · vocera IA:</b> Tu calificación alimenta la reputación del desarrollador en la torre de control. Con datos, no con opiniones.'
-  };
-  if(c && msjs[n]!==undefined) c.innerHTML=msjs[n];
 }
 async function validarNSS(){
   const v=document.getElementById('nss').value.replace(/\D/g,'');
