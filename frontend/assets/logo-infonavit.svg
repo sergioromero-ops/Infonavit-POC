@@ -1,0 +1,13 @@
+<svg viewBox="0 0 1130 790" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#D8232A">
+    <circle cx="272" cy="103" r="93"/>
+    <circle cx="858" cy="103" r="93"/>
+    <path d="M8 128 L8 232 L150 375 L150 640 L225 640 L225 344 L81 200 L81 128 Z"/>
+    <path d="M8 8 L8 96 L262 350 L262 640 L337 640 L337 319 L104 85 L104 8 Z"/>
+    <path d="M565 118 L370 313 L370 640 L445 640 L445 344 L565 224 L685 344 L685 640 L760 640 L760 313 Z"/>
+    <path d="M565 268 L478 355 L478 640 L553 640 L553 386 L565 374 L577 386 L577 640 L652 640 L652 355 Z"/>
+    <path d="M1122 8 L1122 96 L868 350 L868 640 L793 640 L793 319 L1026 85 L1026 8 Z"/>
+    <path d="M1122 128 L1122 232 L980 375 L980 640 L905 640 L905 344 L1049 200 L1049 128 Z"/>
+    <text x="565" y="772" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="bold" text-anchor="middle" textLength="1105" lengthAdjust="spacingAndGlyphs">INFONAVIT</text>
+  </g>
+</svg>
