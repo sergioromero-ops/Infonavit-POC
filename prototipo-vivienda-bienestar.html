@@ -239,7 +239,7 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
         <div style="font-weight:800;font-size:16px;letter-spacing:-.01em">Infonavit<small style="display:block;font-size:10.5px;font-weight:600;color:var(--gris-500)">Gobierno de México</small></div>
       </div>
       <nav class="land-nav">
-        <a href="#como">El programa</a>
+        <a href="#programa">El programa</a>
         <a href="#como">Cómo funciona</a>
       </nav>
     </div>
@@ -288,6 +288,28 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
         <button onclick="pasoIr(2)"></button>
         <button onclick="pasoIr(3)"></button>
         <button onclick="pasoIr(4)"></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="programa" class="seccion" style="background:#fff">
+    <div class="contenedor" style="max-width:940px">
+      <h2>Por qué una vivienda propia cambia vidas</h2>
+      <p class="intro">Como Ana y Luis, millones de familias buscan lo mismo: un patrimonio propio. La evidencia internacional es contundente.</p>
+      <video controls muted playsinline src="assets/hero-familia.mp4" style="width:100%;border-radius:18px;box-shadow:var(--sombra-md);margin-top:28px" title="Video institucional (versión preliminar)"></video>
+      <p style="font-size:11.5px;color:var(--gris-500);text-align:center;margin-top:8px">Video institucional · versión preliminar del prototipo</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:24px">
+        <div class="paso"><div class="num">🩺</div><h3>Mejor salud</h3><p>Los hogares con vivienda adecuada reportan mejores indicadores de salud física y mental (INEGI).</p></div>
+        <div class="paso"><div class="num">👶</div><h3>Menor mortalidad infantil</h3><p>La vivienda con servicios básicos reduce riesgos en la primera infancia (estudios de Harvard).</p></div>
+        <div class="paso"><div class="num">🎓</div><h3>Mejor educación</h3><p>Niñas y niños con vivienda estable mejoran permanencia y desempeño escolar.</p></div>
+        <div class="paso"><div class="num">💼</div><h3>Más productividad</h3><p>Menos tiempo de traslado y certeza patrimonial elevan el ingreso familiar.</p></div>
+      </div>
+      <div class="card" style="margin-top:24px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px">
+          <h3 style="font-size:16px;margin-bottom:8px">¿Aplicas al programa?</h3>
+          <div style="font-size:13.5px;color:var(--gris-700);line-height:1.9">✓ 6+ meses cotizando en Infonavit<br>✓ Ingreso entre 1 y 2 salarios mínimos<br>✓ Sin crédito Infonavit vigente</div>
+        </div>
+        <button class="btn primario" onclick="irVista('b2c')">Verificar con mi NSS →</button>
       </div>
     </div>
   </div>
@@ -378,6 +400,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="marca" style="width:46px;height:46px;border-radius:12px;background:#fff;color:var(--rojo);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:19px">IV</div>
         <h2 style="font-size:26px;margin-top:12px;letter-spacing:-.01em">Acceso · Vivienda del Bienestar</h2>
         <p style="font-size:13.5px;opacity:.85;margin-top:6px">02 · Web privada — comunicación cerrada · un solo acceso, enruta por rol</p>
+        <p style="font-size:11.5px;opacity:.7;margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto">Capa de procesos independiente y exclusiva del programa: consulta la información con permisos institucionales. No modifica los sistemas ni las bases de datos de Infonavit.</p>
       </div>
       <div id="hub-login" class="card" style="max-width:400px;margin:0 auto;padding:26px">
         <form class="formulario" onsubmit="event.preventDefault();hubEntrar()">
@@ -410,6 +433,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div>Torre de Control Nacional<small>Programa de Vivienda del Bienestar</small></div>
       </div>
       <div class="usuario">
+        <span class="chip azul" style="cursor:help" title="Consulta las bases institucionales con los permisos, licencias y acreditaciones que provea Infonavit. No toca los sistemas transaccionales.">Capa de procesos · no invasiva</span>
         <span id="b2g-fecha" class="sub">Actualizado hoy · 13:45 h</span>
         <div class="avatar">DG</div>
         <div>Dirección General<br><small style="color:var(--gris-500);font-weight:600">Infonavit</small></div>
@@ -591,7 +615,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 
         <div class="card" id="detalle-bosques">
           <div class="titulo-seccion" style="margin-top:0"><h3>Bosques del Bienestar</h3><span class="chip rojo" id="det-sem"><span class="punto rojo"></span>Semáforo rojo</span></div>
-          <p style="font-size:12.5px;color:var(--gris-500);margin-bottom:14px">Tlajomulco de Zúñiga, Jalisco · Hábitat Jalisco Constructora · 420 viviendas · Última actualización: <b id="det-ult">hace 12 días</b> <span id="det-uve" style="color:var(--verde);font-weight:700"></span><br>Reputación de residentes: <b style="color:var(--ambar)">★ 4.6</b> · 128 encuestas NPS</p>
+          <p style="font-size:12.5px;color:var(--gris-500);margin-bottom:14px">Tlajomulco de Zúñiga, Jalisco · Hábitat Jalisco Constructora · 420 viviendas · Última actualización: <b id="det-ult">hace 12 días</b> <span id="det-uve" style="color:var(--verde);font-weight:700"></span><br>Reputación de residentes: <b style="color:var(--ambar)" id="det-nps-val">★ 4.6</b> · <span id="det-nps-n">128 encuestas NPS</span></p>
           <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
             <div><span class="mini-lbl">Avance físico</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-fisico-bar" style="width:78%"></span></div><b id="det-fisico">78%</b></div></div>
             <div><span class="mini-lbl">Avance servicios</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-serv-bar" class="ambar" style="width:54%"></span></div><b id="det-serv">54%</b></div></div>
@@ -602,8 +626,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
           <div class="titulo-seccion" style="margin:14px 0 4px"><h3 style="font-size:14px">Causa raíz del bloqueo</h3><span class="chip azul">✦ Análisis IA</span></div>
           <div id="det-causas">
-            <div class="causa"><div class="ic rojo">⚡</div><div><b>CFE: 68 viviendas sin conexión eléctrica</b><p>Trámite de subestación detenido 31 días. Responsable: CFE Distribución Jalisco.</p></div><div class="meta"><span class="chip rojo">Crítico</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 24 jul</p></div></div>
-            <div class="causa"><div class="ic ambar">💧</div><div><b>Drenaje: colector municipal incompleto</b><p>Afecta a la etapa 3 (54 viviendas). Responsable: Ayuntamiento de Tlajomulco.</p></div><div class="meta"><span class="chip ambar">Alto</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 08 ago</p></div></div>
+            <div class="causa"><div class="ic rojo">⚡</div><div><b>CFE: 68 viviendas sin conexión eléctrica</b><p>Trámite de subestación detenido 31 días · afecta a 41 familias con proceso activo. Responsable: CFE Distribución Jalisco.</p></div><div class="meta"><span class="chip rojo">Crítico</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 24 jul</p></div></div>
+            <div class="causa"><div class="ic ambar">💧</div><div><b>Drenaje: colector municipal incompleto</b><p>Afecta a la etapa 3: 54 viviendas y 32 familias en espera. Responsable: Ayuntamiento de Tlajomulco.</p></div><div class="meta"><span class="chip ambar">Alto</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 08 ago</p></div></div>
             <div class="causa" id="causa-escrituras"><div class="ic ambar">📜</div><div><b id="causa-escr-t">48 escrituras detenidas en notaría</b><p id="causa-escr-p">25 ya tienen expediente completo y podrían firmarse esta semana. Responsable: Notaría 121 GDL.</p></div><div class="meta"><span class="chip ambar" id="causa-escr-chip">Alto</span></div></div>
             <div class="causa" id="causa-estim"><div class="ic rojo">🧾</div><div><b id="causa-estim-t">Solo 1 de 2 estimaciones del mes cargadas</b><p id="causa-estim-p">Sin estimación no hay pago y la obra se frena. Responsable: Hábitat Jalisco.</p></div><div class="meta"><span class="chip rojo" id="causa-estim-chip">Crítico</span></div></div>
             <div class="causa" id="causa-fianza"><div class="ic rojo">🛡️</div><div><b id="causa-fianza-t">Fianza de cumplimiento vence en 9 días</b><p id="causa-fianza-p">Monto: $48.2 MDP. Sin evidencia de renovación por parte del constructor.</p></div><div class="meta"><span class="chip rojo" id="causa-fianza-chip">Crítico</span></div></div>
@@ -639,6 +663,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="causa"><div class="ic rojo">⏰</div><div><b>Por vencer (30 días)</b><p id="blq-fianzas">23 fianzas · $612 MDP en riesgo</p></div><div class="meta"><span class="chip rojo">Crítico</span></div></div>
           <div class="causa"><div class="ic rojo">❌</div><div><b>Vencidas sin renovar</b><p>6 fianzas · 3 constructores</p></div><div class="meta"><span class="chip rojo">Crítico</span></div></div>
           <div class="causa"><div class="ic verde" style="background:var(--verde-claro)">✓</div><div><b>Vigentes y en regla</b><p>184 fianzas activas</p></div><div class="meta"><span class="chip verde">OK</span></div></div>
+        </div>
+        <div class="card">
+          <div class="titulo-seccion" style="margin-top:0"><h3>📣 Colocación despareja</h3><span class="chip ambar">demanda desequilibrada</span></div>
+          <div class="causa"><div class="ic ambar">🏘️</div><div><b>Paseo de las Torres · Méx.</b><p>1,000 terminadas · solo 300 colocadas (30%)</p><div class="barra" style="margin-top:6px;max-width:150px"><span class="ambar" style="width:30%"></span></div></div><div class="meta"><button class="btn primario chico" onclick="impulsarB2C(this,'Paseo de las Torres')">Impulsar en B2C</button></div></div>
+          <div class="causa"><div class="ic ambar">🏘️</div><div><b>Altos de Santa Regia · N.L.</b><p>380 terminadas · 168 colocadas (44%)</p><div class="barra" style="margin-top:6px;max-width:150px"><span class="ambar" style="width:44%"></span></div></div><div class="meta"><button class="btn secundario chico" onclick="impulsarB2C(this,'Altos de Santa Regia')">Impulsar en B2C</button></div></div>
+          <div class="causa"><div class="ic verde" style="background:var(--verde-claro)">✓</div><div><b>Mirador del Marqués · Qro.</b><p>240 terminadas · 223 colocadas (93%)</p><div class="barra" style="margin-top:6px;max-width:150px"><span class="verde" style="width:93%"></span></div></div><div class="meta"><span class="chip verde">Equilibrado</span></div></div>
         </div>
         <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>🧾 Estimaciones</h3><span class="chip rojo">$142 MDP detenidos</span></div>
@@ -1594,6 +1624,7 @@ const S = {
   operador:false,         // Operador validó 25 escrituras
   dh:false,               // Derechohabiente confirmó firma
   estimacion:false,       // Constructor cargó estimación 2/2
+  nps:false,              // Residente calificó (NPS)
   verificado:false        // UVE validó avance de obra
 };
 
@@ -1870,11 +1901,28 @@ function estrella(sp){
   sp.parentElement.dataset.v=i+1;
 }
 function enviarNPS(){
+  const ASPECTOS=['la ubicación','los servicios cercanos','el transporte a tu trabajo','la calidad de la vivienda','el desarrollador'];
   const vals=[...document.querySelectorAll('#nps-lista .nps-est')].map(e=>+(e.dataset.v||0));
   if(vals.every(v=>v===0)){ toast('Toca las estrellas para calificar'); return; }
-  const bajo=vals.some(v=>v>0&&v<=2);
-  document.getElementById('nps-gracias').innerHTML='<div class="tarjeta-ok" style="margin-top:14px"><span class="big">💚</span><h3>¡Gracias, Ana!</h3><p>'+(bajo?'Inés te hará 2 preguntas más sobre lo que calificaste bajo, para entender qué mejorar.':'Tu calificación ya alimenta la reputación de Hábitat Jalisco en la torre de control.')+'</p></div>';
-  toast('✓ Encuesta enviada · reputación actualizada');
+  const idxBajo=vals.findIndex(v=>v>0&&v<=3);
+  if(idxBajo>=0){
+    document.getElementById('nps-gracias').innerHTML='<div class="card" style="margin-top:14px;padding:14px;display:flex;gap:11px;align-items:flex-start"><div class="avatar" style="background:var(--rojo);flex-shrink:0">▶</div><div style="font-size:12.5px"><b>Inés · vocera IA</b><p style="color:var(--gris-700);margin-top:3px">Vi que calificaste bajo <b>'+ASPECTOS[idxBajo]+'</b>. ¿Qué es lo que más pesa?</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px"><button class="btn secundario chico" onclick="npsDetalle(this)">Tiempo / frecuencia</button><button class="btn secundario chico" onclick="npsDetalle(this)">Costo</button><button class="btn secundario chico" onclick="npsDetalle(this)">Calidad / estado</button></div></div></div>';
+  } else { npsCerrar('Tu calificación ya alimenta la reputación de Hábitat Jalisco en la torre de control.'); }
+  toast('✓ Encuesta enviada');
+}
+function npsDetalle(btn){
+  npsCerrar('Gracias por el detalle: "'+btn.textContent+'". Se envió al desarrollador y a Infonavit para su plan de mejora.');
+}
+function npsCerrar(msj){
+  S.nps=true;
+  document.getElementById('nps-gracias').innerHTML='<div class="tarjeta-ok" style="margin-top:14px"><span class="big">💚</span><h3>¡Gracias, Ana!</h3><p>'+msj+'</p></div>';
+  const v=document.getElementById('det-nps-val'), n=document.getElementById('det-nps-n');
+  if(v){ v.textContent='★ 4.7'; n.textContent='129 encuestas NPS · 1 nueva hoy'; }
+  toast('✓ Reputación del desarrollador actualizada en la torre de control');
+}
+function impulsarB2C(btn,nombre){
+  btn.textContent='✓ Priorizado'; btn.disabled=true; btn.style.opacity=.6;
+  toast('📣 '+nombre+' se priorizó en las recomendaciones del mapa B2C');
 }
 function desglosarTareasIA(){
   const b=document.getElementById('btn-desglosar'); b.textContent='✓ 3 tareas asignadas por IA'; b.disabled=true; b.style.opacity=.6;
