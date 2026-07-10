@@ -181,6 +181,15 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .mp-item{display:flex;align-items:center;gap:9px;width:100%;padding:11px 14px;border:none;background:none;font-size:13px;font-weight:600;color:var(--gris-900);cursor:pointer;text-align:left}
 .mp-item:hover{background:var(--gris-50)}
 #mp-pass input{width:100%;padding:9px 11px;border:1.5px solid var(--gris-300);border-radius:8px;margin-bottom:8px;font-size:13px}
+/* Mapa Leaflet (tipo Google Maps) */
+#mapa-real .leaflet-container,.leaflet-container{background:#0C1220;font-family:inherit}
+.leaflet-control-attribution{background:rgba(13,20,32,.75)!important;color:#5E7BA0!important;font-size:9px!important}
+.leaflet-control-attribution a{color:#7DD3FC!important}
+.pin-leaflet{position:absolute!important;left:0;top:0;transform:translate(-50%,-100%);white-space:nowrap;z-index:5;box-shadow:0 0 0 1.5px rgba(125,211,252,.35),0 6px 18px rgba(0,0,0,.5)}
+.pin-leaflet.sel{transform:translate(-50%,-100%) scale(1.12)}
+.marc-leaflet{position:absolute!important;left:0;top:0;transform:translate(-50%,-50%)}
+.marc-leaflet small{background:rgba(13,20,32,.85);color:#BFDBFE;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700}
+.marc-leaflet i{font-size:17px;font-style:normal;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
 </style>
 
 <script>
@@ -1478,7 +1487,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
 
           <div id="b2c-mapa" class="mapa-wrap">
-            <div id="mapa-lienzo" class="mapa-lienzo tech"></div>
+            <div id="mapa-real" style="position:absolute;inset:0;background:#0C1220;z-index:1"></div>
+            <div id="mapa-lienzo" class="mapa-lienzo tech" style="display:none"></div>
             <div class="mapa-conteo">8 desarrollos del programa · 5 estados</div>
             <div class="mapa-zoom"><button onclick="zoomMapa(1)">＋</button><button onclick="zoomMapa(-1)">－</button><button onclick="mapaTodoPais()" title="Ver todo el país">🇲🇽</button></div>
             <div id="pin-card" class="pin-card"></div>
@@ -1848,58 +1858,84 @@ async function hubEntrar(){
   else{ document.getElementById('hub-roles').style.display='block'; if(nombre) toast('Sesión iniciada: '+nombre); }
 }
 
-/* ================= MAPA INTERACTIVO B2C (nacional · tech) ================= */
+/* ================= MAPA INTERACTIVO B2C · tipo Google Maps (Leaflet) ================= */
 const DESARROLLOS_MAPA={
-  bosques:{n:"Bosques del Bienestar",d:"Tlajomulco, Jal. \u00b7 \ud83d\ude8c 22 min a tu trabajo",p:"$598,000",m:"\u2248 $3,150/mes",r:"\u2605 4.6 (128)",match:"\u2713 98% compatible",cta:1,cl:"linear-gradient(135deg,#95B8A2,#5D8770)",edo:"MXJAL",dx:2,dy:8},
-  tesistan:{n:"Jardines de Tesist\u00e1n",d:"Zapopan, Jal. \u00b7 \ud83d\ude8c 35 min a tu trabajo",p:"$612,000",m:"\u2248 $3,230/mes",r:"\u2605 4.4 (86)",match:"\u2713 91% compatible",cta:0,cl:"linear-gradient(135deg,#B8C4CE,#7E939F)",edo:"MXJAL",dx:-16,dy:-12},
-  lomas:{n:"Lomas del Salto",d:"El Salto, Jal. \u00b7 \ud83d\ude97 40 min a tu trabajo",p:"$645,000",m:"\u2248 $3,400/mes",r:"\u2605 4.2 (54)",match:"\u2713 86% compatible",cta:0,cl:"linear-gradient(135deg,#C8A8B8,#8A5F76)",edo:"MXJAL",dx:20,dy:-2},
-  chapala:{n:"Vistas de Chapala",d:"Ixtlahuac\u00e1n, Jal. \u00b7 \ud83d\ude97 38 min a tu trabajo",p:"$589,000",m:"\u2248 $3,100/mes",r:"\u2605 4.5 (73)",match:"\u2713 89% compatible",cta:0,cl:"linear-gradient(135deg,#A8C8B8,#5F8A76)",edo:"MXJAL",dx:8,dy:20},
-  valle:{n:"Valle del Bienestar",d:"Apodaca, Nuevo Le\u00f3n",p:"$585,000",m:"\u2248 $3,080/mes",r:"\u2605 4.1 (39)",match:"\u2713 72% compatible",cta:0,cl:"linear-gradient(135deg,#A8C0C8,#5F7E8A)",edo:"MXNLE",dx:0,dy:0},
-  angelopolis:{n:"Angel\u00f3polis Bienestar",d:"Puebla, Puebla",p:"$560,000",m:"\u2248 $2,950/mes",r:"\u2605 4.3 (61)",match:"\u2713 70% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)",edo:"MXPUE",dx:0,dy:0},
-  toluca:{n:"Toluca Bienestar",d:"Toluca, Edo. de M\u00e9xico",p:"$572,000",m:"\u2248 $3,010/mes",r:"\u2605 4.4 (92)",match:"\u2713 74% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)",edo:"MXMEX",dx:-6,dy:6},
-  qro:{n:"Quer\u00e9taro Bienestar",d:"Quer\u00e9taro, Qro.",p:"$618,000",m:"\u2248 $3,260/mes",r:"\u2605 4.7 (104)",match:"\u2713 77% compatible",cta:0,cl:"linear-gradient(135deg,#B8AECE,#7E739F)",edo:"MXQUE",dx:6,dy:-4}
+  bosques:{n:"Bosques del Bienestar",d:"Tlajomulco, Jal. · 🚌 22 min a tu trabajo",p:"$598,000",m:"≈ $3,150/mes",r:"★ 4.6 (128)",match:"✓ 98% compatible",cta:1,cl:"linear-gradient(135deg,#95B8A2,#5D8770)",lat:20.4742,lng:-103.4470},
+  tesistan:{n:"Jardines de Tesistán",d:"Zapopan, Jal. · 🚌 35 min a tu trabajo",p:"$612,000",m:"≈ $3,230/mes",r:"★ 4.4 (86)",match:"✓ 91% compatible",cta:0,cl:"linear-gradient(135deg,#B8C4CE,#7E939F)",lat:20.7410,lng:-103.4720},
+  lomas:{n:"Lomas del Salto",d:"El Salto, Jal. · 🚗 40 min a tu trabajo",p:"$645,000",m:"≈ $3,400/mes",r:"★ 4.2 (54)",match:"✓ 86% compatible",cta:0,cl:"linear-gradient(135deg,#C8A8B8,#8A5F76)",lat:20.5180,lng:-103.1810},
+  chapala:{n:"Vistas de Chapala",d:"Ixtlahuacán, Jal. · 🚗 38 min a tu trabajo",p:"$589,000",m:"≈ $3,100/mes",r:"★ 4.5 (73)",match:"✓ 89% compatible",cta:0,cl:"linear-gradient(135deg,#A8C8B8,#5F8A76)",lat:20.3480,lng:-103.1940},
+  valle:{n:"Valle del Bienestar",d:"Apodaca, Nuevo León",p:"$585,000",m:"≈ $3,080/mes",r:"★ 4.1 (39)",match:"✓ 72% compatible",cta:0,cl:"linear-gradient(135deg,#A8C0C8,#5F7E8A)",lat:25.7810,lng:-100.1880},
+  angelopolis:{n:"Angelópolis Bienestar",d:"Puebla, Puebla",p:"$560,000",m:"≈ $2,950/mes",r:"★ 4.3 (61)",match:"✓ 70% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)",lat:19.0270,lng:-98.2310},
+  toluca:{n:"Toluca Bienestar",d:"Toluca, Edo. de México",p:"$572,000",m:"≈ $3,010/mes",r:"★ 4.4 (92)",match:"✓ 74% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)",lat:19.2820,lng:-99.6550},
+  qro:{n:"Querétaro Bienestar",d:"Querétaro, Qro.",p:"$618,000",m:"≈ $3,260/mes",r:"★ 4.7 (104)",match:"✓ 77% compatible",cta:0,cl:"linear-gradient(135deg,#B8AECE,#7E739F)",lat:20.5880,lng:-100.3890}
 };
+const CASA_ANA=[20.6720,-103.3500], TRABAJO_ANA=[20.6850,-103.4300];
+const PAIS_BOUNDS=[[14.5,-117.2],[32.8,-86.6]];
+const JAL_BOUNDS=[[20.30,-103.55],[20.80,-103.10]];
 const FILTROS_MAPA={
-  casa:{pins:["bosques","tesistan","lomas","chapala"],zona:"jal",sel:"bosques",txt:"4 desarrollos cerca de ti \u00b7 Jalisco"},
+  casa:{pins:["bosques","tesistan","lomas","chapala"],zona:"jal",sel:"bosques",txt:"4 desarrollos cerca de ti · Jalisco"},
   trabajo:{pins:["bosques","tesistan"],zona:"jal",sel:"bosques",txt:"2 desarrollos a <35 min de tu trabajo"},
-  parque:{pins:["bosques","chapala"],zona:"jal",sel:"bosques",txt:"2 desarrollos junto a \u00e1reas verdes"},
-  entrega:{pins:Object.keys(DESARROLLOS_MAPA),zona:"pais",sel:"tesistan",txt:"8 desarrollos con entrega 2026\u20132027"}
+  parque:{pins:["bosques","chapala"],zona:"jal",sel:"bosques",txt:"2 desarrollos junto a áreas verdes"},
+  entrega:{pins:Object.keys(DESARROLLOS_MAPA),zona:"pais",sel:"tesistan",txt:"8 desarrollos con entrega 2026–2027"}
 };
-let mapaX=0, mapaY=0, mapaEsc=1, arrastre=null, _jalC=null;
-function _wrapDims(){ const w=document.getElementById('b2c-mapa'); return {w:(w&&w.clientWidth)||390,h:452}; }
-function pintarMapa(){
-  const l=document.getElementById('mapa-lienzo'); if(!l) return;
-  const {w,h}=_wrapDims(), tam=800*mapaEsc;
-  // banda vertical del mapa dentro del lienzo: 148..652 (x esc)
-  const bTop=148*mapaEsc, bAlto=504*mapaEsc;
-  if(tam<=w) mapaX=(w-tam)/2; else mapaX=Math.min(0,Math.max(mapaX,w-tam));
-  if(bAlto<=h) mapaY=(h-bAlto)/2-bTop; else mapaY=Math.min(-bTop+8,Math.max(mapaY,h-bTop-bAlto-8));
-  l.style.transform='translate('+mapaX+'px,'+mapaY+'px) scale('+mapaEsc+')';
+let MAPA=null,_marcasMapa={},_mapaAjustado=false,_mapaFallo=false;
+
+function iniciarMapaB2C(){
+  if(MAPA||_mapaFallo) return;
+  if(window.L){ montarLeaflet(); return; }
+  const css=document.createElement('link'); css.rel='stylesheet';
+  css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  const s=document.createElement('script');
+  s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload=montarLeaflet;
+  s.onerror=()=>{ _mapaFallo=true; construirMapaSVG(); };
+  document.head.appendChild(s);
 }
-function escalaPais(){ const {w,h}=_wrapDims(); return Math.min(w/800,h/504)*0.98; }
-function zoomMapa(d){ mapaEsc=Math.min(4,Math.max(escalaPais()*0.9,mapaEsc*(d>0?1.3:0.77))); pintarMapa(); }
-function centrarMapa(px,py,esc){
-  const {w,h}=_wrapDims(); mapaEsc=esc;
-  mapaX=w/2-px*esc; mapaY=h/2-py*esc;
-  const l=document.getElementById('mapa-lienzo');
-  l.classList.add('anima'); pintarMapa(); setTimeout(()=>l.classList.remove('anima'),700);
+function montarLeaflet(){
+  const cont=document.getElementById('mapa-real'); if(!cont||MAPA) return;
+  MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true});
+  MAPA.attributionControl.setPrefix('');
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
+  MAPA.fitBounds(PAIS_BOUNDS);
+  // Pins de precio en coordenadas reales
+  Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
+    const ic=L.divIcon({className:'',iconSize:[0,0],html:'<button class="pin-precio pin-leaflet" id="pin-'+id+'">'+d.p+'</button>'});
+    const m=L.marker([d.lat,d.lng],{icon:ic}).addTo(MAPA);
+    m.on('click',()=>seleccionarPin(id));
+    _marcasMapa[id]=m;
+  });
+  // Casa y trabajo de Ana
+  [[CASA_ANA,'🏠','Tu casa'],[TRABAJO_ANA,'💼','Tu trabajo']].forEach(([ll,ic,tx])=>{
+    L.marker(ll,{icon:L.divIcon({className:'',iconSize:[0,0],html:'<div class="marcador marc-leaflet"><i>'+ic+'</i><small>'+tx+'</small></div>'}),interactive:false}).addTo(MAPA);
+  });
+  seleccionarPin('bosques');
 }
+// Leaflet no mide bien contenedores ocultos: reajustar al entrar a la pantalla del mapa
+function ajustarMapaB2C(){
+  if(_mapaFallo) return;
+  if(!MAPA){ iniciarMapaB2C(); setTimeout(ajustarMapaB2C,400); return; }
+  MAPA.invalidateSize();
+  if(!_mapaAjustado){ MAPA.fitBounds(PAIS_BOUNDS,{padding:[10,10]}); _mapaAjustado=true; }
+}
+function pintarMapa(){} // legado (solo usa el fallback SVG)
+function zoomMapa(d){ if(MAPA){ d>0?MAPA.zoomIn():MAPA.zoomOut(); } }
 function mapaTodoPais(){
-  Object.keys(DESARROLLOS_MAPA).forEach(id=>{ const p=document.getElementById('pin-'+id); if(p) p.style.display=''; });
-  centrarMapa(400,400,escalaPais());
-  const c=document.querySelector('.mapa-conteo'); if(c) c.textContent='8 desarrollos del programa \u00b7 5 estados';
+  Object.values(_marcasMapa).forEach(m=>{ if(MAPA&&!MAPA.hasLayer(m)) m.addTo(MAPA); });
+  if(MAPA) MAPA.flyToBounds(PAIS_BOUNDS,{duration:1.1});
+  const c=document.querySelector('.mapa-conteo'); if(c) c.textContent='8 desarrollos del programa · 5 estados';
 }
 function filtrarMapa(clave,btn){
   document.querySelectorAll('#chips-mapa button').forEach(b=>b.classList.toggle('activo',b===btn));
   const f=FILTROS_MAPA[clave];
-  Object.keys(DESARROLLOS_MAPA).forEach(id=>{
-    const p=document.getElementById('pin-'+id);
-    if(p) p.style.display=f.pins.includes(id)?'':'none';
+  Object.entries(_marcasMapa).forEach(([id,m])=>{
+    if(!MAPA) return;
+    if(f.pins.includes(id)){ if(!MAPA.hasLayer(m)) m.addTo(MAPA); }
+    else if(MAPA.hasLayer(m)) MAPA.removeLayer(m);
   });
   document.querySelector('.mapa-conteo').textContent=f.txt;
-  if(f.zona==='jal'&&_jalC) centrarMapa(_jalC.x,_jalC.y,2.8);
-  else mapaTodoPais();
-  seleccionarPin(f.sel);
+  if(MAPA) MAPA.flyToBounds(f.zona==='jal'?JAL_BOUNDS:PAIS_BOUNDS,{duration:1.0,padding:[14,14]});
+  setTimeout(()=>seleccionarPin(f.sel),300);
 }
 function seleccionarPin(id){
   document.querySelectorAll('.pin-precio').forEach(p=>p.classList.remove('sel'));
@@ -1914,67 +1950,29 @@ function toggleListaMapa(){
   const aMapa=li.style.display!=='none';
   m.style.display=aMapa?'none':'block'; li.style.display=aMapa?'block':'none';
   if(!aMapa){ li.style.display='block'; m.style.display='none'; }
-  b.textContent=m.style.display==='none'?'\ud83d\uddfa\ufe0f Mapa':'\u2630 Lista';
+  b.textContent=m.style.display==='none'?'🗺️ Mapa':'☰ Lista';
+  if(m.style.display!=='none') ajustarMapaB2C();
 }
-(function(){
-  const w=document.getElementById('b2c-mapa'); if(!w) return;
-  const lienzo=document.getElementById('mapa-lienzo');
-  const nal=document.getElementById('mapa-mx'); if(!nal||!lienzo) return;
-  // Clona el mapa nacional real dentro del tel\u00e9fono (estilo tech)
+/* Fallback sin internet: mapa SVG nacional clonado del tablero del director */
+function construirMapaSVG(){
+  const lienzo=document.getElementById('mapa-lienzo'), nal=document.getElementById('mapa-mx');
+  const real=document.getElementById('mapa-real');
+  if(!lienzo||!nal) return;
+  if(real) real.style.display='none';
+  lienzo.style.display='';
   const NS='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(NS,'svg');
   svg.setAttribute('viewBox','0 0 1000 630');
   svg.style.cssText='position:absolute;top:148px;left:0;width:800px;height:504px;display:block';
   nal.querySelectorAll('.edo').forEach(p=>{
     const c=document.createElementNS(NS,'path');
-    c.setAttribute('d',p.getAttribute('d'));
-    c.setAttribute('class','edo-b2c');
-    c.id='b2c-'+p.id;
+    c.setAttribute('d',p.getAttribute('d')); c.setAttribute('class','edo-b2c');
     svg.appendChild(c);
   });
   lienzo.appendChild(svg);
-  // Centros de estado (bbox medido con la vista B2G fuera de pantalla si hace falta)
-  function centroEdo(eid){
-    const el=svg.querySelector('#b2c-'+eid); if(!el) return {x:400,y:400};
-    const vista=document.getElementById('vista-b2c');
-    const oculta=!vista.classList.contains('activa');
-    if(oculta) vista.style.cssText='display:block;position:absolute;visibility:hidden;left:-9999px;top:0;width:1200px';
-    const b=el.getBBox();
-    if(oculta) vista.style.cssText='';
-    return {x:(b.x+b.width/2)*0.8, y:148+(b.y+b.height/2)*0.8};
-  }
-  const centros={};
-  ['MXJAL','MXNLE','MXPUE','MXMEX','MXQUE'].forEach(e=>{
-    centros[e]=centroEdo(e);
-    const el=svg.querySelector('#b2c-'+e); if(el) el.classList.add('act');
-  });
-  _jalC=centros.MXJAL;
-  // Marcadores narrativos (casa y trabajo de Ana, en Jalisco)
-  [['\ud83c\udfe0','Tu casa',-14,16],['\ud83d\udcbc','Tu trabajo',20,-12]].forEach(([ic,tx,dx,dy])=>{
-    const m=document.createElement('div'); m.className='marcador';
-    m.style.left=(_jalC.x+dx)+'px'; m.style.top=(_jalC.y+dy)+'px';
-    m.innerHTML='<i>'+ic+'</i><small>'+tx+'</small>';
-    lienzo.appendChild(m);
-  });
-  // Pins de precio en coordenadas del lienzo
-  Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
-    const c=centros[d.edo]||{x:400,y:400};
-    const b=document.createElement('button');
-    b.className='pin-precio'; b.id='pin-'+id;
-    b.style.left=(c.x+d.dx)+'px'; b.style.top=(c.y+d.dy)+'px';
-    b.textContent=d.p;
-    b.onclick=()=>seleccionarPin(id);
-    lienzo.appendChild(b);
-  });
-  // Navegaci\u00f3n: arrastre + rueda
-  w.addEventListener('pointerdown',e=>{ if(e.target.closest('.pin-precio,.mapa-zoom,.pin-card')) return; arrastre={x:e.clientX,y:e.clientY,mx:mapaX,my:mapaY}; });
-  window.addEventListener('pointermove',e=>{ if(!arrastre) return; mapaX=arrastre.mx+(e.clientX-arrastre.x); mapaY=arrastre.my+(e.clientY-arrastre.y); pintarMapa(); });
-  window.addEventListener('pointerup',()=>arrastre=null);
-  w.addEventListener('wheel',e=>{ e.preventDefault(); zoomMapa(e.deltaY<0?1:-1); },{passive:false});
-  // Vista inicial: todo el pa\u00eds
-  mapaEsc=escalaPais(); pintarMapa();
-  seleccionarPin('bosques');
-})();
+  toast('Mapa sin conexión: mostrando versión esquemática');
+}
+window.addEventListener('load',()=>{ iniciarMapaB2C(); });
 
 /* ================= FILTROS MAPA NACIONAL ================= */
 function filtrarZonas(){
@@ -2142,6 +2140,7 @@ function modoB2C(m,btn){
   document.getElementById('b2c-mov').classList.toggle('activo',m==='movil');
   document.getElementById('b2c-web').classList.toggle('activo',m==='web');
   localStorage.setItem('b2c_modo',m);
+  if(typeof ajustarMapaB2C==='function') setTimeout(ajustarMapaB2C,120);
 }
 window.addEventListener('load',()=>{ if(localStorage.getItem('b2c_modo')==='web') modoB2C('web'); });
 let pantallaActual=0;
@@ -2150,6 +2149,7 @@ function irPantalla(n){
   document.getElementById('p-'+n).classList.add('activa');
   document.getElementById('tel-cuerpo').scrollTop=0;
   pantallaActual=n;
+  if(n===3&&typeof ajustarMapaB2C==='function') setTimeout(ajustarMapaB2C,80);
   const c=document.getElementById('copiloto-b2c-txt');
   const cb=document.getElementById('copiloto-b2c');
   if(cb) cb.style.display=(n===5)?'none':'';
