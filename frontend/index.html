@@ -2468,16 +2468,16 @@ if(mapaSvg){
   mapaSvg.addEventListener('wheel',e=>{ e.preventDefault(); const p=svgPt(e); zoomMx(e.deltaY<0?1.22:0.82,p.x,p.y); },{passive:false});
   mapaSvg.addEventListener('dblclick',e=>{ e.preventDefault(); const p=svgPt(e); zoomMx(1.6,p.x,p.y); });
   let _mxPan=null, _mxMovio=false;
-  mapaSvg.addEventListener('pointerdown',e=>{ _mxPan={x:e.clientX,y:e.clientY,vx:VB.x,vy:VB.y}; _mxMovio=false; mapaSvg.setPointerCapture(e.pointerId); });
-  mapaSvg.addEventListener('pointermove',e=>{
+  // Sin pointer capture: si se captura, el clic nunca llega al <path> del estado
+  mapaSvg.addEventListener('pointerdown',e=>{ _mxPan={x:e.clientX,y:e.clientY,vx:VB.x,vy:VB.y}; _mxMovio=false; });
+  window.addEventListener('pointermove',e=>{
     if(!_mxPan) return;
     const r=mapaSvg.getBoundingClientRect();
     const dx=e.clientX-_mxPan.x, dy=e.clientY-_mxPan.y;
-    if(Math.abs(dx)+Math.abs(dy)>4){ _mxMovio=true; mapaSvg.classList.add('arrastrando'); }
-    VB.x=_mxPan.vx-dx/r.width*VB.w; VB.y=_mxPan.vy-dy/r.height*VB.h;
-    clampVB(); aplicarVB();
+    if(Math.abs(dx)+Math.abs(dy)>5){ _mxMovio=true; mapaSvg.classList.add('arrastrando'); }
+    if(_mxMovio){ VB.x=_mxPan.vx-dx/r.width*VB.w; VB.y=_mxPan.vy-dy/r.height*VB.h; clampVB(); aplicarVB(); }
   });
-  ['pointerup','pointercancel'].forEach(ev=>mapaSvg.addEventListener(ev,()=>{ _mxPan=null; mapaSvg.classList.remove('arrastrando'); setTimeout(()=>_mxMovio=false,50); }));
+  ['pointerup','pointercancel'].forEach(ev=>window.addEventListener(ev,()=>{ if(!_mxPan) return; _mxPan=null; mapaSvg.classList.remove('arrastrando'); setTimeout(()=>_mxMovio=false,60); }));
   // Controles + HUD
   const cont=mapaSvg.parentElement;
   const ctr=document.createElement('div'); ctr.className='mapa-ctrl';
