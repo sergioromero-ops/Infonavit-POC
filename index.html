@@ -436,7 +436,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       <div class="grid kpis">
         <div class="kpi"><span class="lbl">Meta 2026</span><b>400,000</b><span class="delta">viviendas por contratar</span></div>
         <div class="kpi"><span class="lbl">Contratadas</span><b>312,480</b><span class="delta up">78.1% de la meta</span></div>
-        <div class="kpi"><span class="lbl">Terminadas</span><b>154,210</b><span class="delta up">+12,340 este mes</span></div>
+        <div class="kpi"><span class="lbl">Terminadas</span><b>154,210</b></div>
         <div class="kpi"><span class="lbl">Entregadas</span><b id="k-entregadas">121,875</b><span class="delta up" id="k-entregadas-d">39% de contratadas</span></div>
         <div class="kpi"><span class="lbl">Terminadas sin servicios</span><b id="k-sinservicios">18,404</b><span class="delta down">bloqueadas para entrega</span></div>
         <div class="kpi"><span class="lbl">Escrituradas</span><b id="k-escrituradas">98,442</b><span class="delta down" id="k-escr-d">12,440 pendientes de firma</span></div>
@@ -446,13 +446,13 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>Avance contra meta por estado</h3><span class="chip gris">Necesidad abril 2026: 689,748</span></div>
           <table class="tabla">
-            <thead><tr><th>Estado / zona</th><th>Meta</th><th style="width:34%">Avance</th><th>Semáforo</th></tr></thead>
+            <thead><tr><th>Estado / zona</th><th>Meta</th><th style="width:23%">Avance físico</th><th style="width:20%">Servicios</th><th>Semáforo</th></tr></thead>
             <tbody>
-              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Jalisco</b> · GDL y conurbados</td><td>89,040</td><td><div class="fila-estado"><div class="barra"><span id="bar-jal" style="width:61%"></span></div><span style="font-size:12px;font-weight:700" id="pct-jal">61%</span></div></td><td><span class="chip rojo" id="sem-jal"><span class="punto rojo"></span>Riesgo</span></td></tr>
-              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Nuevo León</b> · MTY y conurbados</td><td>67,305</td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:72%"></span></div><span style="font-size:12px;font-weight:700">72%</span></div></td><td><span class="chip ambar"><span class="punto ambar"></span>Atención</span></td></tr>
-              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Puebla</b> · Puebla y conurbados</td><td>29,719</td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:68%"></span></div><span style="font-size:12px;font-weight:700">68%</span></div></td><td><span class="chip ambar"><span class="punto ambar"></span>Atención</span></td></tr>
-              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Edo. de México</b> · Toluca y zona</td><td>21,336</td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:84%"></span></div><span style="font-size:12px;font-weight:700">84%</span></div></td><td><span class="chip verde"><span class="punto verde"></span>En meta</span></td></tr>
-              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Querétaro</b> · QRO y zona</td><td>12,570</td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:91%"></span></div><span style="font-size:12px;font-weight:700">91%</span></div></td><td><span class="chip verde"><span class="punto verde"></span>En meta</span></td></tr>
+              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Jalisco</b> · GDL y conurbados</td><td>89,040</td><td><div class="fila-estado"><div class="barra"><span id="bar-jal" style="width:61%"></span></div><span style="font-size:12px;font-weight:700" id="pct-jal">61%</span></div></td><td><div class="fila-estado"><div class="barra"><span class="" id="bar-jal-s" style="width:48%"></span></div><span style="font-size:12px;font-weight:700" id="pct-jal-s" >48%</span></div></td><td><span class="chip rojo" id="sem-jal"><span class="punto rojo"></span>Riesgo</span></td></tr>
+              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Nuevo León</b> · MTY y conurbados</td><td>67,305</td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:72%"></span></div><span style="font-size:12px;font-weight:700">72%</span></div></td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:64%"></span></div><span style="font-size:12px;font-weight:700" >64%</span></div></td><td><span class="chip ambar"><span class="punto ambar"></span>Atención</span></td></tr>
+              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Puebla</b> · Puebla y conurbados</td><td>29,719</td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:68%"></span></div><span style="font-size:12px;font-weight:700">68%</span></div></td><td><div class="fila-estado"><div class="barra"><span class="ambar" style="width:61%"></span></div><span style="font-size:12px;font-weight:700" >61%</span></div></td><td><span class="chip ambar"><span class="punto ambar"></span>Atención</span></td></tr>
+              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Edo. de México</b> · Toluca y zona</td><td>21,336</td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:84%"></span></div><span style="font-size:12px;font-weight:700">84%</span></div></td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:79%"></span></div><span style="font-size:12px;font-weight:700" >79%</span></div></td><td><span class="chip verde"><span class="punto verde"></span>En meta</span></td></tr>
+              <tr class="clic" onclick="irPanel('b2g','mapa')"><td><b>Querétaro</b> · QRO y zona</td><td>12,570</td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:91%"></span></div><span style="font-size:12px;font-weight:700">91%</span></div></td><td><div class="fila-estado"><div class="barra"><span class="verde" style="width:88%"></span></div><span style="font-size:12px;font-weight:700" >88%</span></div></td><td><span class="chip verde"><span class="punto verde"></span>En meta</span></td></tr>
             </tbody>
           </table>
           <button class="btn fantasma chico" style="margin-top:10px" onclick="irPanel('b2g','mapa')">Ver los 32 estados →</button>
@@ -467,6 +467,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <button onclick="preguntarB2G('bosques')">¿Por qué está en rojo Bosques del Bienestar?</button>
             <button onclick="preguntarB2G('servicios')">¿Dónde faltan más servicios?</button>
             <button onclick="preguntarB2G('escrituras')">¿Cómo va la escrituración?</button>
+            <button onclick="preguntarB2G('estim')">¿Qué estimaciones están detenidas?</button>
           </div>
           <div class="chat-input">
             <input id="input-b2g" type="text" placeholder="Pregúntale al copiloto…" onkeydown="if(event.key==='Enter')preguntarB2G('libre')">
@@ -588,7 +589,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 
         <div class="card" id="detalle-bosques">
           <div class="titulo-seccion" style="margin-top:0"><h3>Bosques del Bienestar</h3><span class="chip rojo" id="det-sem"><span class="punto rojo"></span>Semáforo rojo</span></div>
-          <p style="font-size:12.5px;color:var(--gris-500);margin-bottom:14px">Tlajomulco de Zúñiga, Jalisco · Hábitat Jalisco Constructora · 420 viviendas · Última actualización: <b id="det-ult">hace 12 días</b></p>
+          <p style="font-size:12.5px;color:var(--gris-500);margin-bottom:14px">Tlajomulco de Zúñiga, Jalisco · Hábitat Jalisco Constructora · 420 viviendas · Última actualización: <b id="det-ult">hace 12 días</b> <span id="det-uve" style="color:var(--verde);font-weight:700"></span><br>Reputación de residentes: <b style="color:var(--ambar)">★ 4.6</b> · 128 encuestas NPS</p>
           <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
             <div><span class="mini-lbl">Avance físico</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-fisico-bar" style="width:78%"></span></div><b id="det-fisico">78%</b></div></div>
             <div><span class="mini-lbl">Avance servicios</span><div class="fila-estado" style="margin-top:6px"><div class="barra"><span id="det-serv-bar" class="ambar" style="width:54%"></span></div><b id="det-serv">54%</b></div></div>
@@ -602,6 +603,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="causa"><div class="ic rojo">⚡</div><div><b>CFE: 68 viviendas sin conexión eléctrica</b><p>Trámite de subestación detenido 31 días. Responsable: CFE Distribución Jalisco.</p></div><div class="meta"><span class="chip rojo">Crítico</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 24 jul</p></div></div>
             <div class="causa"><div class="ic ambar">💧</div><div><b>Drenaje: colector municipal incompleto</b><p>Afecta a la etapa 3 (54 viviendas). Responsable: Ayuntamiento de Tlajomulco.</p></div><div class="meta"><span class="chip ambar">Alto</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 08 ago</p></div></div>
             <div class="causa" id="causa-escrituras"><div class="ic ambar">📜</div><div><b id="causa-escr-t">48 escrituras detenidas en notaría</b><p id="causa-escr-p">25 ya tienen expediente completo y podrían firmarse esta semana. Responsable: Notaría 121 GDL.</p></div><div class="meta"><span class="chip ambar" id="causa-escr-chip">Alto</span></div></div>
+            <div class="causa" id="causa-estim"><div class="ic rojo">🧾</div><div><b id="causa-estim-t">Solo 1 de 2 estimaciones del mes cargadas</b><p id="causa-estim-p">Sin estimación no hay pago y la obra se frena. Responsable: Hábitat Jalisco.</p></div><div class="meta"><span class="chip rojo" id="causa-estim-chip">Crítico</span></div></div>
             <div class="causa" id="causa-fianza"><div class="ic rojo">🛡️</div><div><b id="causa-fianza-t">Fianza de cumplimiento vence en 9 días</b><p id="causa-fianza-p">Monto: $48.2 MDP. Sin evidencia de renovación por parte del constructor.</p></div><div class="meta"><span class="chip rojo" id="causa-fianza-chip">Crítico</span></div></div>
           </div>
           <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
@@ -637,6 +639,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="causa"><div class="ic verde" style="background:var(--verde-claro)">✓</div><div><b>Vigentes y en regla</b><p>184 fianzas activas</p></div><div class="meta"><span class="chip verde">OK</span></div></div>
         </div>
         <div class="card">
+          <div class="titulo-seccion" style="margin-top:0"><h3>🧾 Estimaciones</h3><span class="chip rojo">$142 MDP detenidos</span></div>
+          <div class="causa"><div class="ic rojo">⏱️</div><div><b>9 estimaciones en autorización &gt; 5 días</b><p>$142 MDP · la obra se frena sin pago</p></div><div class="meta"><span class="chip rojo">Crítico</span></div></div>
+          <div class="causa"><div class="ic ambar">🧾</div><div><b>7 constructores con &lt; 2 estimaciones/mes</b><p>Incluye Hábitat Jalisco (1/2 en julio)</p></div><div class="meta"><span class="chip ambar" id="blq-est-chip">Alto</span></div></div>
+          <div class="causa"><div class="ic azul">📄</div><div><b>4 prefacturas sin factura</b><p>$61 MDP por liberar a pago</p></div><div class="meta"><span class="chip azul">Medio</span></div></div>
+        </div>
+        <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>🏛️ Faltantes Infonavit</h3><span class="chip azul">Acción interna</span></div>
           <div class="causa"><div class="ic ambar">💰</div><div><b>Pagos a constructores</b><p>14 estimaciones por liberar · $238 MDP</p></div><div class="meta"><span class="chip ambar">Alto</span></div></div>
           <div class="causa"><div class="ic azul">🔍</div><div><b>Validaciones de verificador</b><p>32 visitas de obra por programar</p></div><div class="meta"><span class="chip azul">Medio</span></div></div>
@@ -658,6 +666,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="kpi" style="box-shadow:none;border:1px solid var(--gris-100)"><span class="lbl">Estimaciones</span><b>$18,430 MDP</b></div>
             <div class="kpi" style="box-shadow:none;border:1px solid var(--gris-100)"><span class="lbl">Por liberar</span><b style="color:var(--ambar)">$238 MDP</b></div>
           </div>
+          <div class="titulo-seccion"><h3 style="font-size:14px">🧾 Estimaciones recientes</h3><span class="chip gris">flujo: estimación → prefactura → factura → pago 3 días hábiles</span></div>
+          <table class="tabla" style="margin-bottom:16px"><tbody>
+            <tr><td>Hábitat Jalisco · Bosques del Bienestar · <b>Est. 2/2</b></td><td style="text-align:right"><span class="chip gris" id="est-bosques">Sin cargar</span></td></tr>
+            <tr><td>Grupo Angelópolis · Valle Angelópolis · Est. 7</td><td style="text-align:right"><span class="chip ambar">Prefactura</span></td></tr>
+            <tr><td>Vivienda Bajío · Mirador del Marqués · Est. 12</td><td style="text-align:right"><span class="chip verde">Pagada · 3 días</span></td></tr>
+          </tbody></table>
           <span class="mini-lbl">Variación mensual de pagos (últimos 6 meses)</span>
           <div style="display:flex;align-items:flex-end;gap:10px;height:120px;margin-top:12px;padding:0 4px">
             <div style="flex:1;text-align:center"><div style="background:var(--gris-300);height:52px;border-radius:6px 6px 0 0"></div><small style="font-size:10.5px;color:var(--gris-500)">Feb</small></div>
@@ -809,6 +823,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="titulo-seccion" style="margin-top:0"><h3>Solicitudes de la Dirección</h3></div>
           <div class="msj-item"><div class="avatar">DG</div><div><b>Dirección General</b> · <small>hoy</small><p style="font-size:13px;color:var(--gris-700)">Dar seguimiento prioritario a Bosques del Bienestar: fianza, verificación de etapa 3 y gestión de drenaje con el municipio.</p></div></div>
           <div class="msj-item"><div class="avatar">TS</div><div><b>Tesorería</b> · <small>ayer</small><p style="font-size:13px;color:var(--gris-700)">Corte de estimaciones el viernes 10. Favor de enviar vistos buenos pendientes antes de las 14:00 h.</p></div></div>
+          <div style="background:var(--azul-claro);border:1px solid #B3CCF5;border-radius:10px;padding:14px;margin-top:14px;font-size:13px">
+            <b>📢 Mensaje global del director</b>
+            <p style="margin-top:6px;color:var(--gris-700)">"Quiero todos los desarrollos de Jalisco con servicios validados y estimaciones al corriente antes del 15 de julio."</p>
+            <button class="btn primario chico" style="margin-top:10px" id="btn-desglosar" onclick="desglosarTareasIA()">✦ Desglosar en tareas con IA</button>
+            <div id="tareas-ia"></div>
+          </div>
         </div>
         <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>Reportar a la torre de control</h3></div>
@@ -841,6 +861,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
     <div class="contenedor">
       <button class="activo" onclick="irPanel('b2b','desarrollos',this)">Mis desarrollos</button>
       <button onclick="irPanel('b2b','actualizar',this)">Actualizar avance</button>
+      <button onclick="irPanel('b2b','estimaciones',this)">Estimaciones</button>
       <button onclick="irPanel('b2b','fianzas',this)">Fianzas y documentos</button>
       <button onclick="irPanel('b2b','mensajes',this)">Mensajes de Infonavit</button>
     </div>
@@ -856,6 +877,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="kpi"><span class="lbl">Escrituradas</span><b>384</b></div>
         <div class="kpi"><span class="lbl">Documentos pendientes</span><b style="color:var(--ambar)">7</b></div>
         <div class="kpi"><span class="lbl">Fianzas por vencer</span><b style="color:var(--rojo-sem)" id="b2b-fianzas-kpi">1</b></div>
+        <div class="kpi"><span class="lbl">Estimaciones del mes</span><b style="color:var(--ambar)" id="b2b-est-kpi">1 / 2</b><span class="delta">mínimo 2 · cobra en 3 días</span></div>
       </div>
       <div class="card" style="margin-bottom:20px">
         <div class="titulo-seccion" style="margin-top:0"><h3>Mis desarrollos en el mapa · Jalisco</h3><span class="chip gris">Pasa el mouse y haz clic en un desarrollo</span></div>
@@ -961,6 +983,54 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
   </div>
 
   <!-- Panel: Fianzas -->
+  <!-- Panel: Estimaciones -->
+  <div id="panel-b2b-estimaciones" class="panel">
+    <div class="contenedor">
+      <div class="grid kpis" style="margin-bottom:20px">
+        <div class="kpi"><span class="lbl">Estimaciones este mes</span><b style="color:var(--ambar)" id="est-contador">1 / 2</b><span class="delta">mínimo 2 al mes</span></div>
+        <div class="kpi"><span class="lbl">Estimado acumulado 2026</span><b>$148.6 MDP</b></div>
+        <div class="kpi"><span class="lbl">Último pago</span><b>$11.2 MDP</b><span class="delta up">Est. 1/2 · pagada en 3 días hábiles</span></div>
+        <div class="kpi"><span class="lbl">Rechazos del año</span><b>2</b><span class="delta">por detalles de formato</span></div>
+      </div>
+      <div class="grid dos-col">
+        <div class="card">
+          <div class="titulo-seccion" style="margin-top:0"><h3>Generar estimación 2/2 · Bosques del Bienestar</h3><span class="chip azul">✦ Contra presupuesto cargado</span></div>
+          <form class="formulario" onsubmit="event.preventDefault();generarEstimacion()">
+            <div><label>Periodo</label><select><option>1 – 15 de julio 2026</option></select></div>
+            <div><label>Avance físico soportado</label><input type="text" value="82% (validación UVE en curso)" readonly></div>
+            <table class="tabla" style="margin-top:4px">
+              <thead><tr><th>Concepto</th><th>Presupuesto</th><th>Esta estimación</th></tr></thead>
+              <tbody>
+                <tr><td>Estructura etapa 3</td><td>$48.0 MDP</td><td>$6.8 MDP</td></tr>
+                <tr><td>Urbanización y servicios</td><td>$31.5 MDP</td><td>$4.1 MDP</td></tr>
+                <tr><td>Acabados</td><td>$22.4 MDP</td><td>$1.5 MDP</td></tr>
+                <tr><td><b>Total</b></td><td></td><td><b>$12.4 MDP</b></td></tr>
+              </tbody>
+            </table>
+            <button class="btn primario" id="btn-gen-est">Enviar estimación 2/2 a autorización</button>
+          </form>
+        </div>
+        <div>
+          <div class="card">
+            <div class="titulo-seccion" style="margin-top:0"><h3 style="font-size:14px">Flujo de la estimación 2/2</h3></div>
+            <div id="pipe-est" style="display:flex;flex-direction:column;gap:8px">
+              <div class="check-item"><span id="pipe-1" class="chip gris">Pendiente</span> Estimación generada</div>
+              <div class="check-item"><span id="pipe-2" class="chip gris">—</span> Autorización de estimación</div>
+              <div class="check-item"><span id="pipe-3" class="chip gris">—</span> Prefactura</div>
+              <div class="check-item"><span id="pipe-4" class="chip gris">—</span> Autorización y factura</div>
+              <div class="check-item"><span id="pipe-5" class="chip gris">—</span> Pago (3 días hábiles)</div>
+            </div>
+            <p style="font-size:12px;color:var(--gris-500);margin-top:12px">Estimación 1/2: pagada el 30 de junio, 3 días hábiles después de facturar. Sin estimación no hay pago, y sin pago la obra se frena.</p>
+          </div>
+          <div class="copiloto-caja" style="margin-top:16px">
+            <div class="cab"><div class="ia">✦</div><div><h4>Copiloto del Constructor</h4><small>IA personalizada · objetivos operativos</small></div></div>
+            <div class="chat" id="chat-estim"><div class="burbuja ia">Preparé tu estimación 2/2 contra el presupuesto cargado en sistema: <b>$12.4 MDP</b> soportados con el avance del 82%. Si la envías hoy, con la validación de la UVE alcanzas la autorización esta semana y cobras en 3 días hábiles tras facturar.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="panel-b2b-fianzas" class="panel">
     <div class="contenedor">
       <div class="card">
@@ -1002,7 +1072,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       </div>
       <div class="usuario">
         <div class="avatar" style="background:var(--azul)">N1</div>
-        <div>Notaría 121 GDL<br><small style="color:var(--gris-500);font-weight:600">Rol: escrituración</small></div>
+        <div>Notaría 121 GDL<br><small style="color:var(--gris-500);font-weight:600">Roles: escrituración · verificación de obra (UVE)</small></div>
       </div>
     </div>
   </header>
@@ -1021,9 +1091,11 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="kpi"><span class="lbl">Listas para firma</span><b id="b2o-listas">25</b><span class="delta up">expediente completo</span></div>
         <div class="kpi"><span class="lbl">En preparación</span><b>23</b></div>
         <div class="kpi"><span class="lbl">Firmadas este mes</span><b id="b2o-firmadas">84</b></div>
+        <div class="kpi"><span class="lbl">Verificaciones de obra</span><b id="b2o-uve">1</b><span class="delta">UVE externa asignada</span></div>
       </div>
       <div class="grid dos-col">
         <div>
+          <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏗️</div><div><b>UVE-14 (Unidad de Verificación externa) · Validar avance físico etapa 3</b><p>El constructor reporta 82%. Tu validación en sitio habilita la autorización de su estimación 2/2 y el pago en 3 días hábiles.</p></div><div class="acciones"><button class="btn primario chico" id="btn-uve" onclick="validarAvanceUVE()">Validar avance de obra</button></div></div>
           <div class="tarea"><div class="ic" style="background:var(--rojo-sem-claro)">📜</div><div><b>Bosques del Bienestar · 25 escrituras listas para firma</b><p>Expedientes completos y validados. La IA priorizó este lote: destrabaría el semáforo rojo del desarrollo.</p></div><div class="acciones"><button class="btn primario chico" id="btn-validar-escrituras" onclick="validarEscrituras()">Programar 25 firmas</button></div></div>
           <div class="tarea"><div class="ic" style="background:var(--ambar-claro)">📄</div><div><b>Bosques del Bienestar · 23 expedientes incompletos</b><p>Faltan documentos del derechohabiente (14) y avalúos (9). Se enviaron recordatorios automáticos.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: recordatorios reenviados a 14 derechohabientes')">Reenviar aviso</button></div></div>
           <div class="tarea"><div class="ic" style="background:var(--azul-claro)">🏛️</div><div><b>Jardines de Tesistán · 18 escrituras firmadas por registrar</b><p>Pendientes de inscripción en Registro Público de la Propiedad.</p></div><div class="acciones"><button class="btn secundario chico" onclick="toast('Prototipo: lote enviado a Registro Público')">Enviar a RPP</button></div></div>
@@ -1141,6 +1213,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .lt-item p{font-size:12px;color:var(--gris-500)}
 .burbuja-copiloto{position:absolute;bottom:16px;left:16px;right:16px;background:var(--gris-900);color:#fff;border-radius:15px;padding:13px 16px;font-size:12.5px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--sombra-md);z-index:10}
 .burbuja-copiloto .ia{width:26px;height:26px;border-radius:8px;background:var(--rojo);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.nps-est{display:flex;gap:2px}
+.nps-est span{font-size:21px;color:var(--gris-300);cursor:pointer;transition:.1s}
+.nps-est span.on{color:var(--ambar)}
 .b2c-panel-lateral{max-width:360px}
 .b2c-panel-lateral .card{margin-bottom:14px}
 @media(max-width:820px){.b2c-panel-lateral{display:none}}
@@ -1177,6 +1252,11 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="b2c-head"><button class="volver" onclick="irPantalla(0)">←</button><span class="titulo">Verifica tu elegibilidad</span></div>
           <div class="progreso"><span class="ok"></span><span></span><span></span><span></span><span></span></div>
           <p style="font-size:13.5px;color:var(--gris-700)">Escribe tu <b>Número de Seguridad Social</b> (11 dígitos). Está en tu credencial del IMSS o en tu recibo de nómina.</p>
+          <div class="check-lista" style="margin:10px 0 4px">
+            <div class="check-item" style="cursor:default">✓ 6+ meses cotizando en Infonavit</div>
+            <div class="check-item" style="cursor:default">✓ Ingreso entre 1 y 2 salarios mínimos</div>
+            <div class="check-item" style="cursor:default">✓ Sin crédito Infonavit vigente</div>
+          </div>
           <div class="campo-nss">
             <input maxlength="11" id="nss" placeholder="9209 914 2066" value="92099142066" style="letter-spacing:.15em">
           </div>
@@ -1197,7 +1277,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="card" style="padding:16px;margin-bottom:14px">
             <span class="mini-lbl">Tu resumen</span>
             <table style="width:100%;font-size:13.5px;margin-top:8px;border-collapse:collapse">
-              <tr><td style="padding:5px 0;color:var(--gris-500)">Ingreso registrado</td><td style="text-align:right;font-weight:700">1.8 salarios mínimos</td></tr>
+              <tr><td style="padding:5px 0;color:var(--gris-500)">Tiempo cotizando</td><td style="text-align:right;font-weight:700">14 meses ✓</td></tr>
+              <tr><td style="padding:5px 0;color:var(--gris-500)">Ingreso (1–2 SM)</td><td style="text-align:right;font-weight:700">1.8 salarios mínimos ✓</td></tr>
+              <tr><td style="padding:5px 0;color:var(--gris-500)">Crédito Infonavit vigente</td><td style="text-align:right;font-weight:700">Ninguno ✓</td></tr>
               <tr><td style="padding:5px 0;color:var(--gris-500)">Crédito conjunto con Luis</td><td style="text-align:right;font-weight:700">Disponible ✓</td></tr>
               <tr><td style="padding:5px 0;color:var(--gris-500)">Mensualidad estimada</td><td style="text-align:right;font-weight:700">$3,150 MXN</td></tr>
               <tr><td style="padding:5px 0;color:var(--gris-500)">Zona detectada</td><td style="text-align:right;font-weight:700">📍 Guadalajara, Jal.</td></tr>
@@ -1210,6 +1292,23 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <div class="pantalla" id="p-3">
           <div class="b2c-head"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span></div>
           <div class="progreso"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
+          <div style="border:1.5px solid var(--gris-100);border-radius:14px;overflow:hidden;margin-bottom:12px">
+            <svg viewBox="0 0 340 150" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
+              <rect width="340" height="150" fill="#EFF3F8"/>
+              <path d="M0 40 H340 M0 95 H340 M60 0 V150 M150 0 V150 M250 0 V150" stroke="#DDE5EE" stroke-width="6"/>
+              <path d="M0 40 H340 M0 95 H340 M60 0 V150 M150 0 V150 M250 0 V150" stroke="#fff" stroke-width="1.5" stroke-dasharray="6 6"/>
+              <path d="M38 118 Q110 60 196 68" stroke="var(--rojo)" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
+              <path d="M196 68 Q250 74 300 38" stroke="#175CD3" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
+              <g font-size="10.5" font-weight="700" font-family="inherit">
+                <rect x="16" y="106" width="66" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="24" y="120">🏠 Tu casa</text>
+                <rect x="266" y="24" width="66" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="272" y="38">💼 Trabajo</text>
+                <rect x="160" y="52" width="76" height="22" rx="11" fill="var(--rojo)"/><text x="168" y="67" fill="#fff">$598,000 ★</text>
+                <rect x="84" y="18" width="60" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="90" y="32">$612,000</text>
+                <rect x="240" y="112" width="60" height="20" rx="10" fill="#fff" stroke="#D1D5DB"/><text x="246" y="126">$645,000</text>
+              </g>
+            </svg>
+            <p style="font-size:11px;color:var(--gris-500);padding:8px 12px;background:#fff">📍 Detectamos tu casa y tu <b>centro de trabajo</b> (vía tu NSS → patrón) para recomendarte por tiempo real de traslado, no por distancia en línea recta.</p>
+          </div>
           <div class="filtros" style="margin-bottom:12px">
             <select style="flex:1"><option>Jalisco</option></select>
             <select style="flex:1"><option>Tlajomulco</option><option>Zapopan</option><option>El Salto</option></select>
@@ -1218,7 +1317,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="viv-img a"><span class="chip verde" style="background:#fff">A 6.2 km de tu trabajo</span></div>
             <div class="viv-cuerpo">
               <div style="display:flex;align-items:center;gap:8px"><h4>Bosques del Bienestar</h4><span class="match">✓ 98% compatible</span></div>
-              <div class="fila"><span>🛏 2 recámaras</span><span>📐 62 m²</span><span>🏗 Entrega: nov 2026</span><span>🌳 Parque y ciclovía</span></div>
+              <div class="fila"><span>🛏 2 recámaras</span><span>📐 62 m²</span><span>🏗 Entrega: nov 2026</span><span>🚌 22 min a tu trabajo</span><span>🌳 Parque y ciclovía</span></div>
               <div class="viv-precio"><b>$598,000</b><small>· mensualidad ≈ $3,150</small></div>
             </div>
           </div>
@@ -1226,7 +1325,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="viv-img"><span class="chip gris" style="background:#fff">A 11 km</span></div>
             <div class="viv-cuerpo">
               <div style="display:flex;align-items:center;gap:8px"><h4>Jardines de Tesistán</h4><span class="match">✓ 91% compatible</span></div>
-              <div class="fila"><span>🛏 2 recámaras</span><span>📐 58 m²</span><span>🏗 Entrega: sep 2026</span></div>
+              <div class="fila"><span>🛏 2 recámaras</span><span>📐 58 m²</span><span>🏗 Entrega: sep 2026</span><span>🚌 35 min a tu trabajo</span></div>
               <div class="viv-precio"><b>$612,000</b><small>· mensualidad ≈ $3,230</small></div>
             </div>
           </div>
@@ -1234,7 +1333,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="viv-img b"><span class="chip gris" style="background:#fff">A 14 km</span></div>
             <div class="viv-cuerpo">
               <div style="display:flex;align-items:center;gap:8px"><h4>Lomas del Salto</h4><span class="match">✓ 86% compatible</span></div>
-              <div class="fila"><span>🛏 3 recámaras</span><span>📐 68 m²</span><span>🏗 Entrega: feb 2027</span></div>
+              <div class="fila"><span>🛏 3 recámaras</span><span>📐 68 m²</span><span>🏗 Entrega: feb 2027</span><span>🚗 40 min a tu trabajo</span></div>
               <div class="viv-precio"><b>$645,000</b><small>· mensualidad ≈ $3,400</small></div>
             </div>
           </div>
@@ -1269,9 +1368,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
           <div class="card" style="padding:14px;margin-bottom:14px">
             <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:var(--gris-500)">Tu selección</span><b id="sel-depto">Torre A · Piso 3 · Depto 304</b></div>
-            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Precio</span><b>$598,000 · ≈ $3,150/mes</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Precio del programa</span><b>$598,000 · ≈ $3,150/mes</b></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-top:6px"><span style="color:var(--gris-500)">Valor comercial equivalente</span><b style="color:var(--verde)">≈ $1,000,000</b></div>
           </div>
-          <button class="btn primario btn-full" onclick="apartarDepto()">Apartar por 72 horas 🔒</button>
+          <button class="btn primario btn-full" onclick="apartarDepto()">Apartar ahora — toma minutos 🔒</button>
         </div>
 
         <!-- P5: Documentos + cronómetro -->
@@ -1280,11 +1380,12 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="progreso"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span></div>
           <div class="crono">
             <span style="font-size:24px">⏳</span>
-            <div><div class="tiempo" id="crono-tiempo">71:58:41</div><p>Tu depto 304 está apartado. Completa tus documentos antes de que termine el tiempo.</p></div>
+            <div><div class="tiempo" id="crono-tiempo">71:58:41</div><p>Apartado en minutos ✓. Tu apartado tiene una vigencia de 72 horas para completar tus documentos.</p></div>
           </div>
-          <div class="doc-item ok"><div class="ic">🪪</div><div><b>INE (frente y reverso)</b><small>Subida y validada ✓</small></div><span class="accion chip verde">Listo</span></div>
+          <div class="doc-item ok"><div class="ic">🪪</div><div><b>INE (frente y reverso)</b><small>Validación automática al estándar bancario ✓</small></div><span class="accion chip verde">Listo</span></div>
           <div class="doc-item ok"><div class="ic">📄</div><div><b>CURP</b><small>La obtuvimos por ti automáticamente ✓</small></div><span class="accion chip verde">Listo</span></div>
           <div class="doc-item ok" id="doc-comprobante"><div class="ic">🏠</div><div><b>Comprobante de domicilio</b><small id="doc-comp-sub">Subido y validado ✓</small></div><span class="accion chip verde" id="doc-comp-chip">Listo</span></div>
+          <div class="doc-item" id="doc-bio"><div class="ic">🤳</div><div><b>Verificación biométrica</b><small>Selfie + prueba de vida, desde tu celular</small></div><button class="accion btn primario chico" id="btn-bio" onclick="verificarBio()">Verificar</button></div>
           <div class="doc-item" id="doc-constancia"><div class="ic">🧾</div><div><b>Constancia de situación fiscal</b><small>El copiloto te explica cómo descargarla del SAT en 1 minuto</small></div><button class="accion btn primario chico" onclick="subirConstancia()">Subir</button></div>
           <button class="btn primario btn-full" id="btn-docs" style="margin-top:8px;opacity:.5" disabled onclick="irPantalla(6)">Continuar a firma →</button>
         </div>
@@ -1296,7 +1397,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="tarjeta-ok" style="background:var(--azul-claro);border-color:#B3CCF5">
             <span class="big">📜</span>
             <h3>Tu expediente está completo</h3>
-            <p>Te asignamos la <b>Notaría 121 de Guadalajara</b>. Ya validó tus documentos.</p>
+            <p>Te asignamos la <b>Notaría 121 de Guadalajara</b>. Tu escritura ya está precargada digitalmente: solo acudes a firmar.</p>
           </div>
           <div class="card" style="padding:16px;margin-bottom:14px">
             <span class="mini-lbl">Tu cita de firma</span>
@@ -1324,7 +1425,27 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="lt-item"><div class="pt">🔑</div><div><b>Entrega de llaves</b><p>Estimada: 28 de noviembre 2026 · te confirmamos 15 días antes</p></div></div>
             <div class="lt-item"><div class="pt">📜</div><div><b>Recoge tu escritura registrada</b><p>Te avisamos cuando esté lista en notaría · incluye tu reglamento de condominio</p></div></div>
           </div>
-          <button class="btn secundario btn-full" onclick="irVista('b2g')">Ver el impacto en la torre de control →</button>
+          <button class="btn secundario btn-full" onclick="irPantalla(8)">⭐ 6 meses después: califica tu desarrollo</button>
+          <button class="btn secundario btn-full" style="margin-top:8px" onclick="irVista('b2g')">Ver el impacto en la torre de control →</button>
+        </div>
+
+
+        <!-- P8: Encuesta de salida / NPS -->
+        <div class="pantalla" id="p-8">
+          <div class="b2c-head"><button class="volver" onclick="irPantalla(7)">←</button><span class="titulo">¿Cómo ha sido vivir aquí?</span></div>
+          <div class="card" style="padding:14px;margin-bottom:14px;display:flex;gap:11px;align-items:flex-start">
+            <div class="avatar" style="background:var(--rojo);flex-shrink:0">▶</div>
+            <div style="font-size:12.5px"><b>Inés · vocera IA</b> <span class="chip azul">video</span><p style="color:var(--gris-500);margin-top:3px">"Ana, ya llevan 6 meses en Bosques del Bienestar. Califica tu experiencia: tu opinión valora al desarrollador y mejora el programa."</p></div>
+          </div>
+          <div id="nps-lista">
+            <div class="doc-item" style="justify-content:space-between"><b style="font-size:13px">Ubicación</b><div class="nps-est"><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span></div></div>
+            <div class="doc-item" style="justify-content:space-between"><b style="font-size:13px">Servicios cercanos (escuelas, hospital, comercio)</b><div class="nps-est"><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span></div></div>
+            <div class="doc-item" style="justify-content:space-between"><b style="font-size:13px">Transporte hacia tu trabajo</b><div class="nps-est"><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span></div></div>
+            <div class="doc-item" style="justify-content:space-between"><b style="font-size:13px">Calidad de la vivienda</b><div class="nps-est"><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span></div></div>
+            <div class="doc-item" style="justify-content:space-between"><b style="font-size:13px">El desarrollador (Hábitat Jalisco)</b><div class="nps-est"><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span><span onclick="estrella(this)">★</span></div></div>
+          </div>
+          <button class="btn primario btn-full" style="margin-top:8px" onclick="enviarNPS()">Enviar mi calificación</button>
+          <div id="nps-gracias"></div>
         </div>
 
         <div class="burbuja-copiloto" id="copiloto-b2c">
@@ -1360,7 +1481,9 @@ const S = {
   solicitud:false,        // Director pidió actualización
   constructor:false,      // Constructor actualizó
   operador:false,         // Operador validó 25 escrituras
-  dh:false                // Derechohabiente confirmó firma
+  dh:false,               // Derechohabiente confirmó firma
+  estimacion:false,       // Constructor cargó estimación 2/2
+  verificado:false        // UVE validó avance de obra
 };
 
 /* ================= NAVEGACIÓN ================= */
@@ -1393,6 +1516,8 @@ function preguntarB2G(tipo){
     r='El mayor bloqueo nacional es <b>electrificación</b>: 4,210 viviendas en 12 desarrollos, concentradas en Jalisco y Chihuahua. Le siguen agua potable (2,180) y drenaje (1,764). Si CFE resuelve los 3 trámites prioritarios de Jalisco, se destraban 2,340 entregas en agosto.'; }
   else if(tipo==='escrituras'){ q='¿Cómo va la escrituración?';
     r=S.operador? 'Mejorando: la Notaría 121 programó <b>25 firmas</b> de Bosques del Bienestar hoy. Quedan 12,415 pendientes a nivel nacional; el cuello principal ahora es Registro Público (4,890).' : 'Hay <b>12,440 escrituras pendientes</b>: 5,120 en notarías, 4,890 en Registro Público y 2,430 por documentos del derechohabiente. La acción más rápida: las 25 escrituras listas de Bosques del Bienestar, que la Notaría 121 puede firmar esta semana.'; }
+  else if(tipo==='estim'){ q='¿Qué estimaciones están detenidas?';
+    r=S.estimacion? 'Hábitat Jalisco ya cargó su <b>estimación 2/2</b> ($12.4 MDP): está autorizada y el pago corre en 3 días hábiles. Quedan 8 estimaciones detenidas por $129.6 MDP; la más antigua lleva 9 días en autorización.' : 'Hay <b>9 estimaciones detenidas</b> en autorización por $142 MDP y <b>7 constructores</b> van con menos de 2 estimaciones este mes — incluido Hábitat Jalisco (1/2). Sin estimación no hay pago y la obra se frena. ¿Le redacto la solicitud de estimación al constructor?'; }
   else { q=input.value.trim(); if(!q) return; input.value='';
     r='Con datos simulados del prototipo: la respuesta completa integraría reportes de avance, servicios, escrituración y tesorería en tiempo real. En la demo, prueba las preguntas sugeridas para ver el análisis de causa raíz.'; }
   chat.insertAdjacentHTML('beforeend','<div class="burbuja yo">'+q+'</div>');
@@ -1470,6 +1595,47 @@ function hubEntrar(){
   else{ document.getElementById('hub-roles').style.display='block'; }
 }
 
+/* ================= ESTIMACIONES / UVE / NPS / TAREAS IA ================= */
+function generarEstimacion(){
+  S.estimacion=true;
+  const b=document.getElementById('btn-gen-est'); b.textContent='✓ Estimación 2/2 enviada'; b.disabled=true; b.style.opacity=.6;
+  const est=[["pipe-1","chip verde","Listo"],["pipe-2","chip ambar","En autorización"],["pipe-3","chip gris","Sigue"],["pipe-4","chip gris","—"],["pipe-5","chip gris","3 días hábiles"]];
+  est.forEach(([id,cl,tx])=>{const e=document.getElementById(id); if(e){e.className=cl;e.textContent=tx;}});
+  ponTexto('est-contador','2 / 2'); const k=document.getElementById('est-contador'); if(k) k.style.color='var(--verde)';
+  ponTexto('b2b-est-kpi','2 / 2'); const k2=document.getElementById('b2b-est-kpi'); if(k2) k2.style.color='var(--verde)';
+  const ch=document.getElementById('chat-estim'); if(ch) ch.insertAdjacentHTML('beforeend','<div class="burbuja ia">Enviada ✓. Con la validación de la UVE, la autorización corre hoy: <b>prefactura → factura → pago en 3 días hábiles</b>. El Director ya la ve en su tablero.</div>');
+  toast('✓ Estimación 2/2 enviada a autorización');
+  pintarB2G();
+}
+function validarAvanceUVE(){
+  S.verificado=true;
+  const b=document.getElementById('btn-uve'); b.textContent='✓ Avance validado'; b.disabled=true; b.style.opacity=.6;
+  ponTexto('b2o-uve','0');
+  const u=document.getElementById('det-uve'); if(u) u.textContent='· Avance validado por UVE-14 ✓';
+  toast('✓ UVE-14 validó el avance físico (82%)');
+  pintarB2G();
+}
+function estrella(sp){
+  const kids=[...sp.parentElement.children]; const i=kids.indexOf(sp);
+  kids.forEach((k,j)=>k.classList.toggle('on',j<=i));
+  sp.parentElement.dataset.v=i+1;
+}
+function enviarNPS(){
+  const vals=[...document.querySelectorAll('#nps-lista .nps-est')].map(e=>+(e.dataset.v||0));
+  if(vals.every(v=>v===0)){ toast('Toca las estrellas para calificar'); return; }
+  const bajo=vals.some(v=>v>0&&v<=2);
+  document.getElementById('nps-gracias').innerHTML='<div class="tarjeta-ok" style="margin-top:14px"><span class="big">💚</span><h3>¡Gracias, Ana!</h3><p>'+(bajo?'Inés te hará 2 preguntas más sobre lo que calificaste bajo, para entender qué mejorar.':'Tu calificación ya alimenta la reputación de Hábitat Jalisco en la torre de control.')+'</p></div>';
+  toast('✓ Encuesta enviada · reputación actualizada');
+}
+function desglosarTareasIA(){
+  const b=document.getElementById('btn-desglosar'); b.textContent='✓ 3 tareas asignadas por IA'; b.disabled=true; b.style.opacity=.6;
+  document.getElementById('tareas-ia').innerHTML=
+   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:10px"><div class="ic azul">🔍</div><div><b>Programar verificación UVE · Bosques del Bienestar</b><p>Asignada a: Laura Mendoza (verificación) · vence 11 jul</p></div><div class="meta"><span class="chip ambar">En curso</span></div></div>'+
+   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic rojo">🧾</div><div><b>Requerir estimación 2/2 a Hábitat Jalisco</b><p>Asignada a: R. Cortés (tesorería regional) · vence 12 jul</p></div><div class="meta"><span class="chip rojo">Urgente</span></div></div>'+
+   '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic ambar">⚡</div><div><b>Mesa CFE servicios Jalisco (4,180 viviendas)</b><p>Asignada a: M. Ávila (servicios) · vence 14 jul</p></div><div class="meta"><span class="chip ambar">En curso</span></div></div>';
+  toast('✦ La IA desglosó el mensaje en 3 tareas según el perfil de cada colaborador');
+}
+
 /* ================= HISTORIA: COLABORADOR ================= */
 function validarFianza(){
   const b=document.getElementById('btn-validar-fianza');
@@ -1494,11 +1660,12 @@ function irPantalla(n){
     0:'<b>Copiloto operativo:</b> Hola, soy tu guía. Si algo no se entiende, pregúntame — hablo claro, sin lenguaje de trámite.',
     1:'<b>Copiloto operativo:</b> Tu NSS son 11 números. ¿No lo encuentras? Está en tu recibo de nómina, arriba a la derecha.',
     2:'<b>Copiloto operativo:</b> Tu crédito conjunto con Luis suma capacidad. La mensualidad nunca superará el 30% de su ingreso.',
-    3:'<b>Copiloto operativo:</b> Ordené las opciones por cercanía a tu trabajo y compatibilidad con tu crédito.',
+    3:'<b>Copiloto operativo:</b> Crucé tu crédito con la ubicación de tu casa y tu centro de trabajo (lo detecté por tu NSS, vía tu patrón). Bosques del Bienestar te queda a 22 min en Metrobús.',
     4:'<b>Copiloto operativo:</b> El 304 tiene vista al parque y le da el sol de la mañana. Buena elección 😉',
     5:'<b>Copiloto operativo:</b> Solo te falta 1 documento. La constancia del SAT se descarga con tu CURP — te muestro cómo.',
     6:'<b>Copiloto operativo:</b> El notario ya tiene todo. Ese día solo llevas tu INE y firmas. Duración: unos 40 minutos.',
-    7:'<b>Copiloto operativo:</b> De aquí en adelante yo te aviso: no necesitas llamar ni ir a un CESI a preguntar cómo va.'
+    7:'<b>Copiloto operativo:</b> De aquí en adelante yo te aviso: no necesitas llamar ni ir a un CESI a preguntar cómo va.',
+    8:'<b>Inés · vocera IA:</b> Tu calificación alimenta la reputación del desarrollador en la torre de control. Con datos, no con opiniones.'
   };
   if(c && msjs[n]!==undefined) c.innerHTML=msjs[n];
 }
@@ -1564,6 +1731,12 @@ function pintarB2G(){
       lm.insertAdjacentHTML('afterbegin','<div class="msj-item" id="msj-habitat"><div class="avatar" style="background:var(--rojo)">HJ</div><div><b>Hábitat Jalisco Constructora</b> · <small>ahora</small><p style="font-size:13px;color:var(--gris-700)">Actualizamos Bosques del Bienestar: avance 82%, servicios 71%, fianza en renovación. Solicitamos apoyo con el Ayto. de Tlajomulco (drenaje etapa 3).</p></div></div>');
     }
   }
+  if(S.estimacion){
+    const eb=document.getElementById('est-bosques'); if(eb){eb.className='chip verde';eb.textContent='Autorizada · pago en 3 días';}
+    const et2=document.getElementById('causa-estim-t'), ep2=document.getElementById('causa-estim-p'), ec2=document.getElementById('causa-estim-chip');
+    if(et2){ et2.textContent='Estimación 2/2 cargada y autorizada'; ep2.textContent='$12.4 MDP · pago en 3 días hábiles'+(S.verificado?' · avance validado por UVE-14':'')+'.'; ec2.className='chip verde'; ec2.textContent='Resuelto'; }
+    const bq=document.getElementById('blq-est-chip'); if(bq){bq.className='chip verde';bq.textContent='Mejorando';}
+  }
   if(S.operador){
     ponTexto('det-escrit','23');
     const et=document.getElementById('causa-escr-t'), ep=document.getElementById('causa-escr-p'), ec=document.getElementById('causa-escr-chip');
@@ -1575,7 +1748,7 @@ function pintarB2G(){
   const bn=document.getElementById('b2g-banner');
   if(bn && S.constructor){
     bn.className='banner-alerta '+(S.operador?'verde':'ambar');
-    bn.innerHTML='<span style="font-size:19px">'+(S.operador?'🟢':'🟡')+'</span><span><b>Impacto de las últimas 24 h:</b> Bosques del Bienestar pasó de rojo a amarillo. Avance 78→82%, servicios 54→71%, entregables 92→117'+(S.operador?', escrituras pendientes 48→23 y 25 firmas programadas':'')+(S.dh?'. Ana y Luis Hernández confirmaron firma para el 15 de julio.':'.')+'</span><button class="btn primario chico" onclick="verDetalleBosques()">Ver detalle →</button>';
+    bn.innerHTML='<span style="font-size:19px">'+(S.operador?'🟢':'🟡')+'</span><span><b>Impacto de las últimas 24 h:</b> Bosques del Bienestar pasó de rojo a amarillo. Avance 78→82%, servicios 54→71%, entregables 92→117'+(S.operador?', escrituras pendientes 48→23 y 25 firmas programadas':'')+(S.estimacion?', estimación 2/2 autorizada → pago en 3 días hábiles':'')+(S.dh?'. Ana y Luis Hernández confirmaron firma para el 15 de julio.':'.')+'</span><button class="btn primario chico" onclick="verDetalleBosques()">Ver detalle →</button>';
   }
 }
 </script>
