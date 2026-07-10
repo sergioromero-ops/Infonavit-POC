@@ -1223,6 +1223,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#F7F4EE;user-select:none}
 .mapa-lienzo{position:absolute;width:800px;height:800px;transform-origin:0 0;cursor:grab;will-change:transform}
 .mapa-lienzo:active{cursor:grabbing}
+.mapa-lienzo.anima{transition:transform .65s cubic-bezier(.22,1,.36,1)}
 .ruta-anim{animation:rutaFlujo 1.6s linear infinite}
 @keyframes rutaFlujo{to{stroke-dashoffset:-36}}
 .pin-precio{position:absolute;background:#fff;border:none;border-radius:99px;padding:8px 13px;font-size:12.5px;font-weight:800;color:var(--gris-900);box-shadow:0 1px 2px rgba(0,0,0,.14),0 5px 14px rgba(16,24,40,.16);cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1),background .15s;transform:translate(-50%,-118%)}
@@ -1327,8 +1328,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="b2c-head" style="margin-bottom:10px"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:auto" id="btn-toggle-mapa" onclick="toggleListaMapa()">☰ Lista</button></div>
             <div class="progreso" style="margin-bottom:12px"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
             <div class="buscador-pill">🔍 <div><b>Guadalajara y alrededores</b><small>1–2 SM · 2+ recámaras · programa Bienestar</small></div><span style="margin-left:auto">⚙️</span></div>
-            <div class="cat-chips">
-              <button class="activo">🏠 Cerca de ti</button><button>💼 Cerca del trabajo</button><button>🌳 Con parque</button><button>📅 Entrega 2026</button>
+            <div class="cat-chips" id="chips-mapa">
+              <button class="activo" onclick="filtrarMapa('casa',this)">🏠 Cerca de ti</button><button onclick="filtrarMapa('trabajo',this)">💼 Cerca del trabajo</button><button onclick="filtrarMapa('parque',this)">🌳 Con parque</button><button onclick="filtrarMapa('entrega',this)">📅 Entrega 2026</button>
             </div>
           </div>
 
@@ -1712,6 +1713,28 @@ const DESARROLLOS_MAPA={
   puerta:{n:"Puerta Sur",d:"Tlajomulco · 🚗 45 min a tu trabajo",p:"$630,000",m:"≈ $3,320/mes",r:"★ 3.9 (21)",match:"✓ 78% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)"},
   real:{n:"Real del Bosque",d:"Zapopan · 🚌 26 min a tu trabajo",p:"$602,000",m:"≈ $3,170/mes",r:"★ 4.5 (97)",match:"✓ 93% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)"}
 };
+const FILTROS_MAPA={
+  casa:{pins:["bosques","valle","puerta"],centro:[300,470],sel:"bosques",txt:"87 viviendas cerca de tu casa"},
+  trabajo:{pins:["bosques","real","tesistan"],centro:[520,240],sel:"real",txt:"64 viviendas cerca de tu trabajo"},
+  parque:{pins:["bosques","lomas","valle"],centro:[380,360],sel:"bosques",txt:"52 viviendas junto a áreas verdes"},
+  entrega:{pins:["bosques","tesistan","real"],centro:[420,260],sel:"tesistan",txt:"41 viviendas con entrega en 2026"}
+};
+function filtrarMapa(clave,btn){
+  document.querySelectorAll('#chips-mapa button').forEach(b=>b.classList.toggle('activo',b===btn));
+  const f=FILTROS_MAPA[clave];
+  Object.keys(DESARROLLOS_MAPA).forEach(id=>{
+    const p=document.getElementById('pin-'+id);
+    if(p) p.style.display=f.pins.includes(id)?'':'none';
+  });
+  document.querySelector('.mapa-conteo').textContent=f.txt;
+  const l=document.getElementById('mapa-lienzo'), w=l.parentElement.clientWidth||390;
+  l.classList.add('anima');
+  mapaX=Math.min(0,Math.max(-(f.centro[0]*mapaEsc-w/2),-(800*mapaEsc-w)));
+  mapaY=Math.min(0,Math.max(-(f.centro[1]*mapaEsc-452/2),-(800*mapaEsc-452)));
+  pintarMapa();
+  setTimeout(()=>l.classList.remove('anima'),700);
+  seleccionarPin(f.sel);
+}
 let mapaX=-205, mapaY=-165, mapaEsc=1, arrastre=null;
 function pintarMapa(){
   const l=document.getElementById('mapa-lienzo'); if(!l) return;
