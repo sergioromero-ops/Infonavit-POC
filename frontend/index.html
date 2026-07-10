@@ -158,6 +158,30 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 </style>
 </head>
 <body>
+<style id="estilos-sandbox">
+/* Copilotos estilo tech */
+.copiloto-caja{background:linear-gradient(150deg,#0B1018,#131C2B 55%,#221528);border:1px solid rgba(125,211,252,.25);box-shadow:0 10px 34px rgba(0,0,0,.35),inset 0 0 40px rgba(125,211,252,.03)}
+.copiloto-caja .cab small{color:#7DD3FC;opacity:1}
+.copiloto-caja .cab .ia{background:linear-gradient(135deg,var(--rojo),#D33D63);box-shadow:0 0 14px rgba(159,34,65,.7)}
+.copiloto-caja h4{letter-spacing:.02em}
+.burbuja.ia{background:rgba(125,211,252,.07);border:1px solid rgba(125,211,252,.16)}
+.burbuja.ia b{color:#7DD3FC}
+.burbuja.ia i{color:#7DD3FC;font-style:normal;animation:parpadeoIA 1.2s infinite}
+@keyframes parpadeoIA{50%{opacity:.35}}
+.sugerencias button{background:rgba(125,211,252,.06);border:1px solid rgba(125,211,252,.3)}
+.sugerencias button:hover{background:rgba(125,211,252,.16)}
+.chat-input input{background:rgba(7,12,20,.7);border:1px solid rgba(125,211,252,.28)}
+.chat-input input:focus{border-color:#7DD3FC;box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+/* Menu de perfil */
+.app-head .usuario{cursor:pointer;border-radius:12px;padding:4px 8px;transition:.15s}
+.app-head .usuario:hover{background:var(--gris-50)}
+.menu-perfil{position:absolute;z-index:1200;width:280px;background:#fff;border-radius:14px;box-shadow:0 18px 50px rgba(16,24,40,.25);border:1px solid var(--gris-100);overflow:hidden}
+.menu-perfil .mp-cab{display:flex;gap:11px;align-items:center;padding:14px;border-bottom:1px solid var(--gris-100)}
+.menu-perfil .mp-cab small{color:var(--gris-500);font-size:11px;display:block;font-weight:600}
+.mp-item{display:flex;align-items:center;gap:9px;width:100%;padding:11px 14px;border:none;background:none;font-size:13px;font-weight:600;color:var(--gris-900);cursor:pointer;text-align:left}
+.mp-item:hover{background:var(--gris-50)}
+#mp-pass input{width:100%;padding:9px 11px;border:1.5px solid var(--gris-300);border-radius:8px;margin-bottom:8px;font-size:13px}
+</style>
 
 <script>
 /* ============ SANDBOX: CAPA DE CONEXIÓN A LA API ============ */
@@ -454,7 +478,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
   <div style="min-height:calc(100vh - 41px);background:linear-gradient(160deg,var(--vino),var(--rojo) 60%,#C05C74);display:flex;align-items:center;justify-content:center;padding:40px 20px">
     <div style="width:100%;max-width:920px">
       <div style="text-align:center;color:#fff;margin-bottom:28px">
-        <div class="marca" style="width:46px;height:46px;border-radius:12px;background:#fff;color:var(--rojo);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:19px">IV</div>
+        <div class="marca" style="width:64px;height:48px;border-radius:12px;background:#fff;display:inline-flex;align-items:center;justify-content:center"><svg width="42" height="30" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)" style="flex-shrink:0"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg></div>
         <h2 style="font-size:26px;margin-top:12px;letter-spacing:-.01em">Acceso · Vivienda del Bienestar</h2>
         <p style="font-size:13.5px;opacity:.85;margin-top:6px">02 · Web privada — comunicación cerrada · un solo acceso, enruta por rol</p>
         <p style="font-size:11.5px;opacity:.7;margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto">Capa de procesos independiente y exclusiva del programa: consulta la información con permisos institucionales. No modifica los sistemas ni las bases de datos de Infonavit.</p>
@@ -494,7 +518,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 <section id="vista-b2g" class="vista">
   <header class="app-head">
     <div class="contenedor">
-      <div class="logo"><div class="marca">IV</div>
+      <div class="logo"><svg width="42" height="30" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)" style="flex-shrink:0"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg>
         <div>Torre de Control Nacional<small>Programa de Vivienda del Bienestar</small></div>
       </div>
       <div class="usuario">
@@ -856,7 +880,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 <section id="vista-colab" class="vista">
   <header class="app-head">
     <div class="contenedor">
-      <div class="logo"><div class="marca">IV</div>
+      <div class="logo"><svg width="42" height="30" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)" style="flex-shrink:0"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg>
         <div>Portal del Colaborador<small>Operación interna · Programa de Vivienda del Bienestar</small></div>
       </div>
       <div class="usuario">
@@ -997,22 +1021,22 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <button class="btn primario chico" onclick="irPanel('b2b','actualizar')">Actualizar avance</button>
         </div>
         <div class="dev-card" id="dev-tesistan">
-          <div class="top"><div><h4>Jardines de Tesistán</h4><small>Zapopan, Jal. · 360 viviendas</small></div><span class="chip verde" style="margin-left:auto"><span class="punto verde"></span>Verde</span></div>
-          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" style="width:92%"></span></div><b>92%</b></div>
-          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" style="width:88%"></span></div><b>88%</b></div>
-          <button class="btn secundario chico" onclick="toast('Prototipo: flujo de actualización disponible para Bosques del Bienestar')">Actualizar avance</button>
+          <div class="top"><div><h4>Jardines de Tesistán</h4><small>Zapopan, Jal. · 360 viviendas</small></div><span class="chip verde" style="margin-left:auto" id="b2b-tesistan-sem"><span class="punto verde"></span>Verde</span></div>
+          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" id="b2b-tesistan-bar" style="width:92%"></span></div><b id="b2b-tesistan-pct">92%</b></div>
+          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" id="b2b-tesistan-serv-bar" style="width:88%"></span></div><b id="b2b-tesistan-serv">88%</b></div>
+          <button class="btn secundario chico" onclick="actualizarDesarrolloCard('tesistan',this)">Actualizar avance</button>
         </div>
         <div class="dev-card" id="dev-lomas">
-          <div class="top"><div><h4>Lomas del Salto</h4><small>El Salto, Jal. · 288 viviendas</small></div><span class="chip ambar" style="margin-left:auto"><span class="punto ambar"></span>Amarillo</span></div>
-          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="ambar" style="width:64%"></span></div><b>64%</b></div>
-          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="ambar" style="width:57%"></span></div><b>57%</b></div>
-          <button class="btn secundario chico" onclick="toast('Prototipo: flujo de actualización disponible para Bosques del Bienestar')">Actualizar avance</button>
+          <div class="top"><div><h4>Lomas del Salto</h4><small>El Salto, Jal. · 288 viviendas</small></div><span class="chip ambar" style="margin-left:auto" id="b2b-lomas-sem"><span class="punto ambar"></span>Amarillo</span></div>
+          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="ambar" id="b2b-lomas-bar" style="width:64%"></span></div><b id="b2b-lomas-pct">64%</b></div>
+          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="ambar" id="b2b-lomas-serv-bar" style="width:57%"></span></div><b id="b2b-lomas-serv">57%</b></div>
+          <button class="btn secundario chico" onclick="actualizarDesarrolloCard('lomas',this)">Actualizar avance</button>
         </div>
         <div class="dev-card" id="dev-chapala">
-          <div class="top"><div><h4>Vistas de Chapala</h4><small>Ixtlahuacán, Jal. · 380 viviendas</small></div><span class="chip verde" style="margin-left:auto"><span class="punto verde"></span>Verde</span></div>
-          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" style="width:85%"></span></div><b>85%</b></div>
-          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" style="width:81%"></span></div><b>81%</b></div>
-          <button class="btn secundario chico" onclick="toast('Prototipo: flujo de actualización disponible para Bosques del Bienestar')">Actualizar avance</button>
+          <div class="top"><div><h4>Vistas de Chapala</h4><small>Ixtlahuacán, Jal. · 380 viviendas</small></div><span class="chip verde" style="margin-left:auto" id="b2b-chapala-sem"><span class="punto verde"></span>Verde</span></div>
+          <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span class="verde" id="b2b-chapala-bar" style="width:85%"></span></div><b id="b2b-chapala-pct">85%</b></div>
+          <div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span class="verde" id="b2b-chapala-serv-bar" style="width:81%"></span></div><b id="b2b-chapala-serv">81%</b></div>
+          <button class="btn secundario chico" onclick="actualizarDesarrolloCard('chapala',this)">Actualizar avance</button>
         </div>
       </div>
     </div>
@@ -1317,8 +1341,15 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .cat-chips::-webkit-scrollbar{display:none}
 .cat-chips button{flex-shrink:0;border:1px solid var(--gris-100);background:#fff;border-radius:99px;padding:7px 13px;font-size:11.5px;font-weight:700;color:var(--gris-700);box-shadow:var(--sombra);transition:.15s}
 .cat-chips button.activo{background:var(--gris-900);color:#fff;border-color:var(--gris-900)}
-.mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#F7F4EE;user-select:none}
+.mapa-wrap{position:relative;height:452px;overflow:hidden;touch-action:none;background:#0C1220;user-select:none}
 .mapa-lienzo{position:absolute;width:800px;height:800px;transform-origin:0 0;cursor:grab;will-change:transform}
+/* Mapa B2C tech nacional */
+.mapa-lienzo.tech{background:radial-gradient(ellipse at 35% 25%,#1B2735 0%,#0C1220 78%)}
+.mapa-lienzo.tech::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(99,179,237,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,.05) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+.mapa-lienzo.tech .edo-b2c{fill:#1E2A3D;stroke:#35496B;stroke-width:.6}
+.mapa-lienzo.tech .edo-b2c.act{fill:#173B52;stroke:#7DD3FC;stroke-width:1.1;filter:drop-shadow(0 0 3px rgba(125,211,252,.55))}
+.mapa-lienzo.tech .pin-precio{box-shadow:0 0 0 1.5px rgba(125,211,252,.35),0 6px 18px rgba(0,0,0,.5)}
+.mapa-lienzo.tech .marcador small{background:rgba(13,20,32,.85);color:#BFDBFE;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700}
 .mapa-lienzo:active{cursor:grabbing}
 .mapa-lienzo.anima{transition:transform .65s cubic-bezier(.22,1,.36,1)}
 .ruta-anim{animation:rutaFlujo 1.6s linear infinite}
@@ -1353,7 +1384,23 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 </style>
 
 <!-- ============ VISTA: B2C DERECHOHABIENTE ============ -->
+<style>
+/* ===== B2C: modo web (responsive real, no solo móvil) ===== */
+.b2c-toggle{display:flex;justify-content:center;gap:8px;margin-bottom:22px}
+.b2c-toggle button{border:1.5px solid var(--gris-300);background:#fff;padding:8px 18px;border-radius:99px;font-size:12.5px;font-weight:700;color:var(--gris-700);transition:.15s}
+.b2c-toggle button.activo{background:var(--rojo);border-color:var(--rojo);color:#fff}
+#vista-b2c.web .telefono{width:min(1100px,96vw);border-radius:18px;box-shadow:0 14px 44px rgba(16,24,40,.12);outline:1px solid var(--gris-100)}
+#vista-b2c.web .tel-notch{display:none}
+#vista-b2c.web .tel-cuerpo{height:auto;min-height:620px;max-height:calc(100vh - 230px)}
+#vista-b2c.web .pantalla{max-width:880px;margin:0 auto;padding:26px 28px 34px}
+#vista-b2c.web .b2c-panel-lateral{display:none}
+#vista-b2c.web .burbuja-copiloto{max-width:880px;margin-left:auto;margin-right:auto}
+</style>
 <section id="vista-b2c" class="vista">
+  <div class="b2c-toggle">
+    <button id="b2c-mov" class="activo" onclick="modoB2C('movil',this)">📱 Móvil</button>
+    <button id="b2c-web" onclick="modoB2C('web',this)">🖥️ Web</button>
+  </div>
   <div class="b2c-marco">
     <div class="telefono">
       <div class="tel-notch"></div>
@@ -1362,7 +1409,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <!-- P0: Bienvenida -->
         <div class="pantalla activa" id="p-0">
           <div style="display:flex;align-items:center;gap:9px;margin:6px 0 16px">
-            <div class="marca" style="width:30px;height:30px;border-radius:8px;background:var(--rojo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px">IV</div>
+            <svg width="34" height="24" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" fill="var(--rojo)" style="flex-shrink:0"><circle cx="12" cy="7" r="5"/><path d="M4 16l8-5 8 5v6l-8-5-8 5z"/><path d="M4 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="30" cy="7" r="5"/><path d="M22 16l8-5 8 5v6l-8-5-8 5z"/><path d="M22 26l8-5 8 5v6l-8-5-8 5z"/><circle cx="48" cy="7" r="5"/><path d="M40 16l8-5 8 5v6l-8-5-8 5z"/><path d="M40 26l8-5 8 5v6l-8-5-8 5z"/></svg>
             <b style="font-size:14px">Vivienda del Bienestar</b>
           </div>
           <div class="b2c-hero">
@@ -1431,88 +1478,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           </div>
 
           <div id="b2c-mapa" class="mapa-wrap">
-            <div id="mapa-lienzo" class="mapa-lienzo">
-              <svg width="800" height="800" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="display:block">
-                <defs>
-                  <linearGradient id="agua2" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#BFDDF5"/><stop offset="1" stop-color="#A9CFEE"/>
-                  </linearGradient>
-                </defs>
-                <rect width="800" height="800" fill="#F7F4EE"/>
-                <!-- agua -->
-                <path d="M-20 600 Q140 640 240 720 Q300 768 320 820 L-20 820 Z" fill="url(#agua2)"/>
-                <path d="M-10 618 Q150 655 250 735" stroke="#FFFFFF" stroke-width="2.5" fill="none" opacity=".5"/>
-                <path d="M20 660 Q150 690 240 770" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity=".35"/>
-                <!-- manzanas -->
-                <g>
-                  <rect x="56" y="52" width="138" height="96" rx="14" fill="#EDE9E0"/>
-                  <rect x="226" y="52" width="128" height="96" rx="14" fill="#EFEBE3"/>
-                  <rect x="466" y="36" width="146" height="108" rx="14" fill="#EDE9E0"/>
-                  <rect x="646" y="56" width="118" height="92" rx="14" fill="#EFEBE3"/>
-                  <rect x="56" y="196" width="138" height="112" rx="14" fill="#EFEBE3"/>
-                  <rect x="466" y="188" width="146" height="122" rx="14" fill="#EDE9E0"/>
-                  <rect x="646" y="196" width="118" height="114" rx="14" fill="#EDE9E0"/>
-                  <rect x="226" y="344" width="128" height="104" rx="14" fill="#EDE9E0"/>
-                  <rect x="398" y="360" width="152" height="92" rx="14" fill="#EFEBE3"/>
-                  <rect x="596" y="376" width="98" height="76" rx="14" fill="#EFEBE3"/>
-                  <rect x="56" y="516" width="152" height="84" rx="14" fill="#EDE9E0"/>
-                  <rect x="256" y="500" width="126" height="94" rx="14" fill="#EFEBE3"/>
-                  <rect x="426" y="498" width="116" height="84" rx="14" fill="#EDE9E0"/>
-                  <rect x="556" y="646" width="188" height="104" rx="14" fill="#EFEBE3"/>
-                  <rect x="296" y="646" width="188" height="94" rx="14" fill="#EDE9E0"/>
-                  <rect x="60" y="646" width="180" height="104" rx="14" fill="#EFEBE3"/>
-                </g>
-                <!-- huellas de edificios -->
-                <g fill="#E3DED2" opacity=".8">
-                  <rect x="76" y="70" width="34" height="24" rx="5"/><rect x="122" y="70" width="26" height="34" rx="5"/><rect x="76" y="108" width="26" height="26" rx="5"/>
-                  <rect x="488" y="56" width="38" height="26" rx="5"/><rect x="540" y="56" width="26" height="40" rx="5"/><rect x="488" y="96" width="28" height="30" rx="5"/>
-                  <rect x="248" y="366" width="30" height="26" rx="5"/><rect x="290" y="366" width="26" height="38" rx="5"/>
-                  <rect x="668" y="214" width="30" height="26" rx="5"/><rect x="668" y="252" width="42" height="26" rx="5"/>
-                  <rect x="278" y="664" width="40" height="26" rx="5"/><rect x="330" y="664" width="28" height="40" rx="5"/>
-                </g>
-                <!-- calles menores -->
-                <g stroke="#FFFFFF" stroke-width="11" stroke-linecap="round">
-                  <path d="M0 168 H800"/><path d="M0 326 H800"/><path d="M0 472 H800"/><path d="M0 620 H560"/>
-                  <path d="M212 0 V800"/><path d="M566 0 V800"/><path d="M384 0 V640"/>
-                </g>
-                <!-- avenidas -->
-                <g stroke="#FFFFFF" stroke-width="20" stroke-linecap="round">
-                  <path d="M-10 60 Q300 118 810 336"/><path d="M640 -10 Q612 300 700 810"/>
-                </g>
-                <g stroke="#FBE7BC" stroke-width="13" stroke-linecap="round">
-                  <path d="M-10 60 Q300 118 810 336"/><path d="M640 -10 Q612 300 700 810"/>
-                </g>
-                <!-- parques -->
-                <g>
-                  <path d="M258 196 Q330 158 402 198 Q436 246 396 284 Q322 312 270 276 Q236 234 258 196 Z" fill="#CDE7C5"/>
-                  <path d="M280 214 Q330 190 380 216 Q400 248 372 270 Q322 288 288 262 Q262 236 280 214 Z" fill="#BFE0B5" opacity=".7"/>
-                  <ellipse cx="642" cy="556" rx="66" ry="46" fill="#CDE7C5"/>
-                  <ellipse cx="118" cy="420" rx="52" ry="38" fill="#D8EBD0"/>
-                  <g fill="#9CC791"><circle cx="300" cy="230" r="5"/><circle cx="345" cy="215" r="6"/><circle cx="372" cy="245" r="5"/><circle cx="318" cy="262" r="6"/><circle cx="624" cy="546" r="5"/><circle cx="658" cy="566" r="6"/><circle cx="108" cy="414" r="5"/></g>
-                </g>
-                <!-- ruta casa → desarrollo → trabajo -->
-                <path class="ruta-anim" d="M150 600 Q240 480 400 330 Q520 240 640 180" stroke="#9F2241" stroke-width="3.5" stroke-dasharray="9 9" fill="none" stroke-linecap="round" opacity=".85"/>
-                <!-- etiquetas -->
-                <g font-family="inherit">
-                  <text x="248" y="158" font-size="12" fill="#A79D8B">Av. Tlajomulco</text>
-                  <text x="588" y="318" font-size="12" fill="#A79D8B">Av. del Bienestar</text>
-                  <text x="330" y="243" font-size="11.5" fill="#7FA877" text-anchor="middle" font-weight="700">PARQUE METROPOLITANO</text>
-                  <text x="120" y="740" font-size="13" fill="#8FB6D8" font-weight="700" letter-spacing="3">RÍO SANTIAGO</text>
-                  <text x="620" y="70" font-size="12" fill="#C0B7A6" letter-spacing="2.5" font-weight="700">ZAPOPAN</text>
-                  <text x="90" y="560" font-size="12" fill="#C0B7A6" letter-spacing="2.5" font-weight="700">TLAJOMULCO</text>
-                </g>
-              </svg>
-              <div class="marcador" style="left:138px;top:582px"><i>🏠</i><small>Tu casa</small></div>
-              <div class="marcador" style="left:628px;top:162px"><i>💼</i><small>Tu trabajo</small></div>
-              <button class="pin-precio" id="pin-bosques" style="left:376px;top:312px" onclick="seleccionarPin('bosques')">$598,000</button>
-              <button class="pin-precio" id="pin-tesistan" style="left:238px;top:168px" onclick="seleccionarPin('tesistan')">$612,000</button>
-              <button class="pin-precio" id="pin-lomas" style="left:584px;top:462px" onclick="seleccionarPin('lomas')">$645,000</button>
-              <button class="pin-precio" id="pin-valle" style="left:150px;top:352px" onclick="seleccionarPin('valle')">$585,000</button>
-              <button class="pin-precio" id="pin-puerta" style="left:498px;top:588px" onclick="seleccionarPin('puerta')">$630,000</button>
-              <button class="pin-precio" id="pin-real" style="left:642px;top:288px" onclick="seleccionarPin('real')">$602,000</button>
-            </div>
-            <div class="mapa-conteo">312 viviendas del programa en esta zona</div>
-            <div class="mapa-zoom"><button onclick="zoomMapa(1)">＋</button><button onclick="zoomMapa(-1)">－</button></div>
+            <div id="mapa-lienzo" class="mapa-lienzo tech"></div>
+            <div class="mapa-conteo">8 desarrollos del programa · 5 estados</div>
+            <div class="mapa-zoom"><button onclick="zoomMapa(1)">＋</button><button onclick="zoomMapa(-1)">－</button><button onclick="mapaTodoPais()" title="Ver todo el país">🇲🇽</button></div>
             <div id="pin-card" class="pin-card"></div>
           </div>
 
@@ -1777,6 +1745,27 @@ function enviarSolicitudIA(btn){
 }
 
 /* ================= HISTORIA: B2B ================= */
+const SEM_ETQ={verde:'Verde',ambar:'Amarillo',rojo:'Rojo'};
+function pintarCardB2B(d){
+  const p=id=>document.getElementById('b2b-'+d.id+'-'+id);
+  const bar=p('bar'), pct=p('pct'), sbar=p('serv-bar'), spct=p('serv'), sem=p('sem');
+  if(!bar) return;
+  bar.style.width=d.avance_fisico+'%'; bar.className=d.semaforo==='rojo'?'':d.semaforo;
+  pct.textContent=d.avance_fisico+'%';
+  sbar.style.width=d.avance_servicios+'%'; sbar.className=d.semaforo==='rojo'?'ambar':d.semaforo;
+  spct.textContent=d.avance_servicios+'%';
+  sem.className='chip '+d.semaforo; sem.innerHTML='<span class="punto '+d.semaforo+'"></span>'+SEM_ETQ[d.semaforo];
+}
+async function actualizarDesarrolloCard(id,btn){
+  if(!API_OK){ toast('⚠ Requiere el sandbox con API conectada'); return; }
+  btn.disabled=true;
+  try{
+    const j=await apiPost('/api/acciones/actualizar-desarrollo',{desarrollo_id:id},'constructor');
+    pintarCardB2B(j.desarrollo);
+    toast('✓ '+j.desarrollo.nombre+' actualizado ('+j.desarrollo.avance_fisico+'% físico · '+j.desarrollo.avance_servicios+'% servicios). El Director ya lo ve.');
+  }catch(e){ toast('⚠ '+e.message); }
+  btn.disabled=false;
+}
 async function enviarActualizacion(){
   try{ if(API_OK) await apiPost('/api/acciones/actualizar-desarrollo',{avance_fisico:82,avance_servicios:71},'constructor'); }
   catch(e){ toast('⚠ '+e.message); return; }
@@ -1859,21 +1848,47 @@ async function hubEntrar(){
   else{ document.getElementById('hub-roles').style.display='block'; if(nombre) toast('Sesión iniciada: '+nombre); }
 }
 
-/* ================= MAPA INTERACTIVO B2C ================= */
+/* ================= MAPA INTERACTIVO B2C (nacional · tech) ================= */
 const DESARROLLOS_MAPA={
-  bosques:{n:"Bosques del Bienestar",d:"Tlajomulco · 🚌 22 min a tu trabajo",p:"$598,000",m:"≈ $3,150/mes",r:"★ 4.6 (128)",match:"✓ 98% compatible",cta:1,cl:"linear-gradient(135deg,#95B8A2,#5D8770)"},
-  tesistan:{n:"Jardines de Tesistán",d:"Zapopan · 🚌 35 min a tu trabajo",p:"$612,000",m:"≈ $3,230/mes",r:"★ 4.4 (86)",match:"✓ 91% compatible",cta:0,cl:"linear-gradient(135deg,#B8C4CE,#7E939F)"},
-  lomas:{n:"Lomas del Salto",d:"El Salto · 🚗 40 min a tu trabajo",p:"$645,000",m:"≈ $3,400/mes",r:"★ 4.2 (54)",match:"✓ 86% compatible",cta:0,cl:"linear-gradient(135deg,#C8A8B8,#8A5F76)"},
-  valle:{n:"Valle Verde Bienestar",d:"Tlajomulco · 🚌 28 min a tu trabajo",p:"$585,000",m:"≈ $3,080/mes",r:"★ 4.1 (39)",match:"✓ 84% compatible",cta:0,cl:"linear-gradient(135deg,#A8C0C8,#5F7E8A)"},
-  puerta:{n:"Puerta Sur",d:"Tlajomulco · 🚗 45 min a tu trabajo",p:"$630,000",m:"≈ $3,320/mes",r:"★ 3.9 (21)",match:"✓ 78% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)"},
-  real:{n:"Real del Bosque",d:"Zapopan · 🚌 26 min a tu trabajo",p:"$602,000",m:"≈ $3,170/mes",r:"★ 4.5 (97)",match:"✓ 93% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)"}
+  bosques:{n:"Bosques del Bienestar",d:"Tlajomulco, Jal. \u00b7 \ud83d\ude8c 22 min a tu trabajo",p:"$598,000",m:"\u2248 $3,150/mes",r:"\u2605 4.6 (128)",match:"\u2713 98% compatible",cta:1,cl:"linear-gradient(135deg,#95B8A2,#5D8770)",edo:"MXJAL",dx:2,dy:8},
+  tesistan:{n:"Jardines de Tesist\u00e1n",d:"Zapopan, Jal. \u00b7 \ud83d\ude8c 35 min a tu trabajo",p:"$612,000",m:"\u2248 $3,230/mes",r:"\u2605 4.4 (86)",match:"\u2713 91% compatible",cta:0,cl:"linear-gradient(135deg,#B8C4CE,#7E939F)",edo:"MXJAL",dx:-16,dy:-12},
+  lomas:{n:"Lomas del Salto",d:"El Salto, Jal. \u00b7 \ud83d\ude97 40 min a tu trabajo",p:"$645,000",m:"\u2248 $3,400/mes",r:"\u2605 4.2 (54)",match:"\u2713 86% compatible",cta:0,cl:"linear-gradient(135deg,#C8A8B8,#8A5F76)",edo:"MXJAL",dx:20,dy:-2},
+  chapala:{n:"Vistas de Chapala",d:"Ixtlahuac\u00e1n, Jal. \u00b7 \ud83d\ude97 38 min a tu trabajo",p:"$589,000",m:"\u2248 $3,100/mes",r:"\u2605 4.5 (73)",match:"\u2713 89% compatible",cta:0,cl:"linear-gradient(135deg,#A8C8B8,#5F8A76)",edo:"MXJAL",dx:8,dy:20},
+  valle:{n:"Valle del Bienestar",d:"Apodaca, Nuevo Le\u00f3n",p:"$585,000",m:"\u2248 $3,080/mes",r:"\u2605 4.1 (39)",match:"\u2713 72% compatible",cta:0,cl:"linear-gradient(135deg,#A8C0C8,#5F7E8A)",edo:"MXNLE",dx:0,dy:0},
+  angelopolis:{n:"Angel\u00f3polis Bienestar",d:"Puebla, Puebla",p:"$560,000",m:"\u2248 $2,950/mes",r:"\u2605 4.3 (61)",match:"\u2713 70% compatible",cta:0,cl:"linear-gradient(135deg,#C8B8A8,#8A765F)",edo:"MXPUE",dx:0,dy:0},
+  toluca:{n:"Toluca Bienestar",d:"Toluca, Edo. de M\u00e9xico",p:"$572,000",m:"\u2248 $3,010/mes",r:"\u2605 4.4 (92)",match:"\u2713 74% compatible",cta:0,cl:"linear-gradient(135deg,#9FB8A0,#5D8770)",edo:"MXMEX",dx:-6,dy:6},
+  qro:{n:"Quer\u00e9taro Bienestar",d:"Quer\u00e9taro, Qro.",p:"$618,000",m:"\u2248 $3,260/mes",r:"\u2605 4.7 (104)",match:"\u2713 77% compatible",cta:0,cl:"linear-gradient(135deg,#B8AECE,#7E739F)",edo:"MXQUE",dx:6,dy:-4}
 };
 const FILTROS_MAPA={
-  casa:{pins:["bosques","valle","puerta"],centro:[300,470],sel:"bosques",txt:"87 viviendas cerca de tu casa"},
-  trabajo:{pins:["bosques","real","tesistan"],centro:[520,240],sel:"real",txt:"64 viviendas cerca de tu trabajo"},
-  parque:{pins:["bosques","lomas","valle"],centro:[380,360],sel:"bosques",txt:"52 viviendas junto a áreas verdes"},
-  entrega:{pins:["bosques","tesistan","real"],centro:[420,260],sel:"tesistan",txt:"41 viviendas con entrega en 2026"}
+  casa:{pins:["bosques","tesistan","lomas","chapala"],zona:"jal",sel:"bosques",txt:"4 desarrollos cerca de ti \u00b7 Jalisco"},
+  trabajo:{pins:["bosques","tesistan"],zona:"jal",sel:"bosques",txt:"2 desarrollos a <35 min de tu trabajo"},
+  parque:{pins:["bosques","chapala"],zona:"jal",sel:"bosques",txt:"2 desarrollos junto a \u00e1reas verdes"},
+  entrega:{pins:Object.keys(DESARROLLOS_MAPA),zona:"pais",sel:"tesistan",txt:"8 desarrollos con entrega 2026\u20132027"}
 };
+let mapaX=0, mapaY=0, mapaEsc=1, arrastre=null, _jalC=null;
+function _wrapDims(){ const w=document.getElementById('b2c-mapa'); return {w:(w&&w.clientWidth)||390,h:452}; }
+function pintarMapa(){
+  const l=document.getElementById('mapa-lienzo'); if(!l) return;
+  const {w,h}=_wrapDims(), tam=800*mapaEsc;
+  // banda vertical del mapa dentro del lienzo: 148..652 (x esc)
+  const bTop=148*mapaEsc, bAlto=504*mapaEsc;
+  if(tam<=w) mapaX=(w-tam)/2; else mapaX=Math.min(0,Math.max(mapaX,w-tam));
+  if(bAlto<=h) mapaY=(h-bAlto)/2-bTop; else mapaY=Math.min(-bTop+8,Math.max(mapaY,h-bTop-bAlto-8));
+  l.style.transform='translate('+mapaX+'px,'+mapaY+'px) scale('+mapaEsc+')';
+}
+function escalaPais(){ const {w,h}=_wrapDims(); return Math.min(w/800,h/504)*0.98; }
+function zoomMapa(d){ mapaEsc=Math.min(4,Math.max(escalaPais()*0.9,mapaEsc*(d>0?1.3:0.77))); pintarMapa(); }
+function centrarMapa(px,py,esc){
+  const {w,h}=_wrapDims(); mapaEsc=esc;
+  mapaX=w/2-px*esc; mapaY=h/2-py*esc;
+  const l=document.getElementById('mapa-lienzo');
+  l.classList.add('anima'); pintarMapa(); setTimeout(()=>l.classList.remove('anima'),700);
+}
+function mapaTodoPais(){
+  Object.keys(DESARROLLOS_MAPA).forEach(id=>{ const p=document.getElementById('pin-'+id); if(p) p.style.display=''; });
+  centrarMapa(400,400,escalaPais());
+  const c=document.querySelector('.mapa-conteo'); if(c) c.textContent='8 desarrollos del programa \u00b7 5 estados';
+}
 function filtrarMapa(clave,btn){
   document.querySelectorAll('#chips-mapa button').forEach(b=>b.classList.toggle('activo',b===btn));
   const f=FILTROS_MAPA[clave];
@@ -1882,29 +1897,16 @@ function filtrarMapa(clave,btn){
     if(p) p.style.display=f.pins.includes(id)?'':'none';
   });
   document.querySelector('.mapa-conteo').textContent=f.txt;
-  const l=document.getElementById('mapa-lienzo'), w=l.parentElement.clientWidth||390;
-  l.classList.add('anima');
-  mapaX=Math.min(0,Math.max(-(f.centro[0]*mapaEsc-w/2),-(800*mapaEsc-w)));
-  mapaY=Math.min(0,Math.max(-(f.centro[1]*mapaEsc-452/2),-(800*mapaEsc-452)));
-  pintarMapa();
-  setTimeout(()=>l.classList.remove('anima'),700);
+  if(f.zona==='jal'&&_jalC) centrarMapa(_jalC.x,_jalC.y,2.8);
+  else mapaTodoPais();
   seleccionarPin(f.sel);
 }
-let mapaX=-205, mapaY=-165, mapaEsc=1, arrastre=null;
-function pintarMapa(){
-  const l=document.getElementById('mapa-lienzo'); if(!l) return;
-  const w=l.parentElement.clientWidth||390, hgt=452;
-  const min=x=>Math.min(0,Math.max(x,-(800*mapaEsc- (x===mapaX?w:hgt))));
-  mapaX=Math.min(0,Math.max(mapaX,-(800*mapaEsc-w)));
-  mapaY=Math.min(0,Math.max(mapaY,-(800*mapaEsc-hgt)));
-  l.style.transform='translate('+mapaX+'px,'+mapaY+'px) scale('+mapaEsc+')';
-}
-function zoomMapa(d){ mapaEsc=Math.min(1.7,Math.max(1,mapaEsc+d*0.25)); pintarMapa(); }
 function seleccionarPin(id){
   document.querySelectorAll('.pin-precio').forEach(p=>p.classList.remove('sel'));
   const pin=document.getElementById('pin-'+id); if(pin) pin.classList.add('sel');
   const d=DESARROLLOS_MAPA[id], c=document.getElementById('pin-card');
-  c.innerHTML='<div class="foto" style="background:'+d.cl+'">Programa Bienestar</div><div class="info"><h4>'+d.n+' <span class="match" style="font-size:9.5px">'+d.match+'</span></h4><p>'+d.d+'</p><div class="precio-fila"><b>'+d.p+'</b><small style="color:var(--gris-500)">'+d.m+'</small><span style="margin-left:auto;font-size:11px;font-weight:700">'+d.r+'</span></div><button class="btn primario chico" style="margin-top:7px;width:100%" onclick="'+(d.cta?'irPantalla(4)':'toast(\'Prototipo: la selección continúa con Bosques del Bienestar\')')+'">'+(d.cta?'Elegir mi unidad →':'Ver desarrollo')+'</button></div><button class="cerrar" onclick="event.stopPropagation();document.getElementById(\'pin-card\').classList.remove(\'ver\')">✕</button>';
+  if(!d||!c) return;
+  c.innerHTML='<div class="foto" style="background:'+d.cl+'">Programa Bienestar</div><div class="info"><h4>'+d.n+' <span class="match" style="font-size:9.5px">'+d.match+'</span></h4><p>'+d.d+'</p><div class="precio-fila"><b>'+d.p+'</b><small style="color:var(--gris-500)">'+d.m+'</small><span style="margin-left:auto;font-size:11px;font-weight:700">'+d.r+'</span></div><button class="btn primario chico" style="margin-top:7px;width:100%" onclick="'+(d.cta?'irPantalla(4)':'toast(\'Sandbox: la selecci\u00f3n contin\u00faa con Bosques del Bienestar\')')+'">'+(d.cta?'Elegir mi unidad \u2192':'Ver desarrollo')+'</button></div><button class="cerrar" onclick="event.stopPropagation();document.getElementById(\'pin-card\').classList.remove(\'ver\')">\u2715</button>';
   c.classList.add('ver');
 }
 function toggleListaMapa(){
@@ -1912,14 +1914,65 @@ function toggleListaMapa(){
   const aMapa=li.style.display!=='none';
   m.style.display=aMapa?'none':'block'; li.style.display=aMapa?'block':'none';
   if(!aMapa){ li.style.display='block'; m.style.display='none'; }
-  b.textContent=m.style.display==='none'?'🗺️ Mapa':'☰ Lista';
+  b.textContent=m.style.display==='none'?'\ud83d\uddfa\ufe0f Mapa':'\u2630 Lista';
 }
 (function(){
   const w=document.getElementById('b2c-mapa'); if(!w) return;
+  const lienzo=document.getElementById('mapa-lienzo');
+  const nal=document.getElementById('mapa-mx'); if(!nal||!lienzo) return;
+  // Clona el mapa nacional real dentro del tel\u00e9fono (estilo tech)
+  const NS='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(NS,'svg');
+  svg.setAttribute('viewBox','0 0 1000 630');
+  svg.style.cssText='position:absolute;top:148px;left:0;width:800px;height:504px;display:block';
+  nal.querySelectorAll('.edo').forEach(p=>{
+    const c=document.createElementNS(NS,'path');
+    c.setAttribute('d',p.getAttribute('d'));
+    c.setAttribute('class','edo-b2c');
+    c.id='b2c-'+p.id;
+    svg.appendChild(c);
+  });
+  lienzo.appendChild(svg);
+  // Centros de estado (bbox medido con la vista B2G fuera de pantalla si hace falta)
+  function centroEdo(eid){
+    const el=svg.querySelector('#b2c-'+eid); if(!el) return {x:400,y:400};
+    const vista=document.getElementById('vista-b2c');
+    const oculta=!vista.classList.contains('activa');
+    if(oculta) vista.style.cssText='display:block;position:absolute;visibility:hidden;left:-9999px;top:0;width:1200px';
+    const b=el.getBBox();
+    if(oculta) vista.style.cssText='';
+    return {x:(b.x+b.width/2)*0.8, y:148+(b.y+b.height/2)*0.8};
+  }
+  const centros={};
+  ['MXJAL','MXNLE','MXPUE','MXMEX','MXQUE'].forEach(e=>{
+    centros[e]=centroEdo(e);
+    const el=svg.querySelector('#b2c-'+e); if(el) el.classList.add('act');
+  });
+  _jalC=centros.MXJAL;
+  // Marcadores narrativos (casa y trabajo de Ana, en Jalisco)
+  [['\ud83c\udfe0','Tu casa',-14,16],['\ud83d\udcbc','Tu trabajo',20,-12]].forEach(([ic,tx,dx,dy])=>{
+    const m=document.createElement('div'); m.className='marcador';
+    m.style.left=(_jalC.x+dx)+'px'; m.style.top=(_jalC.y+dy)+'px';
+    m.innerHTML='<i>'+ic+'</i><small>'+tx+'</small>';
+    lienzo.appendChild(m);
+  });
+  // Pins de precio en coordenadas del lienzo
+  Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
+    const c=centros[d.edo]||{x:400,y:400};
+    const b=document.createElement('button');
+    b.className='pin-precio'; b.id='pin-'+id;
+    b.style.left=(c.x+d.dx)+'px'; b.style.top=(c.y+d.dy)+'px';
+    b.textContent=d.p;
+    b.onclick=()=>seleccionarPin(id);
+    lienzo.appendChild(b);
+  });
+  // Navegaci\u00f3n: arrastre + rueda
   w.addEventListener('pointerdown',e=>{ if(e.target.closest('.pin-precio,.mapa-zoom,.pin-card')) return; arrastre={x:e.clientX,y:e.clientY,mx:mapaX,my:mapaY}; });
   window.addEventListener('pointermove',e=>{ if(!arrastre) return; mapaX=arrastre.mx+(e.clientX-arrastre.x); mapaY=arrastre.my+(e.clientY-arrastre.y); pintarMapa(); });
   window.addEventListener('pointerup',()=>arrastre=null);
-  pintarMapa();
+  w.addEventListener('wheel',e=>{ e.preventDefault(); zoomMapa(e.deltaY<0?1:-1); },{passive:false});
+  // Vista inicial: todo el pa\u00eds
+  mapaEsc=escalaPais(); pintarMapa();
   seleccionarPin('bosques');
 })();
 
@@ -2083,6 +2136,14 @@ async function validarFianza(){
 }
 
 /* ================= HISTORIA: B2C ================= */
+function modoB2C(m,btn){
+  const v=document.getElementById('vista-b2c');
+  v.classList.toggle('web',m==='web');
+  document.getElementById('b2c-mov').classList.toggle('activo',m==='movil');
+  document.getElementById('b2c-web').classList.toggle('activo',m==='web');
+  localStorage.setItem('b2c_modo',m);
+}
+window.addEventListener('load',()=>{ if(localStorage.getItem('b2c_modo')==='web') modoB2C('web'); });
 let pantallaActual=0;
 function irPantalla(n){
   document.querySelectorAll('#vista-b2c .pantalla').forEach(p=>p.classList.remove('activa'));
@@ -2316,6 +2377,10 @@ async function cargarEstadoRemoto(){
   }
   // NPS real
   if(e.nps && e.nps.n){ const v=document.getElementById('det-nps-val'), n=document.getElementById('det-nps-n'); if(v){v.textContent='★ '+e.nps.p; n.textContent=e.nps.n+' encuestas NPS';} }
+  // Tarjetas B2B de los otros desarrollos (avances reales de la base)
+  ['tesistan','lomas','chapala'].forEach(id=>{
+    const d=e.desarrollos.find(x=>x.id===id); if(d) pintarCardB2B(d);
+  });
   // B2C: reserva activa persistida
   try{
     RESERVA=await apiGet('/api/reservas/activa?nss='+NSS_DEMO);
@@ -2509,5 +2574,96 @@ function montarVoz(v){
 montarVoz("landing");
 </script>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+<!-- ============ MENU DE PERFIL ============ -->
+<div id="menu-perfil" class="menu-perfil" style="display:none">
+  <div class="mp-cab"><div class="avatar" id="mp-avatar">--</div><div style="min-width:0"><b id="mp-nombre" style="font-size:13.5px">--</b><small id="mp-correo"></small></div></div>
+  <label class="mp-item">📷 Cambiar foto<input type="file" accept="image/*" style="display:none" onchange="perfilFoto(this)"></label>
+  <button class="mp-item" onclick="perfilTogglePass()">🔒 Cambiar contraseña</button>
+  <div id="mp-pass" style="display:none;padding:6px 14px 12px">
+    <input type="password" id="mp-pass-actual" placeholder="Contraseña actual">
+    <input type="password" id="mp-pass-nueva" placeholder="Nueva contraseña (mín. 8)">
+    <button class="btn primario chico" style="width:100%" onclick="perfilCambiarPass()">Guardar</button>
+  </div>
+  <button class="mp-item" onclick="perfilCerrarSesion()">🚪 Cerrar sesión</button>
+</div>
+<script>
+/* ============ PERFIL DE USUARIO ============ */
+const ROL_VISTA={'vista-b2g':'director','vista-colab':'colaborador','vista-b2b':'constructor','vista-b2o':'operador'};
+let _perfilRol=null;
+function aplicarFotos(){
+  Object.entries(ROL_VISTA).forEach(([vid,rol])=>{
+    const foto=localStorage.getItem('foto_'+rol); if(!foto) return;
+    const av=document.querySelector('#'+vid+' .app-head .avatar');
+    if(av){ av.style.backgroundImage='url('+foto+')'; av.style.backgroundSize='cover'; av.textContent=''; }
+  });
+}
+function abrirPerfil(rol,anchor){
+  _perfilRol=rol;
+  const m=document.getElementById('menu-perfil');
+  const r=anchor.getBoundingClientRect();
+  m.style.display='block';
+  m.style.top=(r.bottom+8+window.scrollY)+'px';
+  m.style.left=Math.max(10,Math.min(r.left+window.scrollX,window.innerWidth-296))+'px';
+  document.getElementById('mp-pass').style.display='none';
+  const nombre=(anchor.innerText||'').trim().split('\n')[0]||rol;
+  document.getElementById('mp-nombre').textContent=nombre;
+  document.getElementById('mp-correo').textContent=CUENTAS[rol];
+  const foto=localStorage.getItem('foto_'+rol), av=document.getElementById('mp-avatar');
+  if(foto){ av.style.backgroundImage='url('+foto+')'; av.style.backgroundSize='cover'; av.textContent=''; }
+  else{ av.style.backgroundImage=''; av.textContent=nombre.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase(); }
+}
+function perfilTogglePass(){ const p=document.getElementById('mp-pass'); p.style.display=p.style.display==='none'?'block':'none'; }
+async function perfilCambiarPass(){
+  const actual=document.getElementById('mp-pass-actual').value, nueva=document.getElementById('mp-pass-nueva').value;
+  if(!API_OK){ toast('⚠ Requiere el sandbox con API conectada'); return; }
+  try{
+    await apiPost('/api/auth/cambiar-password',{actual,nueva},_perfilRol);
+    toast('✓ Contraseña actualizada para '+CUENTAS[_perfilRol]);
+    document.getElementById('mp-pass-actual').value=''; document.getElementById('mp-pass-nueva').value='';
+    perfilTogglePass();
+  }catch(e){ toast('⚠ '+e.message); }
+}
+function perfilFoto(inp){
+  const f=inp.files[0]; if(!f) return;
+  const fr=new FileReader();
+  fr.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement('canvas'); c.width=c.height=96;
+      const s=Math.min(img.width,img.height);
+      c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,96,96);
+      const data=c.toDataURL('image/jpeg',.85);
+      localStorage.setItem('foto_'+_perfilRol,data);
+      aplicarFotos();
+      const av=document.getElementById('mp-avatar');
+      av.style.backgroundImage='url('+data+')'; av.style.backgroundSize='cover'; av.textContent='';
+      if(API_OK) apiPost('/api/auth/foto',{foto:data},_perfilRol).then(()=>toast('✓ Foto actualizada')).catch(e=>toast('⚠ '+e.message));
+      else toast('✓ Foto actualizada (local)');
+    };
+    img.src=fr.result;
+  };
+  fr.readAsDataURL(f);
+}
+function perfilCerrarSesion(){
+  delete SES.tokens[_perfilRol]; SES.guardar();
+  document.getElementById('menu-perfil').style.display='none';
+  toast('Sesión cerrada · vuelve a entrar desde la Web privada');
+  entrarPorHub(null);
+}
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.app-head .usuario').forEach(u=>{
+    u.addEventListener('click',e=>{
+      const sec=u.closest('section'); const rol=ROL_VISTA[sec&&sec.id];
+      if(rol){ e.stopPropagation(); abrirPerfil(rol,u); }
+    });
+  });
+  document.addEventListener('click',e=>{
+    const m=document.getElementById('menu-perfil');
+    if(m&&m.style.display!=='none'&&!e.target.closest('#menu-perfil')) m.style.display='none';
+  });
+  aplicarFotos();
+});
+</script>
 </body>
 </html>

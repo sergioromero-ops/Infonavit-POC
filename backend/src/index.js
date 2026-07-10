@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { db, seed, getFlag, setFlagV, logEvento } from './db.js';
-import { copilot, desglosarTareas } from './copilot.js';
+import { copilot, desglosarTareas, iaActiva } from './copilot.js';
 
 seed();
 
@@ -80,9 +80,25 @@ const server = http.createServer(async (req, res) => {
 
   // Estáticos del frontend (para correr todo con un solo comando)
   if (req.method === 'GET' && fs.existsSync(FRONTEND_DIR)) {
-    let p = path.normalize(path.join(FRONTEND_DIR, url.pathname === '/' ? 'index.html' : url.pathname));
+    let p = path.normalize(path.join(FRONTEND_DIR, url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname)));
     if (p.startsWith(FRONTEND_DIR) && fs.existsSync(p) && fs.statSync(p).isFile()) {
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p)] || 'application/octet-stream' });
+      const tipo = MIME[path.extname(p)] || 'application/octet-stream';
+      const total = fs.statSync(p).size;
+      const rango = req.headers.range;
+      if (rango) {
+        // Soporte de Range: obligatorio para que Safari/iOS reproduzcan video
+        const m = rango.match(/bytes=(\d*)-(\d*)/);
+        let ini = m[1] ? parseInt(m[1]) : 0;
+        let fin = m[2] ? parseInt(m[2]) : total - 1;
+        if (ini >= total) { res.writeHead(416, { 'Content-Range': `bytes */${total}` }); return res.end(); }
+        fin = Math.min(fin, total - 1);
+        res.writeHead(206, {
+          'Content-Type': tipo, 'Accept-Ranges': 'bytes',
+          'Content-Range': `bytes ${ini}-${fin}/${total}`, 'Content-Length': fin - ini + 1
+        });
+        return fs.createReadStream(p, { start: ini, end: fin }).pipe(res);
+      }
+      res.writeHead(200, { 'Content-Type': tipo, 'Content-Length': total, 'Accept-Ranges': 'bytes' });
       return fs.createReadStream(p).pipe(res);
     }
   }
@@ -94,8 +110,31 @@ POST('/api/auth/login', ({ body, json }) => {
   const u = db.prepare(`SELECT * FROM users WHERE email=?`).get((body.email || '').toLowerCase().trim());
   if (!u || u.pass !== body.password) return json(401, { error: 'Correo o contraseña incorrectos' });
   logEvento('login', u.rol);
-  json(200, { token: firmar({ id: u.id, rol: u.rol, nombre: u.nombre }), user: { email: u.email, rol: u.rol, nombre: u.nombre, organizacion: u.organizacion } });
+  json(200, { token: firmar({ id: u.id, rol: u.rol, nombre: u.nombre }), user: { email: u.email, rol: u.rol, nombre: u.nombre, organizacion: u.organizacion, foto: u.foto || null } });
 });
+
+/* ============ PERFIL ============ */
+GET('/api/perfil', ({ user, json }) => {
+  const u = db.prepare(`SELECT email,rol,nombre,organizacion,foto FROM users WHERE id=?`).get(user.id);
+  json(200, u || {});
+}, []);
+
+POST('/api/auth/cambiar-password', ({ body, user, json }) => {
+  const u = db.prepare(`SELECT * FROM users WHERE id=?`).get(user.id);
+  if (!u || u.pass !== body.actual) return json(401, { error: 'La contraseña actual no coincide' });
+  if (!body.nueva || body.nueva.length < 8) return json(400, { error: 'La nueva contraseña debe tener al menos 8 caracteres' });
+  db.prepare(`UPDATE users SET pass=? WHERE id=?`).run(body.nueva, u.id);
+  logEvento('password_cambiada', user.rol);
+  json(200, { ok: true, mensaje: 'Contraseña actualizada' });
+}, []);
+
+POST('/api/auth/foto', ({ body, user, json }) => {
+  if (!/^data:image\/(png|jpeg|jpg|webp);base64,/.test(body.foto || '')) return json(400, { error: 'Formato de imagen no válido' });
+  if (body.foto.length > 300000) return json(400, { error: 'Imagen demasiado grande (máx ~200 KB)' });
+  db.prepare(`UPDATE users SET foto=? WHERE id=?`).run(body.foto, user.id);
+  logEvento('foto_actualizada', user.rol);
+  json(200, { ok: true });
+}, []);
 
 /* ============ ESTADO GLOBAL ============ */
 function estadoGlobal() {
@@ -121,7 +160,7 @@ function estadoGlobal() {
 }
 
 GET('/api/estado', ({ json }) => json(200, estadoGlobal()));
-GET('/api/health', ({ json }) => json(200, { ok: true, ia: !!process.env.ANTHROPIC_API_KEY }));
+GET('/api/health', ({ json }) => json(200, { ok: true, ia: iaActiva() }));
 
 /* ============ ACCIONES DE LA HISTORIA ============ */
 POST('/api/acciones/solicitar-actualizacion', ({ user, json }) => {
@@ -134,15 +173,32 @@ POST('/api/acciones/solicitar-actualizacion', ({ user, json }) => {
 }, ['director', 'colaborador']);
 
 POST('/api/acciones/actualizar-desarrollo', ({ body, json }) => {
-  const af = body.avance_fisico ?? 82, as = body.avance_servicios ?? 71;
-  db.prepare(`UPDATE desarrollos SET avance_fisico=?, avance_servicios=?, entregables=117, sin_servicios=43,
-    semaforo='ambar', fianza_estado='renovacion', ultima_actualizacion=? WHERE id='bosques'`).run(af, as, now());
-  setFlagV('constructor', 1);
-  db.prepare(`INSERT INTO mensajes (de_rol,para_rol,de_nombre,texto,creado) VALUES (?,?,?,?,?)`)
-    .run('constructor', 'director', 'Hábitat Jalisco Constructora',
-      `Actualizamos Bosques del Bienestar: avance ${af}%, servicios ${as}%, fianza en renovación. Solicitamos apoyo con el Ayto. de Tlajomulco (drenaje etapa 3).`, now());
-  logEvento('actualizacion_desarrollo', 'constructor', { af, as });
-  json(200, { ok: true, estado: estadoGlobal() });
+  const id = body.desarrollo_id || 'bosques';
+  const dev = db.prepare(`SELECT * FROM desarrollos WHERE id=?`).get(id);
+  if (!dev) return json(404, { error: 'Desarrollo no encontrado' });
+
+  if (id === 'bosques') {
+    // Narrativa principal: rojo → ámbar con fianza en renovación
+    const af = body.avance_fisico ?? 82, as = body.avance_servicios ?? 71;
+    db.prepare(`UPDATE desarrollos SET avance_fisico=?, avance_servicios=?, entregables=117, sin_servicios=43,
+      semaforo='ambar', fianza_estado='renovacion', ultima_actualizacion=? WHERE id='bosques'`).run(af, as, now());
+    setFlagV('constructor', 1);
+    db.prepare(`INSERT INTO mensajes (de_rol,para_rol,de_nombre,texto,creado) VALUES (?,?,?,?,?)`)
+      .run('constructor', 'director', 'Hábitat Jalisco Constructora',
+        `Actualizamos Bosques del Bienestar: avance ${af}%, servicios ${as}%, fianza en renovación. Solicitamos apoyo con el Ayto. de Tlajomulco (drenaje etapa 3).`, now());
+  } else {
+    // Cualquier otro desarrollo: avance incremental real con semáforo recalculado
+    const af = Math.min(100, body.avance_fisico ?? dev.avance_fisico + 2);
+    const as = Math.min(100, body.avance_servicios ?? dev.avance_servicios + 3);
+    const sem = (af >= 80 && as >= 75) ? 'verde' : (af >= 60 ? 'ambar' : 'rojo');
+    db.prepare(`UPDATE desarrollos SET avance_fisico=?, avance_servicios=?, semaforo=?, ultima_actualizacion=? WHERE id=?`)
+      .run(af, as, sem, now(), id);
+    db.prepare(`INSERT INTO mensajes (de_rol,para_rol,de_nombre,texto,creado) VALUES (?,?,?,?,?)`)
+      .run('constructor', 'director', 'Hábitat Jalisco Constructora',
+        `Actualizamos ${dev.nombre}: avance ${af}%, servicios ${as}%.`, now());
+  }
+  logEvento('actualizacion_desarrollo', 'constructor', { id });
+  json(200, { ok: true, desarrollo: db.prepare(`SELECT * FROM desarrollos WHERE id=?`).get(id), estado: estadoGlobal() });
 }, ['constructor']);
 
 POST('/api/acciones/generar-estimacion', ({ json }) => {
@@ -296,5 +352,5 @@ POST('/api/reset', ({ json }) => {
 
 server.listen(PORT, () => {
   console.log(`✓ Sandbox Vivienda del Bienestar en http://localhost:${PORT}`);
-  console.log(`  IA real: ${process.env.ANTHROPIC_API_KEY ? 'activada (' + (process.env.CLAUDE_MODEL || 'claude-sonnet-5') + ')' : 'desactivada → respuestas con datos vivos (scripted)'}`);
+  console.log(`  IA real: ${iaActiva() ? 'activada' : 'desactivada → respuestas con datos vivos (scripted)'}`);
 });

@@ -69,6 +69,9 @@ CREATE TABLE IF NOT EXISTS eventos (
 );
 `);
 
+// Migraciones ligeras
+try { db.exec(`ALTER TABLE users ADD COLUMN foto TEXT`); } catch { /* ya existe */ }
+
 /* ============ SEED ============ */
 const now = () => new Date().toISOString();
 
@@ -116,6 +119,9 @@ export function seed(force = false) {
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
   const hace12dias = new Date(Date.now() - 12 * 864e5).toISOString();
   dev.run('bosques', 'Bosques del Bienestar', 'Jalisco', 'Tlajomulco de Zúñiga', 'Hábitat Jalisco', 89040, 78, 54, 160, 92, 68, 48, 'rojo', 'por_vencer', 48.2, '2026-07-17', 1, 2, hace12dias);
+  dev.run('tesistan', 'Jardines de Tesistán', 'Jalisco', 'Zapopan', 'Hábitat Jalisco', 360, 92, 88, 310, 298, 12, 6, 'verde', 'vigente', 39.8, '2027-03-20', 2, 2, now());
+  dev.run('lomas', 'Lomas del Salto', 'Jalisco', 'El Salto', 'Hábitat Jalisco', 288, 64, 57, 120, 98, 22, 11, 'ambar', 'vigente', 31.5, '2027-01-15', 2, 2, now());
+  dev.run('chapala', 'Vistas de Chapala', 'Jalisco', 'Ixtlahuacán', 'Hábitat Jalisco', 380, 85, 81, 260, 244, 16, 9, 'verde', 'vigente', 41.2, '2027-06-30', 2, 2, now());
   dev.run('valle-mty', 'Valle del Bienestar', 'Nuevo León', 'Apodaca', 'Constructora Regia', 67305, 72, 64, 210, 180, 30, 22, 'ambar', 'vigente', 61.0, '2027-02-10', 2, 2, now());
   dev.run('puebla-sur', 'Angelópolis Bienestar', 'Puebla', 'Puebla', 'GP Vivienda', 29719, 68, 61, 140, 122, 18, 15, 'ambar', 'vigente', 38.5, '2026-12-01', 2, 2, now());
   dev.run('toluca-norte', 'Toluca Bienestar', 'Edo. de México', 'Toluca', 'Casas del Centro', 21336, 84, 79, 190, 178, 12, 8, 'verde', 'vigente', 42.0, '2027-05-20', 2, 2, now());

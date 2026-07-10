@@ -87,6 +87,26 @@ try {
   chk(r.texto?.includes('82%'), 'copiloto responde con datos VIVOS (82%, no 78%)');
   chk(r.fuente === 'scripted', 'fallback scripted sin API key');
 
+  console.log('— Desarrollos adicionales del constructor');
+  const TC2 = await login('constructor@habitatjalisco.mx');
+  r = await api('/api/acciones/actualizar-desarrollo', { body: { desarrollo_id: 'tesistan' }, token: TC2 });
+  chk(r.desarrollo?.avance_fisico === 94 && r.desarrollo?.semaforo === 'verde', 'tesistán 92→94% con semáforo recalculado');
+  chk((await api('/api/acciones/actualizar-desarrollo', { body: { desarrollo_id: 'noexiste' }, token: TC2 })).error?.startsWith('Desarrollo'), 'desarrollo inexistente → 404');
+
+  console.log('— Perfil: contraseña y foto');
+  chk((await api('/api/auth/cambiar-password', { body: { actual: 'mala', nueva: 'nueva12345' }, token: TC2 })).error?.includes('actual'), 'password actual incorrecta rechazada');
+  chk((await api('/api/auth/cambiar-password', { body: { actual: 'bienestar2026', nueva: 'corta' }, token: TC2 })).error?.includes('8'), 'password corta rechazada');
+  chk((await api('/api/auth/cambiar-password', { body: { actual: 'bienestar2026', nueva: 'habitat-2026!' }, token: TC2 })).ok === true, 'cambio de contraseña real');
+  chk((await api('/api/auth/login', { body: { email: 'constructor@habitatjalisco.mx', password: 'habitat-2026!' } })).token?.length > 20, 'login con la nueva contraseña');
+  const px = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  chk((await api('/api/auth/foto', { body: { foto: px }, token: TC2 })).ok === true, 'foto de perfil guardada');
+  chk((await api('/api/perfil', { token: TC2 })).foto === px, 'foto persiste en el perfil');
+  chk((await api('/api/auth/foto', { body: { foto: 'data:text/html;base64,xx' }, token: TC2 })).error?.includes('Formato'), 'foto no imagen rechazada');
+
+  console.log('— Video con Range (Safari)');
+  const rv = await fetch(B + '/assets/hero-familia.mp4', { headers: { range: 'bytes=0-1' } });
+  chk(rv.status === 206 && rv.headers.get('content-range')?.startsWith('bytes 0-1/'), 'video responde 206 Partial Content');
+
   console.log('— Reset del sandbox');
   await api('/api/reset', { body: {} });
   const fin = await api('/api/estado');

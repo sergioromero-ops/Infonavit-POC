@@ -1,7 +1,40 @@
 import { db, getFlag } from './db.js';
 
-const API_KEY = process.env.ANTHROPIC_API_KEY;
-const MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-5';
+/* Proveedores de IA: Anthropic (ANTHROPIC_API_KEY) u OpenAI (OPENAI_API_KEY).
+   Las keys viven SOLO en variables de entorno (Cloud Run → Variables), nunca en el código. */
+const AKEY = process.env.ANTHROPIC_API_KEY;
+const OKEY = process.env.OPENAI_API_KEY || process.env.AI_OPENAI_API_KEY;
+const AMODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-5';
+const OMODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
+export const iaActiva = () => !!(AKEY || OKEY);
+
+async function llamarIA(system, user, maxTokens = 400) {
+  if (AKEY) {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': AKEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({ model: AMODEL, max_tokens: maxTokens, system, messages: [{ role: 'user', content: user }] })
+    });
+    if (!r.ok) throw new Error(`Anthropic ${r.status}`);
+    const j = await r.json();
+    return j.content?.[0]?.text || null;
+  }
+  if (OKEY) {
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { authorization: 'Bearer ' + OKEY, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        model: OMODEL, max_tokens: maxTokens,
+        messages: [{ role: 'system', content: system }, { role: 'user', content: user }]
+      })
+    });
+    if (!r.ok) throw new Error(`OpenAI ${r.status}`);
+    const j = await r.json();
+    return j.choices?.[0]?.message?.content || null;
+  }
+  return null;
+}
 
 /* ============ SNAPSHOT DE DATOS VIVOS PARA EL PROMPT ============ */
 export function snapshot() {
@@ -51,41 +84,25 @@ function fallback(rol, pregunta) {
   return `Hola, soy tu guía. Tu apartado y documentos se guardan en tiempo real — si algo no se entiende, pregúntame.`;
 }
 
-/* ============ LLAMADA REAL A CLAUDE ============ */
+/* ============ COPILOTO ============ */
 export async function copilot(rol, pregunta, contexto = '') {
-  if (!API_KEY) return { texto: fallback(rol, pregunta), fuente: 'scripted' };
+  if (!iaActiva()) return { texto: fallback(rol, pregunta), fuente: 'scripted' };
   try {
-    const s = snapshot();
     const system = `${PERFILES[rol] || PERFILES.derechohabiente}
 
 Estás dentro de un SANDBOX con datos simulados pero flujos reales y persistentes. Responde en máximo 120 palabras, puedes usar <b>negritas</b> HTML. Nunca inventes cifras: usa solo el snapshot.
 
 SNAPSHOT ACTUAL DE LA BASE DE DATOS:
-${JSON.stringify(s)}${contexto ? `\n\nCONTEXTO DE PANTALLA: ${contexto}` : ''}`;
-
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: MODEL, max_tokens: 400,
-        system,
-        messages: [{ role: 'user', content: pregunta }]
-      })
-    });
-    if (!r.ok) throw new Error(`Anthropic ${r.status}`);
-    const j = await r.json();
-    return { texto: j.content?.[0]?.text || fallback(rol, pregunta), fuente: 'claude' };
+${JSON.stringify(snapshot())}${contexto ? `\n\nCONTEXTO DE PANTALLA: ${contexto}` : ''}`;
+    const texto = await llamarIA(system, pregunta, 400);
+    return texto ? { texto, fuente: 'ia' } : { texto: fallback(rol, pregunta), fuente: 'scripted' };
   } catch (e) {
     console.error('copilot fallback:', e.message);
     return { texto: fallback(rol, pregunta), fuente: 'scripted' };
   }
 }
 
-/* ============ DESGLOSE DE TAREAS POR IA (mensaje del director) ============ */
+/* ============ DESGLOSE DE TAREAS POR IA ============ */
 const TAREAS_FALLBACK = [
   { texto: 'Programar verificación UVE · Bosques del Bienestar', asignado: 'Laura Mendoza (verificación)', rol: 'colaborador', vence: '2026-07-11', prioridad: 'normal' },
   { texto: 'Requerir estimación 2/2 a Hábitat Jalisco', asignado: 'R. Cortés (tesorería regional)', rol: 'colaborador', vence: '2026-07-12', prioridad: 'urgente' },
@@ -93,23 +110,12 @@ const TAREAS_FALLBACK = [
 ];
 
 export async function desglosarTareas(mensaje) {
-  if (!API_KEY) return { tareas: TAREAS_FALLBACK, fuente: 'scripted' };
+  if (!iaActiva()) return { tareas: TAREAS_FALLBACK, fuente: 'scripted' };
   try {
-    const s = snapshot();
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({
-        model: MODEL, max_tokens: 800,
-        system: `Eres la IA de la Torre de Control de Vivienda del Bienestar. El Director envía un mensaje global; tú lo desglosas en tareas específicas según el perfil de cada colaborador. Responde SOLO un array JSON: [{"texto","asignado","rol","vence","prioridad"}] (3 tareas máx, fechas próximas a hoy 2026-07-10, prioridad "urgente"|"normal"). Datos vivos: ${JSON.stringify(s.desarrollos)}`,
-        messages: [{ role: 'user', content: mensaje }]
-      })
-    });
-    if (!r.ok) throw new Error(`Anthropic ${r.status}`);
-    const j = await r.json();
-    const raw = j.content?.[0]?.text || '';
+    const system = `Eres la IA de la Torre de Control de Vivienda del Bienestar. El Director envía un mensaje global; tú lo desglosas en tareas específicas según el perfil de cada colaborador. Responde SOLO un array JSON: [{"texto","asignado","rol","vence","prioridad"}] (3 tareas máx, fechas próximas a hoy 2026-07-10, prioridad "urgente"|"normal"). Datos vivos: ${JSON.stringify(snapshot().desarrollos)}`;
+    const raw = await llamarIA(system, mensaje, 800) || '';
     const arr = JSON.parse(raw.slice(raw.indexOf('['), raw.lastIndexOf(']') + 1));
-    return { tareas: arr.slice(0, 3), fuente: 'claude' };
+    return { tareas: arr.slice(0, 3), fuente: 'ia' };
   } catch (e) {
     console.error('desglose fallback:', e.message);
     return { tareas: TAREAS_FALLBACK, fuente: 'scripted' };
