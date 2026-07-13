@@ -1536,6 +1536,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
               <tr><td style="padding:5px 0;color:var(--gris-500)">Zona detectada</td><td style="text-align:right;font-weight:700">📍 Guadalajara, Jal.</td></tr>
             </table>
           </div>
+          <button class="btn secundario btn-full" style="margin-bottom:8px" onclick="explicarCredito(this)">✦ Explícame mi crédito en simple</button>
+          <div id="credito-explica"></div>
           <button class="btn primario btn-full" onclick="irPantalla(3)">Ver viviendas para mí →</button>
         </div>
 
@@ -1686,7 +1688,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <!-- P8: Encuesta de salida / NPS -->
         <div class="pantalla" id="p-8">
           <div class="b2c-head"><button class="volver" onclick="irPantalla(7)">←</button><span class="titulo">¿Cómo ha sido vivir aquí?</span></div>
-          <div class="card" style="padding:14px;margin-bottom:14px;display:flex;gap:11px;align-items:flex-start">
+          <video id="video-ines" controls playsinline style="display:none;width:100%;border-radius:14px;margin-bottom:12px;box-shadow:var(--sombra-md)" src="assets/ines-nps.mp4" onloadeddata="this.style.display='block';document.getElementById('ines-card').style.display='none'"></video>
+          <div class="card" id="ines-card" style="padding:14px;margin-bottom:14px;display:flex;gap:11px;align-items:flex-start">
             <div class="avatar" style="background:var(--rojo);flex-shrink:0">▶</div>
             <div style="font-size:12.5px"><b>Inés · vocera IA</b> <span class="chip azul">video</span><p style="color:var(--gris-500);margin-top:3px">"Ana, ya llevan 6 meses en Bosques del Bienestar. Califica tu experiencia: tu opinión valora al desarrollador y mejora el programa."</p></div>
           </div>
@@ -2406,6 +2409,42 @@ function pintarB2G(){
   }
 }
 
+/* ================= EXPLICACIÓN DEL CRÉDITO CON IA (documento: "explicación sencilla de su crédito") ================= */
+async function explicarCredito(btn){
+  const cont=document.getElementById('credito-explica');
+  btn.disabled=true; btn.textContent='✦ Inés está pensando…';
+  const fallback='Ana, tu crédito funciona así: Infonavit te presta hasta <b>$680,000</b> porque llevas 14 meses cotizando y tu ingreso es de 1.8 salarios mínimos. Con el crédito conjunto de Luis suman más capacidad. Tu mensualidad se descuenta de tu nómina y <b>nunca superará el 30% de su ingreso</b> (≈ $3,150). No necesitas ahorros previos: tu subcuenta de vivienda cuenta como enganche.';
+  let texto=fallback;
+  try{ if(API_OK) texto=(await apiPost('/api/copilot',{rol:'derechohabiente',pregunta:'Explícame mi crédito en lenguaje muy simple: cuánto me prestan, por qué, cómo pago y qué significa el crédito conjunto con Luis. Máximo 80 palabras.'})).texto; }catch{}
+  cont.innerHTML='<div class="card" style="padding:13px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;background:var(--rojo-claro);border:none"><div class="avatar" style="background:var(--rojo);flex-shrink:0;width:30px;height:30px;font-size:12px">✦</div><div style="font-size:12.5px;line-height:1.6"><b>Inés</b><p style="color:var(--gris-700);margin-top:3px">'+texto+'</p></div></div>';
+  btn.style.display='none';
+}
+
+/* ================= MODELO DE NEGOCIO (interno · NO para la demo del director) ================= */
+function abrirMonetizacion(){
+  const d=document.createElement('div'); d.className='modal-fondo'; d.id='modal-monetiza';
+  d.innerHTML='<div class="modal-caja" style="max-width:680px;text-align:left">'+
+   '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><h3 style="font-size:18px">💼 Modelo por verticales</h3><span class="chip rojo">interno · no mostrar al director</span></div>'+
+   '<table class="tabla" style="margin-top:10px"><thead><tr><th>Vertical</th><th>Oportunidad comercial</th></tr></thead><tbody>'+
+   '<tr><td><b>B2G · Infonavit Enterprise</b></td><td>Licencia institucional, implementación, soporte y evolución</td></tr>'+
+   '<tr><td><b>B2B · Constructores</b></td><td>Suscripción anual (~$30,000 MXN inicial), fee por operación completada, módulos premium</td></tr>'+
+   '<tr><td><b>B2O · Operadores</b></td><td>Accesos por rol, validaciones, módulos por operador</td></tr>'+
+   '<tr><td><b>B2C · Derechohabiente</b></td><td>Sin monetización directa: genera adopción, menor fricción y mejor conversión</td></tr>'+
+   '<tr><td><b>Intelligence · Data</b></td><td>Analítica avanzada, reportes, benchmarking y APIs futuras</td></tr>'+
+   '</tbody></table>'+
+   '<p style="font-size:12.5px;color:var(--gris-700);margin-top:14px;background:var(--gris-50);border-radius:10px;padding:12px"><b>Argumento:</b> el desarrollador absorbe el costo — el programa ya le genera ~4% de ahorro en comercialización. Infonavit es el cliente ancla; el ecosistema genera ingresos recurrentes por operación, uso e inteligencia.</p>'+
+   '<div class="botones" style="margin-top:16px"><button class="btn primario" onclick="document.getElementById(\'modal-monetiza\').remove()">Cerrar</button></div></div>';
+  document.body.appendChild(d);
+}
+// El botón solo aparece con ?interno=1 (se recuerda en el navegador)
+window.addEventListener('load',()=>{
+  if(new URLSearchParams(location.search).get('interno')==='1') localStorage.setItem('modo_interno','1');
+  if(localStorage.getItem('modo_interno')==='1'){
+    const bar=document.querySelector('.proto-bar');
+    if(bar){ const b=document.createElement('button'); b.className='rol-btn'; b.style.flexShrink='0'; b.textContent='💼'; b.title='Modelo de negocio (interno)'; b.onclick=abrirMonetizacion; bar.insertBefore(b,bar.querySelector('.roles')); }
+  }
+});
+
 /* ================= CENTRO DE NOTIFICACIONES 🔔 ================= */
 async function abrirNotifs(rol,btn){
   let p=document.getElementById('panel-notifs');
@@ -2590,6 +2629,7 @@ async function cargarEvidencias(){
 
 /* ================= MODO DEMO GUIADO (guion del documento, 5 escenas) ================= */
 const DEMO_ESCENAS=[
+  {vista:'landing',panel:null,t:'El pitch · 60 segundos',d:'Una torre de control inteligente para el Programa de Vivienda del Bienestar. No es otro dashboard ni una app aislada: conecta a Infonavit, constructores, operadores y derechohabientes para dar visibilidad sobre obra, servicios, fianzas, escrituración y entregas. El Director ve qué desarrollo está en riesgo, entiende la causa raíz y activa al actor correcto.<br><br><b>Infonavit ve · Constructor actualiza · Operador valida · Derechohabiente avanza.</b>'},
   {vista:'b2g',panel:'resumen',t:'1 · La torre de control del Director',d:'Aquí se ve el país completo: meta 2026, contratadas, terminadas, entregadas, sin servicios y escrituración — con semáforos y alertas en vivo.'},
   {vista:'b2g',panel:'desarrollos',t:'2 · Un desarrollo terminado que no se puede entregar',d:'Bosques del Bienestar: causa raíz del bloqueo (CFE, drenaje, escrituras, fianza), responsable y fecha comprometida. La IA lo detectó y lo explica.'},
   {vista:'b2b',panel:'actualizar',t:'3 · El constructor alimenta la vista nacional',d:'Sube avance, servicios, fianza y evidencia fotográfica. Su actualización cambia el semáforo del Director en tiempo real.'},
