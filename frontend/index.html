@@ -293,6 +293,7 @@ async function reiniciarSandbox(){
   <span class="tag" id="proto-tag">Prototipo · Datos simulados</span>
   <button class="rol-btn" style="flex-shrink:0" onclick="reiniciarSandbox()" title="Regresa el sandbox al estado inicial">↺</button>
   <button class="rol-btn" style="flex-shrink:0" onclick="mostrarDisclaimer()" title="Alcance del prototipo">ⓘ</button>
+  <button class="rol-btn" style="flex-shrink:0;background:var(--rojo);border-color:var(--rojo)" onclick="iniciarDemo()" title="Recorrido guiado de 5 escenas para presentar">▶ Demo</button>
   <div class="roles">
     <button class="rol-btn activo" data-vista="landing" onclick="irVista('landing',this)">🌐 Web pública para derechohabientes</button>
     <button class="rol-btn" data-vista="hub" onclick="entrarPorHub(null)">🔐 Web privada</button>
@@ -772,6 +773,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="stat-box"><span class="mini-lbl">Sin servicios</span><b class="stat-num" style="color:var(--rojo-sem)" id="det-sinserv">68</b></div>
             <div class="stat-box"><span class="mini-lbl">Escrituras pendientes</span><b class="stat-num" style="color:var(--rojo-sem)" id="det-escrit">48</b></div>
           </div>
+          <div id="evidencias-b2g-wrap" style="display:none">
+            <div class="titulo-seccion" style="margin:10px 0 6px"><h3 style="font-size:14px">Evidencia de obra del constructor</h3><span class="chip verde" id="evidencias-b2g-n"></span></div>
+            <div id="evidencias-b2g" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div>
+          </div>
           <div class="titulo-seccion" style="margin:14px 0 4px"><h3 style="font-size:14px">Causa raíz del bloqueo</h3><span class="chip azul">✦ Análisis IA</span></div>
           <div id="det-causas">
             <div class="causa"><div class="ic rojo">⚡</div><div><b>CFE: 68 viviendas sin conexión eléctrica</b><p>Trámite de subestación detenido 31 días · afecta a 41 familias con proceso activo. Responsable: CFE Distribución Jalisco.</p></div><div class="meta"><span class="chip rojo">Crítico</span><p style="font-size:11px;color:var(--gris-500);margin-top:4px">Comp.: 24 jul</p></div></div>
@@ -902,10 +907,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         </div>
         <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>Nuevo mensaje</h3></div>
-          <form class="formulario" onsubmit="event.preventDefault();toast('Mensaje enviado a Hábitat Jalisco Constructora');this.reset()">
-            <div><label>Destinatario</label><select><option>Hábitat Jalisco Constructora · Bosques del Bienestar</option><option>Todos los desarrolladores de Jalisco</option><option>Todos los desarrolladores (nacional)</option></select></div>
-            <div><label>Asunto</label><select><option>Solicitud de actualización de avance</option><option>Convocatoria a junta de seguimiento</option><option>Requerimiento de fianza</option></select></div>
-            <div><label>Mensaje</label><textarea rows="4" placeholder="Escribe el mensaje institucional…"></textarea></div>
+          <form class="formulario" onsubmit="event.preventDefault();enviarMensajeDirector(this)">
+            <div><label>Destinatario</label><select id="msj-dest"><option>Hábitat Jalisco Constructora · Bosques del Bienestar</option><option>Todos los desarrolladores de Jalisco</option><option>Todos los desarrolladores (nacional)</option></select></div>
+            <div><label>Asunto</label><select id="msj-asunto"><option>Solicitud de actualización de avance</option><option>Convocatoria a junta de seguimiento</option><option>Requerimiento de fianza</option></select></div>
+            <div><label>Mensaje</label><textarea id="msj-texto" rows="4" placeholder="Escribe el mensaje institucional…"></textarea></div>
             <button class="btn primario">Enviar mensaje</button>
           </form>
         </div>
@@ -1140,7 +1145,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             </div>
             <div>
               <label>Evidencia fotográfica</label>
-              <div class="drop" onclick="toast('Prototipo: se adjuntaron 6 fotografías de obra')">📷 Arrastra fotos de obra o haz clic para subir · Etapa 3, junio-julio</div>
+              <label class="drop" style="cursor:pointer;display:block">📷 Haz clic para subir fotos de obra · Etapa 3, junio-julio<input type="file" accept="image/*" multiple style="display:none" onchange="subirEvidencia(this)"></label>
+              <div id="evidencias-b2b" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
             </div>
             <div>
               <label>Incidencias y comentarios</label>
@@ -1728,6 +1734,9 @@ function irPanel(vista, panel, btn){
   document.querySelectorAll('#vista-'+vista+' .panel').forEach(p=>p.classList.remove('activo'));
   document.getElementById('panel-'+vista+'-'+panel).classList.add('activo');
   if(vista==='b2g'&&panel==='mensajes'&&typeof cargarBitacora==='function') cargarBitacora();
+  if(vista==='b2b'&&panel==='mensajes'&&typeof cargarMensajesRol==='function') cargarMensajesRol('constructor','lista-msj-b2b');
+  if(vista==='b2b'&&panel==='actualizar'&&typeof cargarEvidencias==='function') cargarEvidencias();
+  if(vista==='b2g'&&panel==='desarrollos'&&typeof cargarEvidencias==='function') cargarEvidencias();
   const nav=document.querySelectorAll('#vista-'+vista+' .subnav button');
   nav.forEach(b=>b.classList.remove('activo'));
   if(btn){btn.classList.add('activo')}
@@ -2388,6 +2397,104 @@ function pintarB2G(){
   }
 }
 
+/* ================= MENSAJERÍA REAL ENTRE ROLES ================= */
+async function enviarMensajeDirector(form){
+  const dest=document.getElementById('msj-dest').value;
+  const asunto=document.getElementById('msj-asunto').value;
+  const texto=document.getElementById('msj-texto').value.trim();
+  if(!texto){ toast('Escribe el mensaje'); return; }
+  try{
+    if(!API_OK) throw new Error('Requiere la API conectada');
+    await apiPost('/api/mensajes',{para_rol:'constructor',asunto,texto},'director');
+    toast('✓ Mensaje enviado. El constructor ya lo ve en su portal.');
+    form.reset();
+  }catch(e){ toast('⚠ '+e.message); }
+}
+async function cargarMensajesRol(rol,contId){
+  const cont=document.getElementById(contId); if(!cont||!API_OK) return;
+  let dyn=document.getElementById(contId+'-dyn');
+  if(!dyn){ dyn=document.createElement('div'); dyn.id=contId+'-dyn'; cont.prepend(dyn); }
+  try{
+    const ms=await apiGet('/api/mensajes?rol='+rol);
+    dyn.innerHTML=ms.map(m=>{
+      const t=new Date(m.creado).toLocaleString('es-MX',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      return '<div class="msj-item"><div class="avatar" style="background:var(--rojo)">'+(m.de_nombre||'IN').split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase()+'</div><div><b>'+(m.de_nombre||m.de_rol)+'</b> · <small>'+t+'</small><p style="font-size:13px;color:var(--gris-700)">'+m.texto+'</p></div></div>';
+    }).join('');
+  }catch{}
+}
+
+/* ================= EVIDENCIA FOTOGRÁFICA DE OBRA ================= */
+function miniFoto(e){
+  const t=new Date(e.creado).toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
+  return '<figure style="margin:0;text-align:center"><img src="'+e.foto+'" style="width:86px;height:64px;object-fit:cover;border-radius:9px;border:1px solid var(--gris-100);box-shadow:var(--sombra)"><figcaption style="font-size:9.5px;color:var(--gris-500);margin-top:2px">'+t+'</figcaption></figure>';
+}
+function subirEvidencia(inp){
+  if(!API_OK){ toast('⚠ Requiere el sandbox con API conectada'); return; }
+  [...inp.files].slice(0,4).forEach(f=>{
+    const fr=new FileReader();
+    fr.onload=()=>{
+      const img=new Image();
+      img.onload=async()=>{
+        const esc=Math.min(1,800/Math.max(img.width,img.height));
+        const c=document.createElement('canvas'); c.width=img.width*esc; c.height=img.height*esc;
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        const data=c.toDataURL('image/jpeg',.8);
+        try{
+          const j=await apiPost('/api/desarrollos/bosques/evidencia',{foto:data},'constructor');
+          toast('✓ Evidencia subida ('+j.total+' fotos). El Director ya la ve en su tablero.');
+          cargarEvidencias();
+        }catch(e){ toast('⚠ '+e.message); }
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(f);
+  });
+  inp.value='';
+}
+async function cargarEvidencias(){
+  if(!API_OK) return;
+  try{
+    const evs=await apiGet('/api/desarrollos/bosques/evidencias');
+    const b2b=document.getElementById('evidencias-b2b');
+    if(b2b) b2b.innerHTML=evs.map(miniFoto).join('');
+    const wrap=document.getElementById('evidencias-b2g-wrap');
+    if(wrap){
+      wrap.style.display=evs.length?'':'none';
+      document.getElementById('evidencias-b2g').innerHTML=evs.slice(0,6).map(miniFoto).join('');
+      document.getElementById('evidencias-b2g-n').textContent=evs.length+' foto'+(evs.length===1?'':'s')+' · cargadas por el constructor';
+    }
+  }catch{}
+}
+
+/* ================= MODO DEMO GUIADO (guion del documento, 5 escenas) ================= */
+const DEMO_ESCENAS=[
+  {vista:'b2g',panel:'resumen',t:'1 · La torre de control del Director',d:'Aquí se ve el país completo: meta 2026, contratadas, terminadas, entregadas, sin servicios y escrituración — con semáforos y alertas en vivo.'},
+  {vista:'b2g',panel:'desarrollos',t:'2 · Un desarrollo terminado que no se puede entregar',d:'Bosques del Bienestar: causa raíz del bloqueo (CFE, drenaje, escrituras, fianza), responsable y fecha comprometida. La IA lo detectó y lo explica.'},
+  {vista:'b2b',panel:'actualizar',t:'3 · El constructor alimenta la vista nacional',d:'Sube avance, servicios, fianza y evidencia fotográfica. Su actualización cambia el semáforo del Director en tiempo real.'},
+  {vista:'b2c',panel:null,t:'4 · El derechohabiente avanza con claridad',d:'Valida si aplica con su NSS, explora viviendas reales, aparta 72 horas, sube documentos y llega a firma — acompañado por Inés.'},
+  {vista:'b2g',panel:'resumen',t:'5 · La IA convierte datos en decisiones',d:'Los copilotos explican, alertan y resumen por rol. Control institucional + impacto social: eso es la plataforma.'}
+];
+let _demoIdx=-1;
+function demoIr(i){
+  _demoIdx=i;
+  if(i>=DEMO_ESCENAS.length){ demoSalir(); return; }
+  const e=DEMO_ESCENAS[i];
+  irVista(e.vista); if(e.panel) irPanel(e.vista,e.panel);
+  let o=document.getElementById('demo-overlay');
+  if(!o){
+    o=document.createElement('div'); o.id='demo-overlay';
+    o.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:1400;background:var(--gris-900);color:#fff;border-radius:16px;padding:18px 22px;max-width:620px;width:92vw;box-shadow:0 20px 60px rgba(0,0,0,.45)';
+    document.body.appendChild(o);
+  }
+  o.innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px">'+DEMO_ESCENAS.map((_,j)=>'<span style="height:4px;flex:1;border-radius:99px;background:'+(j<=i?'var(--rojo)':'rgba(255,255,255,.2)')+'"></span>').join('')+'</div>'+
+    '<b style="font-size:15px">'+e.t+'</b><p style="font-size:13px;opacity:.9;margin-top:6px;line-height:1.55">'+e.d+'</p>'+
+    '<div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end"><button class="btn fantasma chico" style="color:#fff" onclick="demoSalir()">Salir</button>'+
+    (i>0?'<button class="btn secundario chico" onclick="demoIr('+(i-1)+')">← Anterior</button>':'')+
+    '<button class="btn primario chico" onclick="demoIr('+(i+1)+')">'+(i===DEMO_ESCENAS.length-1?'Terminar ✓':'Siguiente →')+'</button></div>';
+}
+function demoSalir(){ const o=document.getElementById('demo-overlay'); if(o) o.remove(); _demoIdx=-1; }
+function iniciarDemo(){ sessionStorage.setItem('disclaimer_visto','1'); demoIr(0); }
+
 /* ================= BITÁCORA (historial requerido por el documento) ================= */
 const ICONO_EVENTO={login:'🔐',solicitud_actualizacion:'📨',actualizacion_desarrollo:'🏗️',estimacion_enviada:'🧾',firmas_programadas:'📜',uve_validacion:'🔍',fianza_validada:'🛡️',tareas_ia:'✦',elegibilidad:'🪪',reserva_creada:'🔒',documento_validado:'📄',firma_confirmada:'✍️',nps:'⭐',copilot:'💬',seed:'↺',password_cambiada:'🔑',foto_actualizada:'📷',derechohabiente_autoregistro:'👤'};
 async function cargarBitacora(){
@@ -2497,6 +2604,9 @@ async function cargarEstadoRemoto(){
     RESERVA=await apiGet('/api/reservas/activa?nss='+NSS_DEMO);
     if(RESERVA){ pintarDocs(); if(RESERVA.estado==='activa') iniciarCrono(RESERVA.segundos_restantes); }
   }catch{}
+  // Evidencias y mensajes reales
+  cargarEvidencias();
+  cargarMensajesRol('constructor','lista-msj-b2b');
 }
 window.addEventListener('load',cargarEstadoRemoto);
 </script>

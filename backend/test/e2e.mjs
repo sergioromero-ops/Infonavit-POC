@@ -81,6 +81,15 @@ try {
   chk((await api('/api/reservas/activa?nss=92099142066')).estado === 'firmada', 'reserva persiste tras "recargar"');
   chk((await api('/api/estado')).flags.dh === true, 'firma refleja en torre de control');
 
+  console.log('— Mensajería real y evidencias');
+  chk((await api('/api/mensajes', { body: { para_rol: 'constructor', asunto: 'Junta', texto: 'Revisión el viernes' }, token: TD })).ok, 'director envía mensaje real');
+  const inbox = await api('/api/mensajes?rol=constructor');
+  chk(inbox.some(m => m.texto.includes('Revisión el viernes')), 'constructor recibe el mensaje');
+  const foto = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  chk((await api('/api/desarrollos/bosques/evidencia', { body: { foto }, token: TC })).ok, 'constructor sube evidencia fotográfica');
+  chk((await api('/api/desarrollos/bosques/evidencias')).length === 1, 'director puede ver la evidencia');
+  chk((await api('/api/desarrollos/bosques/evidencia', { body: { foto }, token: TO })).error?.startsWith('Rol'), 'operador NO puede subir evidencia');
+
   console.log('— Bitácora');
   const evs = await api('/api/eventos');
   chk(Array.isArray(evs) && evs.length > 5 && evs[0].texto, 'bitácora con eventos humanizados');

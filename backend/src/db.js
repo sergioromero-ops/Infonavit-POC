@@ -67,6 +67,10 @@ CREATE TABLE IF NOT EXISTS nps (
 CREATE TABLE IF NOT EXISTS eventos (
   id INTEGER PRIMARY KEY, tipo TEXT NOT NULL, actor TEXT, payload TEXT, creado TEXT
 );
+CREATE TABLE IF NOT EXISTS evidencias (
+  id INTEGER PRIMARY KEY, desarrollo_id TEXT NOT NULL, foto TEXT NOT NULL,
+  comentario TEXT, creado TEXT
+);
 `);
 
 // Migraciones ligeras

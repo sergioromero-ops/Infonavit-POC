@@ -255,6 +255,37 @@ GET('/api/eventos', ({ json }) => {
   json(200, evs.map(e => ({ ...e, texto: EVENTO_TXT[e.tipo] || e.tipo })));
 });
 
+/* ============ MENSAJERÍA REAL ENTRE ROLES (comunicación cerrada del documento) ============ */
+POST('/api/mensajes', ({ body, user, json }) => {
+  const { para_rol, asunto = '', texto } = body;
+  if (!texto || !para_rol) return json(400, { error: 'Faltan destinatario o texto' });
+  db.prepare(`INSERT INTO mensajes (de_rol,para_rol,de_nombre,texto,creado) VALUES (?,?,?,?,?)`)
+    .run(user.rol, para_rol, user.nombre, (asunto ? '【' + asunto + '】 ' : '') + texto, now());
+  logEvento('mensaje_enviado', user.rol, { para: para_rol });
+  json(200, { ok: true });
+}, []);
+
+GET('/api/mensajes', ({ query, json }) => {
+  const rol = query.get('rol') || 'director';
+  json(200, db.prepare(`SELECT * FROM mensajes WHERE para_rol=? ORDER BY creado DESC LIMIT 15`).all(rol));
+});
+
+/* ============ EVIDENCIA FOTOGRÁFICA DE OBRA (constructor → director) ============ */
+POST('/api/desarrollos/:id/evidencia', ({ params, body, user, json }) => {
+  if (!/^data:image\/(png|jpeg|jpg|webp);base64,/.test(body.foto || '')) return json(400, { error: 'Formato de imagen no válido' });
+  if (body.foto.length > 900000) return json(400, { error: 'Imagen demasiado grande (máx ~650 KB)' });
+  const dev = db.prepare(`SELECT id FROM desarrollos WHERE id=?`).get(params.id);
+  if (!dev) return json(404, { error: 'Desarrollo no encontrado' });
+  db.prepare(`INSERT INTO evidencias (desarrollo_id,foto,comentario,creado) VALUES (?,?,?,?)`)
+    .run(params.id, body.foto, body.comentario || null, now());
+  logEvento('evidencia_subida', user.rol, { desarrollo: params.id });
+  json(200, { ok: true, total: db.prepare(`SELECT COUNT(*) n FROM evidencias WHERE desarrollo_id=?`).get(params.id).n });
+}, ['constructor']);
+
+GET('/api/desarrollos/:id/evidencias', ({ params, json }) => {
+  json(200, db.prepare(`SELECT id,foto,comentario,creado FROM evidencias WHERE desarrollo_id=? ORDER BY id DESC LIMIT 12`).all(params.id));
+});
+
 /* ============ B2C ============ */
 POST('/api/elegibilidad', ({ body, json }) => {
   const nss = String(body.nss || '').replace(/\D/g, '');
