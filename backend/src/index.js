@@ -239,6 +239,22 @@ POST('/api/tareas/desglosar', async ({ body, json }) => {
 
 GET('/api/tareas', ({ json }) => json(200, db.prepare(`SELECT * FROM tareas ORDER BY creada DESC`).all()));
 
+// Bitácora del sandbox (requisito del documento: historial/bitácora en todas las vistas)
+const EVENTO_TXT = {
+  seed: 'Sandbox sembrado', login: 'Inicio de sesión', solicitud_actualizacion: 'El director solicitó actualización al constructor',
+  actualizacion_desarrollo: 'El constructor actualizó avance de obra', estimacion_enviada: 'Estimación enviada a autorización',
+  firmas_programadas: 'La notaría programó firmas de escrituras', uve_validacion: 'UVE validó avance en sitio',
+  fianza_validada: 'Fianza validada por jurídico', tareas_ia: 'La IA desglosó un mensaje del director en tareas',
+  elegibilidad: 'Consulta de elegibilidad por NSS', reserva_creada: 'Departamento apartado (72 h)',
+  documento_validado: 'Documento del expediente validado', firma_confirmada: 'Cita de firma confirmada en notaría',
+  nps: 'Encuesta NPS registrada', copilot: 'Consulta al copiloto IA', password_cambiada: 'Contraseña actualizada',
+  foto_actualizada: 'Foto de perfil actualizada', derechohabiente_autoregistro: 'Nuevo derechohabiente registrado'
+};
+GET('/api/eventos', ({ json }) => {
+  const evs = db.prepare(`SELECT tipo, actor, payload, creado FROM eventos ORDER BY id DESC LIMIT 25`).all();
+  json(200, evs.map(e => ({ ...e, texto: EVENTO_TXT[e.tipo] || e.tipo })));
+});
+
 /* ============ B2C ============ */
 POST('/api/elegibilidad', ({ body, json }) => {
   const nss = String(body.nss || '').replace(/\D/g, '');

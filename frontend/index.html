@@ -200,6 +200,29 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .grid-bloqueos .causa b{font-size:13.5px;line-height:1.35}
 .grid-bloqueos .causa p{font-size:12.5px;margin-top:3px}
 .grid-bloqueos .causa .meta .chip{white-space:nowrap}
+/* ===== Pulido de UI: micro-interacciones y detalles ===== */
+.panel.activo{animation:aparecePanel .28s ease}
+@keyframes aparecePanel{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.vista.activa{animation:apareceVista .25s ease}
+@keyframes apareceVista{from{opacity:.4}to{opacity:1}}
+.btn{transition:transform .14s ease,box-shadow .14s ease,background .14s ease,border-color .14s}
+.btn.primario:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(159,34,65,.28)}
+.btn.secundario:hover:not(:disabled){transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn:focus-visible,.rol-btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--rojo);outline-offset:2px}
+.card{transition:box-shadow .18s ease}
+tr.clic{transition:background .12s}
+.kpi b{font-variant-numeric:tabular-nums}
+.tel-cuerpo::-webkit-scrollbar,.chat::-webkit-scrollbar{width:5px}
+.tel-cuerpo::-webkit-scrollbar-thumb{background:var(--gris-300);border-radius:99px}
+.chat::-webkit-scrollbar-thumb{background:rgba(125,211,252,.3);border-radius:99px}
+.toast{border-radius:99px;padding:12px 24px;backdrop-filter:blur(6px)}
+.chip{transition:background .15s}
+.subnav button{transition:color .15s,border-color .15s}
+.dev-card{transition:transform .16s,box-shadow .16s}
+.dev-card:hover{transform:translateY(-2px);box-shadow:var(--sombra-md)}
+.tarea,.causa{transition:background .12s}
+.barra>span{transition:width .9s cubic-bezier(.22,1,.36,1)}
 /* Detalle de desarrollo (director): tarjetas ejecutivas */
 .stat-box{background:var(--gris-50);border:1px solid var(--gris-100);border-radius:11px;padding:13px 15px}
 .stat-box .mini-lbl{display:block}
@@ -269,6 +292,7 @@ async function reiniciarSandbox(){
 <div class="proto-bar">
   <span class="tag" id="proto-tag">Prototipo · Datos simulados</span>
   <button class="rol-btn" style="flex-shrink:0" onclick="reiniciarSandbox()" title="Regresa el sandbox al estado inicial">↺</button>
+  <button class="rol-btn" style="flex-shrink:0" onclick="mostrarDisclaimer()" title="Alcance del prototipo">ⓘ</button>
   <div class="roles">
     <button class="rol-btn activo" data-vista="landing" onclick="irVista('landing',this)">🌐 Web pública para derechohabientes</button>
     <button class="rol-btn" data-vista="hub" onclick="entrarPorHub(null)">🔐 Web privada</button>
@@ -555,6 +579,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
       <div class="logo"><img src="assets/emblema-infonavit.svg" alt="Infonavit" style="height:36px;flex-shrink:0">
         <div>Torre de Control Nacional<small>Programa de Vivienda del Bienestar</small></div>
       </div>
+      <button class="btn secundario chico" onclick="reporteEjecutivo()" title="Genera un reporte imprimible con los datos vivos del sandbox">📄 Reporte ejecutivo</button>
       <div class="usuario">
         <span class="chip azul" style="cursor:help" title="Consulta las bases institucionales con los permisos, licencias y acreditaciones que provea Infonavit. No toca los sistemas transaccionales.">Capa de procesos · no invasiva</span>
         <span id="b2g-fecha" class="sub">Actualizado hoy · 13:45 h</span>
@@ -862,6 +887,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
   <!-- Panel: Mensajes -->
   <div id="panel-b2g-mensajes" class="panel">
     <div class="contenedor">
+      <div class="card" style="margin-bottom:16px">
+        <div class="titulo-seccion" style="margin-top:0"><h3>Bitácora del programa</h3><span class="chip azul">registro en tiempo real del sandbox</span><button class="btn secundario chico" style="margin-left:auto" onclick="cargarBitacora()">↻ Actualizar</button></div>
+        <div id="bitacora-lista" style="font-size:13px;color:var(--gris-700)"><p style="color:var(--gris-500)">Cargando actividad…</p></div>
+      </div>
       <div class="grid dos-col">
         <div class="card">
           <div class="titulo-seccion" style="margin-top:0"><h3>Comunicación con desarrolladores</h3></div>
@@ -1698,6 +1727,7 @@ const S = {
 function irPanel(vista, panel, btn){
   document.querySelectorAll('#vista-'+vista+' .panel').forEach(p=>p.classList.remove('activo'));
   document.getElementById('panel-'+vista+'-'+panel).classList.add('activo');
+  if(vista==='b2g'&&panel==='mensajes'&&typeof cargarBitacora==='function') cargarBitacora();
   const nav=document.querySelectorAll('#vista-'+vista+' .subnav button');
   nav.forEach(b=>b.classList.remove('activo'));
   if(btn){btn.classList.add('activo')}
@@ -2358,6 +2388,48 @@ function pintarB2G(){
   }
 }
 
+/* ================= BITÁCORA (historial requerido por el documento) ================= */
+const ICONO_EVENTO={login:'🔐',solicitud_actualizacion:'📨',actualizacion_desarrollo:'🏗️',estimacion_enviada:'🧾',firmas_programadas:'📜',uve_validacion:'🔍',fianza_validada:'🛡️',tareas_ia:'✦',elegibilidad:'🪪',reserva_creada:'🔒',documento_validado:'📄',firma_confirmada:'✍️',nps:'⭐',copilot:'💬',seed:'↺',password_cambiada:'🔑',foto_actualizada:'📷',derechohabiente_autoregistro:'👤'};
+async function cargarBitacora(){
+  const cont=document.getElementById('bitacora-lista'); if(!cont) return;
+  try{
+    const evs=await apiGet('/api/eventos');
+    if(!evs.length){ cont.innerHTML='<p style="color:var(--gris-500)">Sin actividad aún.</p>'; return; }
+    cont.innerHTML=evs.map(e=>{
+      const h=new Date(e.creado); const hora=h.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+      return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--gris-100);align-items:center"><span style="font-size:15px">'+(ICONO_EVENTO[e.tipo]||'•')+'</span><span style="flex:1">'+e.texto+'</span><span class="chip gris" style="font-size:10px">'+(e.actor||'')+'</span><small style="color:var(--gris-500)">'+hora+'</small></div>';
+    }).join('');
+  }catch{ cont.innerHTML='<p style="color:var(--gris-500)">La bitácora requiere la API conectada.</p>'; }
+}
+
+/* ================= REPORTE EJECUTIVO (requisito B2G del documento) ================= */
+async function reporteEjecutivo(){
+  let e; try{ e=await apiGet('/api/estado'); }catch{ toast('⚠ Requiere la API conectada'); return; }
+  const n=e.nacional, b=e.bosques;
+  const fila=(k,v)=>'<tr><td style="padding:6px 10px;color:#666">'+k+'</td><td style="padding:6px 10px;text-align:right"><b>'+v+'</b></td></tr>';
+  const w=window.open('','_blank');
+  w.document.write('<html><head><title>Reporte ejecutivo · Vivienda del Bienestar</title></head><body style="font-family:-apple-system,Arial;max-width:700px;margin:40px auto;color:#1F2328">'+
+   '<div style="border-bottom:3px solid #9F2241;padding-bottom:12px;margin-bottom:20px"><h1 style="margin:0;font-size:22px;color:#9F2241">Programa de Vivienda del Bienestar</h1><p style="margin:4px 0 0;color:#666;font-size:13px">Reporte ejecutivo · generado '+new Date().toLocaleString('es-MX')+' · datos del sandbox</p></div>'+
+   '<h2 style="font-size:15px">Avance nacional</h2><table style="width:100%;border-collapse:collapse;font-size:13.5px">'+
+   fila('Meta 2026',n.meta_2026.toLocaleString())+fila('Contratadas',n.contratadas.toLocaleString()+' ('+n.pct_meta+'%)')+
+   fila('Terminadas',n.terminadas.toLocaleString())+fila('Entregadas',n.entregadas.toLocaleString())+
+   fila('Terminadas sin servicios',n.sin_servicios.toLocaleString())+fila('Escrituras pendientes',n.escrituras_pendientes.toLocaleString())+'</table>'+
+   '<h2 style="font-size:15px;margin-top:22px">Desarrollo crítico: '+b.nombre+'</h2><table style="width:100%;border-collapse:collapse;font-size:13.5px">'+
+   fila('Semáforo',b.semaforo.toUpperCase())+fila('Avance físico',b.avance_fisico+'%')+fila('Servicios',b.avance_servicios+'%')+
+   fila('Escrituras pendientes',b.escrituras_pendientes)+fila('Fianza',b.fianza_estado+' · vence '+b.fianza_vence)+
+   fila('Estimaciones del mes',b.estimaciones_mes+' / '+b.estimaciones_meta)+'</table>'+
+   '<p style="margin-top:28px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:10px">Esta versión es un prototipo estratégico de alta fidelidad con datos simulados. No sustituye sistemas actuales ni toma decisiones reales; permite validar visión, experiencia y valor antes de pasar a piloto/MVP.</p>'+
+   '</body></html>');
+  w.document.close(); setTimeout(()=>w.print(),400);
+}
+
+/* ================= DISCLAIMER INSTITUCIONAL (frase obligatoria del documento) ================= */
+function mostrarDisclaimer(){
+  const d=document.createElement('div'); d.className='modal-fondo'; d.id='modal-disclaimer';
+  d.innerHTML='<div class="modal-caja" style="max-width:560px"><p style="font-size:24px;margin-bottom:10px">ⓘ</p><p class="msj" style="text-align:left"><b>Esta versión es un prototipo estratégico de alta fidelidad con datos simulados.</b> No sustituye sistemas actuales ni toma decisiones reales; permite validar visión, experiencia y valor antes de pasar a piloto/MVP.</p><div class="botones"><button class="btn primario" onclick="document.getElementById(\'modal-disclaimer\').remove()">Entendido</button></div></div>';
+  document.body.appendChild(d);
+}
+
 /* ================= RESTAURAR ESTADO DESDE LA API (persistencia real) ================= */
 async function cargarEstadoRemoto(){
   let e;
@@ -2436,6 +2508,9 @@ function irVista(v, btn){
   window.scrollTo({top:0});
   if(typeof montarVoz==='function') montarVoz(v);
   if(v==='b2g' && typeof pintarB2G==='function') pintarB2G();
+  if(v==='b2g' && !sessionStorage.getItem('disclaimer_visto') && typeof mostrarDisclaimer==='function'){
+    sessionStorage.setItem('disclaimer_visto','1'); mostrarDisclaimer();
+  }
 }
 
 /* ============ MAPA REAL DE MÉXICO ============ */

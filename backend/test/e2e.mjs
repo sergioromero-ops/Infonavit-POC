@@ -81,6 +81,10 @@ try {
   chk((await api('/api/reservas/activa?nss=92099142066')).estado === 'firmada', 'reserva persiste tras "recargar"');
   chk((await api('/api/estado')).flags.dh === true, 'firma refleja en torre de control');
 
+  console.log('— Bitácora');
+  const evs = await api('/api/eventos');
+  chk(Array.isArray(evs) && evs.length > 5 && evs[0].texto, 'bitácora con eventos humanizados');
+
   console.log('— NPS y copiloto');
   chk((await api('/api/nps', { body: { ubicacion: 5, servicios: 4, transporte: 3, calidad: 5, desarrollador: 5 } })).ok, 'NPS registrado');
   r = await api('/api/copilot', { body: { rol: 'director', pregunta: '¿por qué está en riesgo bosques?' } });
