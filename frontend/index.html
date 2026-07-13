@@ -746,7 +746,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="titulo-seccion" style="margin-top:0"><h3>Semáforo de desarrollos</h3><span class="chip gris">20 activos · 5 mostrados</span></div>
           <table class="tabla">
             <thead><tr><th>Desarrollo</th><th>Constructor</th><th>Viviendas</th><th>Avance</th><th>Semáforo</th></tr></thead>
-            <tbody>
+            <tbody id="tbody-semaforo-b2g">
               <tr class="clic" onclick="verDetalleBosques()"><td><b>Bosques del Bienestar</b><br><small style="color:var(--gris-500)">Tlajomulco, Jal.</small></td><td>Hábitat Jalisco</td><td>420</td><td id="td-bosques-avance">78%</td><td><span class="chip rojo" id="td-bosques-sem"><span class="punto rojo"></span>Rojo</span></td></tr>
               <tr class="clic" onclick="toast('Prototipo: el detalle completo está disponible para Bosques del Bienestar')"><td><b>Altos de Santa Regia</b><br><small style="color:var(--gris-500)">Apodaca, N.L.</small></td><td>Regia del Norte</td><td>380</td><td>66%</td><td><span class="chip ambar"><span class="punto ambar"></span>Amarillo</span></td></tr>
               <tr class="clic" onclick="toast('Prototipo: el detalle completo está disponible para Bosques del Bienestar')"><td><b>Valle Angelópolis</b><br><small style="color:var(--gris-500)">Cuautlancingo, Pue.</small></td><td>Grupo Angelópolis</td><td>296</td><td>71%</td><td><span class="chip ambar"><span class="punto ambar"></span>Amarillo</span></td></tr>
@@ -1085,7 +1085,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <span><i style="background:#F7E3E9;border:1px solid var(--vino)"></i>Jalisco</span>
         </div>
       </div>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div style="display:flex;justify-content:flex-end;margin:4px 0 10px">
+        <button class="btn primario chico" onclick="abrirAltaDesarrollo()">➕ Registrar nuevo desarrollo</button>
+      </div>
+      <div class="grid" id="grid-devs-b2b" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
         <div class="dev-card" id="dev-bosques">
           <div class="top"><div><h4>Bosques del Bienestar</h4><small>Tlajomulco, Jal. · 420 viviendas</small></div><span class="chip rojo" style="margin-left:auto" id="b2b-bosques-sem"><span class="punto rojo"></span>Rojo</span></div>
           <div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span id="b2b-bosques-bar" style="width:78%"></span></div><b id="b2b-bosques-pct">78%</b></div>
@@ -1511,7 +1514,7 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
           <div class="campo-nss">
             <input maxlength="11" id="nss" placeholder="9209 914 2066" value="92099142066" style="letter-spacing:.15em">
           </div>
-          <label class="check-item" style="margin-bottom:14px"><input type="checkbox" checked> Permitir mi ubicación para mostrarme viviendas cerca 📍</label>
+          <label class="check-item" style="margin-bottom:14px"><input type="checkbox" id="chk-geo" checked onchange="if(this.checked)pedirUbicacion()"> Permitir mi ubicación para mostrarme viviendas cerca 📍</label>
           <button class="btn primario btn-full" onclick="validarNSS()">Verificar con mi NSS</button>
           <p style="font-size:11.5px;color:var(--gris-500);margin-top:12px;text-align:center">🔒 Tus datos solo se usan para validar tu elegibilidad.</p>
         </div>
@@ -1952,45 +1955,68 @@ const FILTROS_MAPA={
   parque:{pins:["bosques","chapala"],zona:"jal",sel:"bosques",txt:"2 desarrollos junto a áreas verdes"},
   entrega:{pins:Object.keys(DESARROLLOS_MAPA),zona:"pais",sel:"tesistan",txt:"8 desarrollos con entrega 2026–2027"}
 };
-let MAPA=null,_marcasMapa={},_mapaAjustado=false,_mapaFallo=false;
+let MAPA=null,_marcasMapa={},_mapaAjustado=false,_mapaFallo=false,_leafletCargando=false,_geo=null;
 
+function pedirUbicacion(){
+  if(!navigator.geolocation){ toast('Tu navegador no comparte ubicación'); return; }
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      _geo=[pos.coords.latitude,pos.coords.longitude];
+      toast('📍 Ubicación detectada: te mostraremos viviendas cerca');
+      if(MAPA){ marcarUbicacion(); }
+    },
+    ()=>{ toast('No pudimos leer tu ubicación · usaremos Guadalajara (demo)'); },
+    {timeout:6000,maximumAge:600000}
+  );
+}
+function marcarUbicacion(){
+  if(!MAPA||!_geo||MAPA._marcaGeo) return;
+  MAPA._marcaGeo=L.marker(_geo,{icon:L.divIcon({className:'',iconSize:[0,0],html:'<div class="marcador marc-leaflet"><i>📍</i><small>Estás aquí</small></div>'}),interactive:false}).addTo(MAPA);
+}
 function iniciarMapaB2C(){
-  if(MAPA||_mapaFallo) return;
-  if(window.L){ montarLeaflet(); return; }
+  // Solo precarga los assets de Leaflet; el mapa se monta cuando la pantalla es visible
+  if(window.L||_mapaFallo||_leafletCargando) return;
+  _leafletCargando=true;
   const css=document.createElement('link'); css.rel='stylesheet';
   css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
   document.head.appendChild(css);
   const s=document.createElement('script');
   s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-  s.onload=montarLeaflet;
-  s.onerror=()=>{ _mapaFallo=true; construirMapaSVG(); };
+  s.onload=()=>{ _leafletCargando=false; if(pantallaActual===3) ajustarMapaB2C(); };
+  s.onerror=()=>{ _leafletCargando=false; _mapaFallo=true; construirMapaSVG(); };
   document.head.appendChild(s);
 }
 function montarLeaflet(){
-  const cont=document.getElementById('mapa-real'); if(!cont||MAPA) return;
-  MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true});
+  const cont=document.getElementById('mapa-real'); if(!cont||MAPA||!window.L) return;
+  MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true,center:[23.6,-102.5],zoom:5});
   MAPA.attributionControl.setPrefix('');
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
-  MAPA.fitBounds(PAIS_BOUNDS);
-  // Pins de precio en coordenadas reales
   Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
     const ic=L.divIcon({className:'',iconSize:[0,0],html:'<button class="pin-precio pin-leaflet" id="pin-'+id+'">'+d.p+'</button>'});
     const m=L.marker([d.lat,d.lng],{icon:ic}).addTo(MAPA);
     m.on('click',()=>seleccionarPin(id));
     _marcasMapa[id]=m;
   });
-  // Casa y trabajo de Ana
   [[CASA_ANA,'🏠','Tu casa'],[TRABAJO_ANA,'💼','Tu trabajo']].forEach(([ll,ic,tx])=>{
     L.marker(ll,{icon:L.divIcon({className:'',iconSize:[0,0],html:'<div class="marcador marc-leaflet"><i>'+ic+'</i><small>'+tx+'</small></div>'}),interactive:false}).addTo(MAPA);
   });
+  marcarUbicacion();
   seleccionarPin('bosques');
 }
-// Leaflet no mide bien contenedores ocultos: reajustar al entrar a la pantalla del mapa
+// Leaflet no mide contenedores ocultos: montar/ajustar SOLO con la pantalla visible
 function ajustarMapaB2C(){
   if(_mapaFallo) return;
-  if(!MAPA){ iniciarMapaB2C(); setTimeout(ajustarMapaB2C,400); return; }
-  MAPA.invalidateSize();
-  if(!_mapaAjustado){ MAPA.fitBounds(PAIS_BOUNDS,{padding:[10,10]}); _mapaAjustado=true; }
+  if(!window.L){ iniciarMapaB2C(); return; }
+  if(!MAPA) montarLeaflet();
+  if(!MAPA) return;
+  requestAnimationFrame(()=>{
+    MAPA.invalidateSize();
+    if(!_mapaAjustado){
+      _mapaAjustado=true;
+      if(_geo){ MAPA.setView(_geo,9); marcarUbicacion(); }
+      else MAPA.fitBounds(PAIS_BOUNDS,{padding:[10,10]});
+    }
+  });
 }
 function pintarMapa(){} // legado (solo usa el fallback SVG)
 function zoomMapa(d){ if(MAPA){ d>0?MAPA.zoomIn():MAPA.zoomOut(); } }
@@ -2008,7 +2034,10 @@ function filtrarMapa(clave,btn){
     else if(MAPA.hasLayer(m)) MAPA.removeLayer(m);
   });
   document.querySelector('.mapa-conteo').textContent=f.txt;
-  if(MAPA) MAPA.flyToBounds(f.zona==='jal'?JAL_BOUNDS:PAIS_BOUNDS,{duration:1.0,padding:[14,14]});
+  if(MAPA){
+    if(clave==='casa'&&_geo) MAPA.flyTo(_geo,9,{duration:1.0});   // ubicación real del navegador
+    else MAPA.flyToBounds(f.zona==='jal'?JAL_BOUNDS:PAIS_BOUNDS,{duration:1.0,padding:[14,14]});
+  }
   setTimeout(()=>seleccionarPin(f.sel),300);
 }
 function seleccionarPin(id){
@@ -2188,9 +2217,18 @@ async function accionHecha(btn,msj){
 }
 function tarjetaTarea(t){
   const ic=t.prioridad==='urgente'?['rojo','🧾']:['ambar','⚡'];
-  const chip=t.prioridad==='urgente'?'<span class="chip rojo">Urgente</span>':'<span class="chip ambar">En curso</span>';
+  const hecha=t.estado==='completada';
+  const chip=hecha?'<span class="chip verde">✓ Completada</span>':(t.prioridad==='urgente'?'<span class="chip rojo">Urgente</span>':'<span class="chip ambar">En curso</span>');
   const vence=(t.vence||'').slice(5).replace('-',' ');
-  return '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px"><div class="ic '+ic[0]+'">'+ic[1]+'</div><div><b>'+t.texto+'</b><p>Asignada a: '+t.asignado+' · vence '+vence+'</p></div><div class="meta">'+chip+'</div></div>';
+  const btn=(!hecha&&t.id)?'<button class="btn secundario chico" style="margin-top:6px" onclick="completarTarea('+t.id+',this)">Marcar completada</button>':'';
+  return '<div class="causa" style="background:#fff;border-radius:9px;padding:10px;margin-top:8px;'+(hecha?'opacity:.65':'')+'"><div class="ic '+(hecha?'verde" style="background:var(--verde-claro)':ic[0])+'">'+(hecha?'✓':ic[1])+'</div><div><b>'+t.texto+'</b><p>Asignada a: '+t.asignado+' · vence '+vence+'</p>'+btn+'</div><div class="meta">'+chip+'</div></div>';
+}
+async function completarTarea(id,btn){
+  try{
+    const j=await apiPost('/api/tareas/'+id+'/completar',{},'colaborador');
+    document.getElementById('tareas-ia').innerHTML=j.estado.tareas.slice(0,3).map(tarjetaTarea).join('');
+    toast('✓ Tarea validada. El Director ya lo ve en su torre de control.');
+  }catch(e){ toast('⚠ '+e.message); }
 }
 async function desglosarTareasIA(){
   const b=document.getElementById('btn-desglosar');
@@ -2406,6 +2444,57 @@ function pintarB2G(){
   if(bn && S.constructor){
     bn.className='banner-alerta '+(S.operador?'verde':'ambar');
     bn.innerHTML='<span style="font-size:19px">'+(S.operador?'🟢':'🟡')+'</span><span><b>Impacto de las últimas 24 h:</b> Bosques del Bienestar pasó de rojo a amarillo. Avance 78→82%, servicios 54→71%, entregables 92→117'+(S.operador?', escrituras pendientes 48→23 y 25 firmas programadas':'')+(S.estimacion?', estimación 2/2 autorizada → pago en 3 días hábiles':'')+(S.dh?'. Ana y Luis Hernández confirmaron firma para el 15 de julio.':'.')+'</span><button class="btn primario chico" onclick="verDetalleBosques()">Ver detalle →</button>';
+  }
+}
+
+/* ================= ALTA DE DESARROLLO (documento: "registro de proyecto/desarrollo/viviendas") ================= */
+const DEVS_SEMBRADOS=['bosques','tesistan','lomas','chapala','valle','angelopolis','toluca','qro'];
+function abrirAltaDesarrollo(){
+  const d=document.createElement('div'); d.className='modal-fondo'; d.id='modal-alta';
+  d.innerHTML='<div class="modal-caja" style="max-width:480px;text-align:left"><h3 style="font-size:17px;margin-bottom:14px">➕ Registrar nuevo desarrollo</h3>'+
+   '<form class="formulario" onsubmit="event.preventDefault();altaDesarrollo(this)">'+
+   '<div><label>Nombre del desarrollo</label><input type="text" id="alta-nombre" placeholder="p. ej. Praderas del Bienestar" required></div>'+
+   '<div style="display:flex;gap:10px"><div style="flex:1"><label>Estado</label><select id="alta-estado"><option>Jalisco</option><option>Nuevo León</option><option>Puebla</option><option>Edo. de México</option><option>Querétaro</option></select></div>'+
+   '<div style="flex:1"><label>Municipio</label><input type="text" id="alta-ciudad" placeholder="Tlajomulco"></div></div>'+
+   '<div style="display:flex;gap:10px"><div style="flex:1"><label>Viviendas</label><input type="number" id="alta-viv" value="240" min="10"></div>'+
+   '<div style="flex:1"><label>Avance físico %</label><input type="number" id="alta-af" value="15" min="0" max="100"></div>'+
+   '<div style="flex:1"><label>Servicios %</label><input type="number" id="alta-as" value="5" min="0" max="100"></div></div>'+
+   '<div style="display:flex;gap:10px;margin-top:6px"><button type="button" class="btn secundario" style="flex:1" onclick="document.getElementById(\'modal-alta\').remove()">Cancelar</button><button class="btn primario" style="flex:1">Registrar</button></div>'+
+   '</form></div>';
+  document.body.appendChild(d);
+}
+async function altaDesarrollo(form){
+  try{
+    if(!API_OK) throw new Error('Requiere la API conectada');
+    const j=await apiPost('/api/desarrollos',{
+      nombre:document.getElementById('alta-nombre').value.trim(),
+      estado:document.getElementById('alta-estado').value,
+      ciudad:document.getElementById('alta-ciudad').value.trim(),
+      viviendas:+document.getElementById('alta-viv').value,
+      avance_fisico:+document.getElementById('alta-af').value,
+      avance_servicios:+document.getElementById('alta-as').value
+    },'constructor');
+    document.getElementById('modal-alta').remove();
+    pintarDevNuevo(j.desarrollo);
+    toast('✓ '+j.desarrollo.nombre+' registrado con 18 unidades. Ya aparece en el semáforo del Director.');
+  }catch(e){ toast('⚠ '+e.message); }
+}
+function pintarDevNuevo(d){
+  const SEM_TXT={verde:'Verde',ambar:'Amarillo',rojo:'Rojo'};
+  // Tarjeta en el portal del constructor
+  const grid=document.getElementById('grid-devs-b2b');
+  if(grid && !document.getElementById('dev-'+d.id)){
+    grid.insertAdjacentHTML('beforeend',
+     '<div class="dev-card" id="dev-'+d.id+'"><div class="top"><div><h4>'+d.nombre+'</h4><small>'+(d.ciudad?d.ciudad+', ':'')+d.estado+' · '+d.meta+' viviendas</small></div><span class="chip '+d.semaforo+'" id="b2b-'+d.id+'-sem" style="margin-left:auto"><span class="punto '+d.semaforo+'"></span>'+SEM_TXT[d.semaforo]+'</span></div>'+
+     '<div class="fila-estado" style="margin-bottom:8px"><span class="mini-lbl" style="min-width:96px">Avance físico</span><div class="barra"><span id="b2b-'+d.id+'-bar" class="'+(d.semaforo==='rojo'?'':d.semaforo)+'" style="width:'+d.avance_fisico+'%"></span></div><b id="b2b-'+d.id+'-pct">'+d.avance_fisico+'%</b></div>'+
+     '<div class="fila-estado" style="margin-bottom:14px"><span class="mini-lbl" style="min-width:96px">Servicios</span><div class="barra"><span id="b2b-'+d.id+'-serv-bar" class="ambar" style="width:'+d.avance_servicios+'%"></span></div><b id="b2b-'+d.id+'-serv">'+d.avance_servicios+'%</b></div>'+
+     '<button class="btn secundario chico" onclick="actualizarDesarrolloCard(\''+d.id+'\',this)">Actualizar avance</button></div>');
+  }
+  // Fila en el semáforo del Director
+  const tb=document.getElementById('tbody-semaforo-b2g');
+  if(tb && !document.getElementById('td-sem-'+d.id)){
+    tb.insertAdjacentHTML('beforeend',
+     '<tr id="td-sem-'+d.id+'"><td><b>'+d.nombre+'</b><br><small style="color:var(--gris-500)">'+(d.ciudad?d.ciudad+', ':'')+d.estado+' · nuevo</small></td><td>'+d.desarrollador+'</td><td>'+d.meta+'</td><td>'+d.avance_fisico+'%</td><td><span class="chip '+d.semaforo+'"><span class="punto '+d.semaforo+'"></span>'+SEM_TXT[d.semaforo]+'</span></td></tr>');
   }
 }
 
@@ -2769,6 +2858,13 @@ async function cargarEstadoRemoto(){
   // Evidencias y mensajes reales
   cargarEvidencias();
   cargarMensajesRol('constructor','lista-msj-b2b');
+  // Desarrollos registrados por el constructor (más allá del seed)
+  e.desarrollos.filter(d=>!DEVS_SEMBRADOS.includes(d.id)).forEach(pintarDevNuevo);
+  // Tareas con estado real (incluye completadas)
+  if(e.tareas && e.tareas.length){
+    const cont=document.getElementById('tareas-ia');
+    if(cont) cont.innerHTML=e.tareas.slice(0,3).map(tarjetaTarea).join('');
+  }
 }
 window.addEventListener('load',cargarEstadoRemoto);
 </script>

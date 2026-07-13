@@ -232,12 +232,39 @@ POST('/api/tareas/desglosar', async ({ body, json }) => {
   if (!body.mensaje) return json(400, { error: 'Falta el mensaje' });
   const { tareas, fuente } = await desglosarTareas(body.mensaje);
   const ins = db.prepare(`INSERT INTO tareas (texto,asignado,rol,vence,prioridad,estado,origen,creada) VALUES (?,?,?,?,?,'en_curso','ia',?)`);
-  for (const t of tareas) ins.run(t.texto, t.asignado, t.rol || 'colaborador', t.vence, t.prioridad || 'normal', now());
+  const conIds = tareas.map(t => ({ ...t, estado: 'en_curso', id: Number(ins.run(t.texto, t.asignado, t.rol || 'colaborador', t.vence, t.prioridad || 'normal', now()).lastInsertRowid) }));
   logEvento('tareas_ia', 'director', { n: tareas.length, fuente });
-  json(200, { ok: true, tareas, fuente, estado: estadoGlobal() });
+  json(200, { ok: true, tareas: conIds, fuente, estado: estadoGlobal() });
 }, ['director']);
 
 GET('/api/tareas', ({ json }) => json(200, db.prepare(`SELECT * FROM tareas ORDER BY creada DESC`).all()));
+
+// Validación de tareas (documento: "validación de tareas")
+POST('/api/tareas/:id/completar', ({ params, user, json }) => {
+  const t = db.prepare(`SELECT * FROM tareas WHERE id=?`).get(params.id);
+  if (!t) return json(404, { error: 'Tarea no encontrada' });
+  db.prepare(`UPDATE tareas SET estado='completada' WHERE id=?`).run(params.id);
+  logEvento('tarea_completada', user.rol, { tarea: t.texto });
+  json(200, { ok: true, estado: estadoGlobal() });
+}, ['colaborador', 'director']);
+
+// Alta de desarrollo (documento: "registro de proyecto, desarrollo y viviendas")
+POST('/api/desarrollos', ({ body, user, json }) => {
+  const { nombre, estado = 'Jalisco', ciudad = '', viviendas = 200, avance_fisico = 0, avance_servicios = 0, precio_base = 590000 } = body;
+  if (!nombre || nombre.length < 3) return json(400, { error: 'Nombre del desarrollo requerido' });
+  const id = nombre.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30);
+  if (db.prepare(`SELECT 1 FROM desarrollos WHERE id=?`).get(id)) return json(409, { error: 'Ya existe un desarrollo con ese nombre' });
+  const af = Math.min(100, +avance_fisico || 0), as = Math.min(100, +avance_servicios || 0);
+  const sem = (af >= 80 && as >= 75) ? 'verde' : (af >= 60 ? 'ambar' : 'rojo');
+  db.prepare(`INSERT INTO desarrollos (id,nombre,estado,ciudad,desarrollador,meta,avance_fisico,avance_servicios,terminadas,entregables,sin_servicios,escrituras_pendientes,semaforo,fianza_estado,fianza_monto,fianza_vence,estimaciones_mes,estimaciones_meta,ultima_actualizacion)
+    VALUES (?,?,?,?,?,?,?,?,0,0,0,0,?,'vigente',0,'2027-12-31',0,2,?)`)
+    .run(id, nombre, estado, ciudad, user.nombre, +viviendas || 200, af, as, sem, now());
+  const unidad = db.prepare(`INSERT INTO unidades (id,desarrollo_id,torre,piso,numero,precio,estado) VALUES (?,?,?,?,?,?,'disponible')`);
+  for (const piso of [2, 3, 4]) for (let n = 1; n <= 6; n++)
+    unidad.run(`${id}-A-${piso}0${n}`, id, 'A', piso, `${piso}0${n}`, (+precio_base || 590000) + piso * 1500 + n * 300);
+  logEvento('desarrollo_registrado', user.rol, { id, nombre });
+  json(200, { ok: true, desarrollo: db.prepare(`SELECT * FROM desarrollos WHERE id=?`).get(id) });
+}, ['constructor']);
 
 // Bitácora del sandbox (requisito del documento: historial/bitácora en todas las vistas)
 const EVENTO_TXT = {
@@ -248,6 +275,8 @@ const EVENTO_TXT = {
   elegibilidad: 'Consulta de elegibilidad por NSS', reserva_creada: 'Departamento apartado (72 h)',
   documento_validado: 'Documento del expediente validado', firma_confirmada: 'Cita de firma confirmada en notaría',
   nps: 'Encuesta NPS registrada', copilot: 'Consulta al copiloto IA', password_cambiada: 'Contraseña actualizada',
+  mensaje_enviado: 'Mensaje institucional enviado', evidencia_subida: 'Evidencia fotográfica de obra cargada',
+  tarea_completada: 'Tarea validada como completada', desarrollo_registrado: 'Nuevo desarrollo registrado en el programa',
   foto_actualizada: 'Foto de perfil actualizada', derechohabiente_autoregistro: 'Nuevo derechohabiente registrado'
 };
 GET('/api/eventos', ({ json }) => {

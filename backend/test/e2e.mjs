@@ -90,6 +90,18 @@ try {
   chk((await api('/api/desarrollos/bosques/evidencias')).length === 1, 'director puede ver la evidencia');
   chk((await api('/api/desarrollos/bosques/evidencia', { body: { foto }, token: TO })).error?.startsWith('Rol'), 'operador NO puede subir evidencia');
 
+  console.log('— Validación de tareas y alta de desarrollo');
+  const td2 = await api('/api/tareas/desglosar', { body: { mensaje: 'Cerrar pendientes de servicios' }, token: TD });
+  chk(td2.tareas[0]?.id > 0, 'tareas desglosadas traen id');
+  r = await api(`/api/tareas/${td2.tareas[0].id}/completar`, { body: {}, token: TL });
+  chk(r.estado.tareas.find(t => t.id === td2.tareas[0].id)?.estado === 'completada', 'colaborador completa tarea → visible en estado');
+  r = await api('/api/desarrollos', { body: { nombre: 'Praderas del Bienestar', estado: 'Jalisco', ciudad: 'Zapotlanejo', viviendas: 240, avance_fisico: 15 }, token: TC });
+  chk(r.desarrollo?.id === 'praderas-del-bienestar' && r.desarrollo.semaforo === 'rojo', 'constructor registra desarrollo nuevo');
+  chk((await api('/api/desarrollos/praderas-del-bienestar/unidades')).length === 18, 'desarrollo nuevo con 18 unidades');
+  chk((await api('/api/estado')).desarrollos.some(d => d.id === 'praderas-del-bienestar'), 'aparece en el estado del director');
+  chk((await api('/api/desarrollos', { body: { nombre: 'Praderas del Bienestar' }, token: TC })).error?.startsWith('Ya existe'), 'nombre duplicado rechazado');
+  chk((await api('/api/desarrollos', { body: { nombre: 'Otro' }, token: TO })).error?.startsWith('Rol'), 'operador NO puede registrar desarrollos');
+
   console.log('— Notificaciones por rol (datos vivos)');
   let nd = await api('/api/notificaciones?rol=derechohabiente');
   chk(nd.some(x => /apartado|firma/i.test(x.t)), 'derechohabiente: recordatorio de apartado/firma');
