@@ -1988,9 +1988,15 @@ function iniciarMapaB2C(){
 }
 function montarLeaflet(){
   const cont=document.getElementById('mapa-real'); if(!cont||MAPA||!window.L) return;
-  MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true,center:[23.6,-102.5],zoom:5});
+  try{
+    MAPA=L.map('mapa-real',{zoomControl:false,attributionControl:true,worldCopyJump:true,center:[23.6,-102.5],zoom:5});
+  }catch(e){ _mapaFallo=true; construirMapaSVG(); return; }
   MAPA.attributionControl.setPrefix('');
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
+  const capa=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© OpenStreetMap · CARTO'}).addTo(MAPA);
+  // Blindaje: si los tiles no cargan (CDN bloqueado), usar el mapa esquemático
+  let _tilesOk=false, _tilesMal=0;
+  capa.on('tileload',()=>{ _tilesOk=true; });
+  capa.on('tileerror',()=>{ _tilesMal++; if(!_tilesOk&&_tilesMal>5){ _mapaFallo=true; try{MAPA.remove();}catch{} MAPA=null; construirMapaSVG(); } });
   Object.entries(DESARROLLOS_MAPA).forEach(([id,d])=>{
     const ic=L.divIcon({className:'',iconSize:[0,0],html:'<button class="pin-precio pin-leaflet" id="pin-'+id+'">'+d.p+'</button>'});
     const m=L.marker([d.lat,d.lng],{icon:ic}).addTo(MAPA);
