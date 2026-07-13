@@ -90,6 +90,14 @@ try {
   chk((await api('/api/desarrollos/bosques/evidencias')).length === 1, 'director puede ver la evidencia');
   chk((await api('/api/desarrollos/bosques/evidencia', { body: { foto }, token: TO })).error?.startsWith('Rol'), 'operador NO puede subir evidencia');
 
+  console.log('— Notificaciones por rol (datos vivos)');
+  let nd = await api('/api/notificaciones?rol=derechohabiente');
+  chk(nd.some(x => /apartado|firma/i.test(x.t)), 'derechohabiente: recordatorio de apartado/firma');
+  const nc = await api('/api/notificaciones?rol=constructor');
+  chk(Array.isArray(nc), 'constructor: notificaciones responden');
+  const ndir = await api('/api/notificaciones?rol=director');
+  chk(Array.isArray(ndir), 'director: notificaciones responden');
+
   console.log('— Bitácora');
   const evs = await api('/api/eventos');
   chk(Array.isArray(evs) && evs.length > 5 && evs[0].texto, 'bitácora con eventos humanizados');

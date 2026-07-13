@@ -270,6 +270,45 @@ GET('/api/mensajes', ({ query, json }) => {
   json(200, db.prepare(`SELECT * FROM mensajes WHERE para_rol=? ORDER BY creado DESC LIMIT 15`).all(rol));
 });
 
+/* ============ NOTIFICACIONES POR ROL (recordatorios del documento, con datos vivos) ============ */
+GET('/api/notificaciones', ({ query, json }) => {
+  const rol = query.get('rol') || 'director';
+  const b = db.prepare(`SELECT * FROM desarrollos WHERE id='bosques'`).get();
+  const n = [];
+  const diasFianza = Math.ceil((new Date(b.fianza_vence) - Date.now()) / 864e5);
+  const msjs = db.prepare(`SELECT COUNT(*) c FROM mensajes WHERE para_rol=?`).get(rol).c;
+
+  if (rol === 'director' || rol === 'colaborador') {
+    if (b.semaforo === 'rojo') n.push({ ic: '🔴', t: `${b.nombre} en semáforo rojo`, d: `Sin actualización del constructor · ${b.escrituras_pendientes} escrituras pendientes`, u: 'critico' });
+    if (b.fianza_estado !== 'vigente') n.push({ ic: '🛡️', t: `Fianza por vencer en ${diasFianza} días`, d: `$${b.fianza_monto} MDP · ${b.nombre}`, u: 'critico' });
+    if (b.estimaciones_mes < b.estimaciones_meta) n.push({ ic: '🧾', t: 'Estimación 2/2 sin cargar', d: 'Hábitat Jalisco · sin estimación no hay pago', u: 'alto' });
+    const tareas = db.prepare(`SELECT COUNT(*) c FROM tareas WHERE estado='en_curso'`).get().c;
+    if (tareas) n.push({ ic: '✦', t: `${tareas} tareas asignadas por IA en curso`, d: 'Desglosadas del último mensaje global', u: 'medio' });
+  }
+  if (rol === 'constructor') {
+    if (getFlag('solicitud') === '1' && getFlag('constructor') !== '1') n.push({ ic: '📨', t: 'Infonavit solicita actualización', d: `${b.nombre}: avance, servicios y fianza`, u: 'critico' });
+    if (b.fianza_estado === 'por_vencer') n.push({ ic: '🛡️', t: `Tu fianza vence en ${diasFianza} días`, d: `$${b.fianza_monto} MDP · renueva para bajar el semáforo`, u: 'critico' });
+    if (b.estimaciones_mes < b.estimaciones_meta) n.push({ ic: '🧾', t: 'Te falta la estimación 2/2 del mes', d: 'Envíala hoy y cobra en 3 días hábiles', u: 'alto' });
+  }
+  if (rol === 'operador') {
+    if (getFlag('operador') !== '1') n.push({ ic: '📜', t: `${b.escrituras_pendientes >= 25 ? 25 : b.escrituras_pendientes} escrituras listas para firma`, d: `${b.nombre} · expedientes completos`, u: 'alto' });
+    if (getFlag('verificado') !== '1') n.push({ ic: '🔍', t: 'Verificación UVE pendiente', d: 'Etapa 3 · habilita la estimación del constructor', u: 'alto' });
+  }
+  if (rol === 'derechohabiente') {
+    db.prepare(`UPDATE reservas SET estado='expirada' WHERE estado='activa' AND expira < ?`).run(now());
+    const r = db.prepare(`SELECT r.*, u.numero FROM reservas r JOIN unidades u ON u.id=r.unidad_id WHERE r.estado IN ('activa','firmada') ORDER BY r.creada DESC LIMIT 1`).get();
+    if (r && r.estado === 'activa') {
+      const h = Math.floor((new Date(r.expira) - Date.now()) / 36e5);
+      n.push({ ic: '⏳', t: `Tu apartado del depto ${r.numero} vence en ${h} h`, d: 'Completa tus documentos para asegurar tu vivienda', u: 'critico' });
+      const pend = db.prepare(`SELECT COUNT(*) c FROM documentos WHERE reserva_id=? AND estado!='validado'`).get(r.id).c;
+      if (pend) n.push({ ic: '📄', t: `Te faltan ${pend} documentos`, d: 'Biometría y/o constancia del SAT', u: 'alto' });
+    }
+    if (r && r.estado === 'firmada') n.push({ ic: '✍️', t: 'Cita de firma: miércoles 15 de julio, 11:00 h', d: 'Notaría 121 · lleva tu INE original', u: 'alto' });
+  }
+  if (msjs) n.push({ ic: '💬', t: `${msjs} mensajes en tu bandeja`, d: 'Comunicación cerrada del programa', u: 'medio' });
+  json(200, n);
+});
+
 /* ============ EVIDENCIA FOTOGRÁFICA DE OBRA (constructor → director) ============ */
 POST('/api/desarrollos/:id/evidencia', ({ params, body, user, json }) => {
   if (!/^data:image\/(png|jpeg|jpg|webp);base64,/.test(body.foto || '')) return json(400, { error: 'Formato de imagen no válido' });

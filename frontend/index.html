@@ -171,6 +171,10 @@ table.tabla tr.clic:hover{background:var(--gris-50)}
 .sugerencias button:hover{background:rgba(125,211,252,.16)}
 .chat-input input{background:rgba(7,12,20,.7);border:1px solid rgba(125,211,252,.28)}
 .chat-input input:focus{border-color:#7DD3FC;box-shadow:0 0 0 3px rgba(125,211,252,.15)}
+/* Campanita de notificaciones */
+.campana{position:relative;border:none;background:var(--gris-100);width:38px;height:38px;border-radius:50%;font-size:15px;cursor:pointer;transition:.15s;flex-shrink:0}
+.campana:hover{background:var(--gris-300)}
+.campana .badge{position:absolute;top:-3px;right:-3px;background:var(--ambar);color:#fff;font-size:9.5px;font-weight:800;min-width:16px;height:16px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px}
 /* Menu de perfil */
 .app-head .usuario{cursor:pointer;border-radius:12px;padding:4px 8px;transition:.15s}
 .app-head .usuario:hover{background:var(--gris-50)}
@@ -1538,7 +1542,8 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
         <!-- P3: Desarrollos -->
                 <div class="pantalla" id="p-3" style="padding:0">
           <div style="padding:16px 20px 0">
-            <div class="b2c-head" style="margin-bottom:10px"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:auto" id="btn-toggle-mapa" onclick="toggleListaMapa()">☰ Lista</button></div>
+            <div class="b2c-head" style="margin-bottom:10px"><button class="volver" onclick="irPantalla(2)">←</button><span class="titulo">Viviendas para ti</span><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:auto" id="btn-comparar" onclick="toggleComparar()">⇄ Comparar</button><button class="volver" style="width:auto;padding:0 12px;font-size:12px;font-weight:700;margin-left:6px" id="btn-toggle-mapa" onclick="toggleListaMapa()">☰ Lista</button></div>
+          <div id="b2c-comparar" style="display:none;padding:4px 0 96px"></div>
             <div class="progreso" style="margin-bottom:12px"><span class="ok"></span><span class="ok"></span><span class="ok"></span><span></span><span></span></div>
             <div class="buscador-pill">🔍 <div><b>Guadalajara y alrededores</b><small>1–2 SM · 2+ recámaras · programa Bienestar</small></div><span style="margin-left:auto;cursor:pointer" onclick="toast('Filtros: precio, recámaras y fecha de entrega — usa los chips de abajo')">⚙️</span></div>
             <div class="cat-chips" id="chips-mapa">
@@ -1670,6 +1675,10 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
             <div class="lt-item"><div class="pt">📜</div><div><b>Recoge tu escritura registrada</b><p>Te avisamos cuando esté lista en notaría · incluye tu reglamento de condominio</p></div></div>
           </div>
           <button class="btn secundario btn-full" onclick="irPantalla(8)">⭐ 6 meses después: califica tu desarrollo</button>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn secundario chico" style="flex:1" onclick="verEscritura()">📜 Mi escritura</button>
+            <button class="btn secundario chico" style="flex:1" onclick="verReglamento()">📘 Reglamento</button>
+          </div>
           <button class="btn secundario btn-full" style="margin-top:8px" onclick="irVista('b2g')">Ver el impacto en la torre de control →</button>
         </div>
 
@@ -2395,6 +2404,119 @@ function pintarB2G(){
     bn.className='banner-alerta '+(S.operador?'verde':'ambar');
     bn.innerHTML='<span style="font-size:19px">'+(S.operador?'🟢':'🟡')+'</span><span><b>Impacto de las últimas 24 h:</b> Bosques del Bienestar pasó de rojo a amarillo. Avance 78→82%, servicios 54→71%, entregables 92→117'+(S.operador?', escrituras pendientes 48→23 y 25 firmas programadas':'')+(S.estimacion?', estimación 2/2 autorizada → pago en 3 días hábiles':'')+(S.dh?'. Ana y Luis Hernández confirmaron firma para el 15 de julio.':'.')+'</span><button class="btn primario chico" onclick="verDetalleBosques()">Ver detalle →</button>';
   }
+}
+
+/* ================= CENTRO DE NOTIFICACIONES 🔔 ================= */
+async function abrirNotifs(rol,btn){
+  let p=document.getElementById('panel-notifs');
+  if(p&&p.dataset.rol===rol){ p.remove(); return; }
+  if(p) p.remove();
+  p=document.createElement('div'); p.id='panel-notifs'; p.dataset.rol=rol; p.className='menu-perfil';
+  const r=btn.getBoundingClientRect();
+  p.style.top=(r.bottom+8+window.scrollY)+'px';
+  p.style.left=Math.max(10,Math.min(r.left+window.scrollX-120,window.innerWidth-316))+'px';
+  p.style.width='310px';
+  p.innerHTML='<div class="mp-cab"><b style="font-size:13.5px">🔔 Notificaciones</b></div><div style="padding:6px 0"><p style="padding:10px 14px;color:var(--gris-500);font-size:12.5px">Cargando…</p></div>';
+  document.body.appendChild(p);
+  try{
+    const ns=await apiGet('/api/notificaciones?rol='+rol);
+    const cuerpo=ns.length?ns.map(n=>{
+      const col={critico:'var(--rojo-sem)',alto:'var(--ambar)',medio:'var(--azul)'}[n.u]||'var(--gris-500)';
+      return '<div style="display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--gris-100);align-items:flex-start"><span style="font-size:16px">'+n.ic+'</span><div><b style="font-size:12.5px;display:block;line-height:1.35">'+n.t+'</b><small style="color:var(--gris-500);font-size:11px">'+n.d+'</small></div><span style="margin-left:auto;width:7px;height:7px;border-radius:50%;background:'+col+';flex-shrink:0;margin-top:5px"></span></div>';
+    }).join(''):'<p style="padding:12px 14px;color:var(--gris-500);font-size:12.5px">Sin pendientes. Todo al día ✓</p>';
+    p.innerHTML='<div class="mp-cab"><b style="font-size:13.5px">🔔 Notificaciones</b><span class="chip '+(ns.some(n=>n.u==='critico')?'rojo':'gris')+'" style="margin-left:auto">'+ns.length+'</span></div><div style="max-height:320px;overflow-y:auto">'+cuerpo+'</div>';
+  }catch{ p.querySelector('div+div').innerHTML='<p style="padding:12px 14px;color:var(--gris-500);font-size:12.5px">Requiere la API conectada.</p>'; }
+}
+async function refrescarBadges(){
+  if(!API_OK) return;
+  for(const [vid,rol] of Object.entries(ROL_VISTA)){
+    try{
+      const ns=await apiGet('/api/notificaciones?rol='+rol);
+      const b=document.querySelector('#'+vid+' .campana .badge');
+      if(b){ b.textContent=ns.length; b.style.display=ns.length?'flex':'none'; if(ns.some(n=>n.u==='critico')) b.style.background='var(--rojo-sem)'; }
+    }catch{}
+  }
+}
+window.addEventListener('load',()=>{
+  Object.entries(ROL_VISTA).forEach(([vid,rol])=>{
+    const cont=document.querySelector('#'+vid+' .app-head .usuario'); if(!cont) return;
+    const b=document.createElement('button'); b.className='campana'; b.title='Notificaciones';
+    b.innerHTML='🔔<span class="badge" style="display:none"></span>';
+    b.onclick=e=>{ e.stopPropagation(); abrirNotifs(rol,b); };
+    cont.parentElement.insertBefore(b,cont);
+  });
+  document.addEventListener('click',e=>{ const p=document.getElementById('panel-notifs'); if(p&&!e.target.closest('#panel-notifs,.campana')) p.remove(); });
+  setTimeout(refrescarBadges,1200);
+});
+
+/* ================= COMPARADOR + SIMULADOR B2C (documento: "simulador de opciones") ================= */
+let _simAnios=20,_simEng=0;
+function toggleComparar(){
+  const c=document.getElementById('b2c-comparar'), m=document.getElementById('b2c-mapa'), li=document.getElementById('b2c-lista');
+  const abrir=c.style.display==='none';
+  c.style.display=abrir?'block':'none';
+  m.style.display=abrir?'none':'block';
+  li.style.display='none';
+  document.getElementById('btn-comparar').style.background=abrir?'var(--gris-900)':'';
+  document.getElementById('btn-comparar').style.color=abrir?'#fff':'';
+  if(abrir) pintarComparador();
+  else if(typeof ajustarMapaB2C==='function') ajustarMapaB2C();
+}
+function mensualidad(precio){
+  const monto=Math.max(0,precio-_simEng);
+  return Math.round(monto*1.32/(_simAnios*12)/10)*10;
+}
+function pintarComparador(){
+  const ids=[_devSel||'bosques','tesistan','valle'].filter((v,i,a)=>a.indexOf(v)===i);
+  while(ids.length<3){ const extra=Object.keys(DESARROLLOS_MAPA).find(k=>!ids.includes(k)); if(!extra)break; ids.push(extra); }
+  const filas=[
+    ['Precio del programa',d=>d.p],
+    ['Mensualidad simulada',d=>'<b style="color:var(--rojo)">$'+mensualidad(parseInt(d.p.replace(/\D/g,''))).toLocaleString('en-US')+'</b>'],
+    ['Compatibilidad',d=>'<span class="match" style="font-size:9.5px">'+d.match+'</span>'],
+    ['Ubicación',d=>d.d.split('·')[0]],
+    ['Reputación',d=>d.r]
+  ];
+  document.getElementById('b2c-comparar').innerHTML=
+   '<div class="card" style="padding:14px;margin-bottom:12px"><span class="mini-lbl">Simulador de mensualidad</span>'+
+   '<div style="display:flex;gap:14px;margin-top:10px;font-size:12px;font-weight:700;color:var(--gris-700)">'+
+   '<label style="flex:1">Plazo: <span id="sim-a">'+_simAnios+'</span> años<input type="range" min="5" max="30" step="5" value="'+_simAnios+'" style="width:100%" oninput="_simAnios=+this.value;document.getElementById(\'sim-a\').textContent=this.value;pintarComparador()"></label>'+
+   '<label style="flex:1">Enganche: $<span id="sim-e">'+_simEng.toLocaleString('en-US')+'</span><input type="range" min="0" max="120000" step="10000" value="'+_simEng+'" style="width:100%" oninput="_simEng=+this.value;pintarComparador()"></label>'+
+   '</div><p style="font-size:10px;color:var(--gris-500);margin-top:6px">Simulación ilustrativa del sandbox · la mensualidad nunca supera el 30% del ingreso</p></div>'+
+   '<div class="card" style="padding:0;overflow-x:auto"><table class="tabla" style="min-width:100%"><thead><tr><th></th>'+
+   ids.map(id=>'<th style="text-align:center">'+DESARROLLOS_MAPA[id].n.replace(' del ',' ')+'</th>').join('')+'</tr></thead><tbody>'+
+   filas.map(([k,fn])=>'<tr><td style="color:var(--gris-500);font-size:12px">'+k+'</td>'+ids.map(id=>'<td style="text-align:center;font-size:12.5px">'+fn(DESARROLLOS_MAPA[id])+'</td>').join('')+'</tr>').join('')+
+   '<tr><td></td>'+ids.map(id=>'<td style="text-align:center"><button class="btn primario chico" onclick="toggleComparar();elegirDesarrollo(\''+id+'\')">Elegir →</button></td>').join('')+'</tr>'+
+   '</tbody></table></div>';
+}
+
+/* ================= DOCUMENTOS POST-FIRMA (escritura y reglamento) ================= */
+function _docVentana(titulo,cuerpo){
+  const w=window.open('','_blank');
+  w.document.write('<html><head><title>'+titulo+'</title></head><body style="font-family:Georgia,serif;max-width:640px;margin:48px auto;color:#1F2328;line-height:1.7">'+
+   '<div style="text-align:center;border-bottom:3px double #9F2241;padding-bottom:14px;margin-bottom:24px"><h1 style="font-size:19px;color:#9F2241;margin:0">'+titulo+'</h1><p style="font-size:11px;color:#888;margin-top:6px">Programa de Vivienda del Bienestar · Infonavit · documento simulado del sandbox</p></div>'+
+   cuerpo+
+   '<p style="margin-top:36px;font-size:10.5px;color:#999;border-top:1px solid #eee;padding-top:10px">Esta versión es un prototipo estratégico de alta fidelidad con datos simulados. Este documento no tiene validez legal.</p></body></html>');
+  w.document.close(); setTimeout(()=>w.print(),400);
+}
+function verEscritura(){
+  const dev=DESARROLLOS_MAPA[_devSel||'bosques'];
+  const unidad=RESERVA?('Torre '+RESERVA.torre+' · Piso '+RESERVA.piso+' · Depto '+RESERVA.numero):'Torre A · Depto 304';
+  _docVentana('Carátula de Escritura Pública',
+   '<p><b>Escritura número:</b> 48,215 (simulada)</p><p><b>Notaría:</b> 121 de Guadalajara, Jalisco</p>'+
+   '<p><b>Adquirientes:</b> Ana Hernández y Luis Hernández (crédito conjunto)</p>'+
+   '<p><b>Inmueble:</b> '+unidad+' · '+dev.n+'</p>'+
+   '<p><b>Valor de operación:</b> '+dev.p+' MXN · Programa de Vivienda del Bienestar</p>'+
+   '<p><b>Fecha de firma:</b> 15 de julio de 2026, 11:00 h</p>'+
+   '<p style="margin-top:26px">Pendiente de inscripción en el Registro Público de la Propiedad. Se te notificará cuando puedas pasar por tu testimonio.</p>');
+}
+function verReglamento(){
+  const dev=DESARROLLOS_MAPA[_devSel||'bosques'];
+  _docVentana('Reglamento de Condominio · '+dev.n,
+   '<p><b>1. Convivencia.</b> Horario de silencio de 22:00 a 07:00 h. Las áreas comunes (parque central, ciclovía y salón de usos múltiples) son de uso compartido.</p>'+
+   '<p><b>2. Cuota de mantenimiento.</b> $380 MXN mensuales por unidad, destinada a limpieza, vigilancia y mantenimiento de áreas comunes.</p>'+
+   '<p><b>3. Mascotas.</b> Permitidas con correa en áreas comunes; el propietario es responsable de su limpieza.</p>'+
+   '<p><b>4. Modificaciones.</b> Cualquier modificación de fachada requiere aprobación de la administración del condominio.</p>'+
+   '<p><b>5. Asambleas.</b> Asamblea ordinaria semestral; tu voz y voto cuentan desde la entrega de tu vivienda.</p>');
 }
 
 /* ================= MENSAJERÍA REAL ENTRE ROLES ================= */
