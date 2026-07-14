@@ -2533,10 +2533,13 @@ function abrirMonetizacion(){
 }
 // El botón solo aparece con ?interno=1 (se recuerda en el navegador)
 window.addEventListener('load',()=>{
-  if(new URLSearchParams(location.search).get('interno')==='1') localStorage.setItem('modo_interno','1');
+  const _pInterno=new URLSearchParams(location.search).get('interno')==='1';
+  if(_pInterno) localStorage.setItem('modo_interno','1');
   if(localStorage.getItem('modo_interno')==='1'){
     const bar=document.querySelector('.proto-bar');
-    if(bar){ const b=document.createElement('button'); b.className='rol-btn'; b.style.flexShrink='0'; b.textContent='💼'; b.title='Modelo de negocio (interno)'; b.onclick=abrirMonetizacion; bar.insertBefore(b,bar.querySelector('.roles')); }
+    if(bar){ const b=document.createElement('button'); b.className='rol-btn'; b.style.flexShrink='0'; b.textContent='💼 Modelo'; b.title='Modelo de negocio (interno)'; b.onclick=abrirMonetizacion; bar.insertBefore(b,bar.querySelector('.roles')); }
+    // Con ?interno=1 en la URL, el panel se abre directamente
+    if(_pInterno) setTimeout(()=>{ const m=document.getElementById('modal-entrada'); if(m) m.style.display='none'; abrirMonetizacion(); },400);
   }
 });
 
