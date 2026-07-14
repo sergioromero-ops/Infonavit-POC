@@ -1499,17 +1499,32 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
 .mz-barra{flex:1;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;gap:10px}
 .mz-barra .v{font-size:19px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(90deg,#fff,#E58BA5);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mz-barra .b{border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,#E58BA5,var(--rojo) 45%,#5E1024);box-shadow:0 0 34px rgba(159,34,65,.5),inset 0 1px 0 rgba(255,255,255,.35);animation:mzCrece 1s cubic-bezier(.22,1,.36,1) both}
-.mz-barra:nth-child(2) .b{animation-delay:.15s}
-.mz-barra:nth-child(3) .b{animation-delay:.3s}
-@keyframes mzCrece{from{height:0!important}}
 .mz-barra .t{font-size:12.5px;font-weight:800}
 .mz-barra .d{font-size:10.5px;color:#8A7F96;line-height:1.5}
 .mz-nota{font-size:11px;color:#7A6F86;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.mz-orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;pointer-events:none;animation:mzFlota 11s ease-in-out infinite}
+.mz-orb.o1{width:340px;height:340px;background:#9F2241;top:-80px;right:6%}
+.mz-orb.o2{width:260px;height:260px;background:#5E1024;bottom:8%;left:-60px;animation-delay:3s}
+.mz-orb.o3{width:200px;height:200px;background:#C05C74;top:42%;right:-50px;animation-delay:6s;opacity:.35}
+@keyframes mzFlota{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-28px,26px) scale(1.08)}66%{transform:translate(22px,-20px) scale(.94)}}
+.mz-quote{position:relative;overflow:hidden}
+.mz-quote::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 65%);transform:translateX(-120%);animation:mzShimmer 4.5s ease-in-out infinite}
+@keyframes mzShimmer{0%,60%{transform:translateX(-120%)}90%,100%{transform:translateX(120%)}}
+.mz-kpi b{transition:none}
+.mz-pilar .n{animation:mzLate 2.6s ease-in-out infinite}
+.mz-pilar:nth-child(3) .n{animation-delay:.4s}.mz-pilar:nth-child(4) .n{animation-delay:.8s}
+@keyframes mzLate{0%,100%{box-shadow:0 6px 18px rgba(159,34,65,.45)}50%{box-shadow:0 6px 30px rgba(229,139,165,.75)}}
+.mz-vert .ic{transition:transform .2s,background .2s}
+.mz-vert:hover .ic{transform:scale(1.12) rotate(-4deg);background:rgba(159,34,65,.3)}
+.mz-barra .b{position:relative;overflow:hidden;transition:height 1.1s cubic-bezier(.22,1,.36,1)}
+.mz-barra .b::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent 40%);animation:mzBrillo 3s ease-in-out infinite}
+@keyframes mzBrillo{50%{opacity:.4}}
 #vista-monetiza .anima-sube{animation:mzSube .5s ease both}
 #vista-monetiza .anima-sube:nth-child(2){animation-delay:.06s}#vista-monetiza .anima-sube:nth-child(3){animation-delay:.12s}#vista-monetiza .anima-sube:nth-child(4){animation-delay:.18s}#vista-monetiza .anima-sube:nth-child(5){animation-delay:.24s}
 @keyframes mzSube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 </style>
-<section id="vista-monetiza" class="vista">
+<section id="vista-monetiza" class="vista" style="position:relative;overflow:hidden">
+  <div class="mz-orb o1"></div><div class="mz-orb o2"></div><div class="mz-orb o3"></div>
   <div class="mz-head">
     <div>
       <span class="mz-chip">interno · no mostrar al director</span>
@@ -1519,9 +1534,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
   </div>
   <div class="mz-cont">
     <div class="mz-kpis">
-      <div class="mz-kpi anima-sube"><span class="l">Suscripción B2B</span><b>$30,000</b><span>MXN/año por desarrollador · cifra de arranque</span></div>
+      <div class="mz-kpi anima-sube"><span class="l">Suscripción B2B</span><b class="mz-num" data-fin="30000" data-pre="$">$0</b><span>MXN/año por desarrollador · cifra de arranque</span></div>
       <div class="mz-kpi anima-sube"><span class="l">Fee por operación</span><b>Variable</b><span>por vivienda colocada · lo absorbe el desarrollador</span></div>
-      <div class="mz-kpi anima-sube"><span class="l">Ahorro que ya genera</span><b>~4%</b><span>en comercialización para el desarrollador</span></div>
+      <div class="mz-kpi anima-sube"><span class="l">Ahorro que ya genera</span><b class="mz-num" data-fin="4" data-pre="~" data-post="%">~0%</b><span>en comercialización para el desarrollador</span></div>
       <div class="mz-kpi anima-sube"><span class="l">Cliente ancla</span><b>Infonavit</b><span>licencia institucional B2G</span></div>
       <div class="mz-kpi anima-sube"><span class="l">Costo al usuario</span><b>$0</b><span>nunca se traslada al derechohabiente</span></div>
     </div>
@@ -1551,9 +1566,9 @@ form.formulario{display:flex;flex-direction:column;gap:14px}
     <div class="mz-card mz-proy">
       <h3>Proyección ilustrativa · primeros 3 años <small>supuestos por validar</small></h3>
       <div class="mz-barras">
-        <div class="mz-barra"><span class="v">~$4.5 MDP</span><div class="b" style="height:18%"></div><span class="t">Año 1</span><span class="d">50 desarrolladores · piloto</span></div>
-        <div class="mz-barra"><span class="v">~$18 MDP</span><div class="b" style="height:48%"></div><span class="t">Año 2</span><span class="d">200 desarrolladores + fees por operación</span></div>
-        <div class="mz-barra"><span class="v">~$45 MDP</span><div class="b" style="height:88%"></div><span class="t">Año 3</span><span class="d">Escala nacional + premium + data</span></div>
+        <div class="mz-barra"><span class="v mz-num" data-fin="4.5" data-pre="~$" data-post=" MDP" data-dec="1">~$0 MDP</span><div class="b mz-b" data-h="18%" style="height:0%"></div><span class="t">Año 1</span><span class="d">50 desarrolladores · piloto</span></div>
+        <div class="mz-barra"><span class="v mz-num" data-fin="18" data-pre="~$" data-post=" MDP">~$0 MDP</span><div class="b mz-b" data-h="48%" style="height:0%"></div><span class="t">Año 2</span><span class="d">200 desarrolladores + fees por operación</span></div>
+        <div class="mz-barra"><span class="v mz-num" data-fin="45" data-pre="~$" data-post=" MDP">~$0 MDP</span><div class="b mz-b" data-h="88%" style="height:0%"></div><span class="t">Año 3</span><span class="d">Escala nacional + premium + data</span></div>
       </div>
       <p class="mz-nota">Cifras ilustrativas para discusión interna: dependen del fee definitivo, número de operaciones y adopción. Pendiente: reunión de monetización para fijar montos y el mensaje al director.</p>
     </div>
@@ -2619,6 +2634,30 @@ async function explicarCredito(btn){
 function abrirMonetizacion(){
   const m=document.getElementById('modal-entrada'); if(m) m.style.display='none';
   irVista('monetiza');
+  animarMonetiza();
+}
+function animarMonetiza(){
+  // contadores que suben
+  document.querySelectorAll('#vista-monetiza .mz-num').forEach(el=>{
+    const fin=parseFloat(el.dataset.fin), pre=el.dataset.pre||'', post=el.dataset.post||'', dec=+(el.dataset.dec||0);
+    const ini=performance.now(), dur=1200;
+    function paso(t){
+      const p=Math.min(1,(t-ini)/dur), e=1-Math.pow(1-p,3);
+      const v=fin*e;
+      el.textContent=pre+(dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US'))+post;
+      if(p<1) requestAnimationFrame(paso);
+    }
+    requestAnimationFrame(paso);
+  });
+  // barras que crecen (re-ejecutable en cada entrada)
+  document.querySelectorAll('#vista-monetiza .mz-b').forEach((b,i)=>{
+    b.style.height='0%';
+    setTimeout(()=>{ b.style.height=b.dataset.h; },150+i*180);
+  });
+  // re-dispara la cascada de entrada
+  document.querySelectorAll('#vista-monetiza .anima-sube').forEach(el=>{
+    el.style.animation='none'; void el.offsetWidth; el.style.animation='';
+  });
 }
 // El botón solo aparece con ?interno=1 (se recuerda en el navegador)
 window.addEventListener('load',()=>{
@@ -2968,8 +3007,10 @@ window.addEventListener('load',cargarEstadoRemoto);
 </script>
 <script>
 function irVista(v, btn){
+  const destino=document.getElementById('vista-'+v);
+  if(!destino){ toast('⚠ Esa vista no existe en esta versión — recarga la página (Cmd+Shift+R)'); return; }
   document.querySelectorAll('.vista').forEach(s=>s.classList.remove('activa'));
-  document.getElementById('vista-'+v).classList.add('activa');
+  destino.classList.add('activa');
   document.querySelectorAll('.rol-btn').forEach(b=>b.classList.toggle('activo', b.dataset.vista===v));
   window.scrollTo({top:0});
   if(typeof montarVoz==='function') montarVoz(v);
